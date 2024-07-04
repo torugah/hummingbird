@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox"
 
 import {
   Form,
@@ -22,7 +23,7 @@ const FormSchema = z.object({
   }),
 })
 
-export function InputForm() {
+export function SignInForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -60,6 +61,22 @@ export function InputForm() {
             </FormItem>
           )}
         />
+        <div className="items-center">
+          <div className="items-center flex space-x-2 float-left">
+            <Checkbox id="terms1" />
+            <div className="grid gap-1.5 leading-none">
+              <label
+                htmlFor="terms1"
+                className="text-sm font-light text-gray-500 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Remember me
+              </label>
+            </div>
+          </div>
+          <div className="float-right">
+            <p className="text-xs font-semibold text-[#01C14C] underline cursor-pointer hover:underline-offset-2" >Forgot your password?</p>
+            {/* TODO: Fazer tela de Reset Password */}
+          </div>          
+        </div>        
           <Button className="w-full" type="submit" variant="default">Sign In</Button>
         </form>
       </Form>
