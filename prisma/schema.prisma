@@ -1,0 +1,178 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo de Usuários
+model User {
+  id                  Int       @id @default(autoincrement())
+  account_id          Int?
+  session_id          Int?
+  username            String    @unique
+  password            String    
+  email               String    @unique
+  emailVerified       DateTime?
+  image               String?
+  accounts            Account[]
+  sessions            Session[]
+  str_hashedPassword  String?
+  str_profile_picture String?
+  dtm_createAt        DateTime  @default(now())
+  dtm_updateAt        DateTime  @updatedAt
+  bool_active         Boolean?
+
+  // Optional for WebAuthn support
+  Authenticator Authenticator[]
+
+  @@map("users")
+}
+
+model Session {
+  sessionToken String   @unique @map("session_token")
+  userId       Int      @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sessions")
+}
+ 
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@id([identifier, token])
+  @@map("verificationtokens")
+}
+ 
+// Optional for WebAuthn support
+model Authenticator {
+  credentialID         String  @unique
+  userId               Int
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([userId, credentialID])
+}
+
+// Modelo de Contas
+model Account {
+  account_id             Int       @default(autoincrement()) @unique
+  userId                 Int       @map("user_id")
+  dtm_createAt           DateTime  @default(now())
+  dtm_updateAt           DateTime  @updatedAt
+  bool_active            Boolean?
+  type                   String?
+  provider               String
+  providerAccountId      String @map("provider_account_id")
+  refresh_token          String? @db.Text
+  access_token           String? @db.Text
+  expiresAt              Int?
+  tokenType              String?
+  scope                  String?
+  id_token               String? @db.Text
+  session_state          String? 
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+// Modelo de Transações
+model Transacao {
+  transaction_id              Int       @id @default(autoincrement())
+  account_id                  Int
+  str_category_id             Int
+  str_name                    String
+  dbl_valor                   Float
+  str_transactionType         String
+  str_movimentType            String
+  str_description             String?
+  bool_installment            Boolean?
+  int_installmentCount        Int?
+  dtm_currentInstallmentDate  DateTime?
+  str_paymentForm             String
+  str_card_id                 Int
+  str_status                  String
+  dtm_data                    DateTime
+  str_brokerName              String?
+  str_investimentType         String?
+  dtm_createAt                DateTime  @default(now())
+  dtm_updateAt                DateTime  @updatedAt
+  bool_active                 Boolean
+}
+
+// Modelo de Categorias
+model Categoria {
+  category_id        Int       @id @default(autoincrement())
+  account_id         Int
+  str_categoryName   String
+  str_movimentType   String
+  bool_hasBudgetLimit Boolean
+  dbl_budgetLimit    Float?
+  str_image          String
+  dtm_createAt       DateTime  @default(now())
+  dtm_updateAt       DateTime  @updatedAt
+  bool_active        Boolean
+}
+
+// Modelo de Cartões
+model Cartao {
+  card_id          Int       @id @default(autoincrement())
+  str_transaction_id  Int
+  str_bank_id         Int
+  account_id          Int
+  dbl_creditLimit     Float
+  dtm_dueDate         DateTime
+  str_lastNumbers     String
+  dtm_createAt        DateTime  @default(now())
+  dtm_updateAt        DateTime  @updatedAt
+  bool_active         Boolean
+}
+
+// Modelo de Bancos
+model Banco {
+  bank_id      Int       @id @default(autoincrement())
+  str_card_id  Int
+  str_bankName String
+  str_image    String?
+  dtm_createAt DateTime  @default(now())
+  dtm_updateAt DateTime  @updatedAt
+  bool_active  Boolean
+}
+
+// Enum de Tipo de Transação
+enum TipoTransacao {
+  Fixed
+  Variable
+  Income
+  Investiment
+  DividendReturn
+}
+
+// Enum de Tipo de Movimento
+enum TipoMovimento {
+  Input
+  Output
+}
+
