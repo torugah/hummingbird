@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import Image from "next/image";
 import Footer from "../_components/footer";
+import Header from '../_components/header';
 import { SignInForm } from "../_components/signInForm";
 import { SignUpForm } from "../_components/signUpForm";
 import { FaGoogle } from 'react-icons/fa';
 import { Button } from "@/components/ui/button";
+
 
 export default function Home() {
   const [isMoved, setIsMoved] = useState(false);
@@ -39,7 +41,9 @@ export default function Home() {
   }
 
   return (
+    
     <div className="flex min-h-screen flex-col items-center justify-between">
+      <Header />
       <div className="flex flex-row border-[2px] bg-[url('/fullSignInOnImage.jpg')] bg-cover border-gray-40 my-16 max-lg:w-[95%] max-lg:h-fit w-3/5 h-[80vh] ">
 
         <div className={`max-lg:w-full w-1/2 h-full bg-gray-100 p-10 transition-transform duration-500 ${isMoved ? 'transform translate-x-full' : ''}`}>
