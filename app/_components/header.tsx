@@ -7,11 +7,13 @@ const Header = () => {
     return (
         <div className="flex flex-row justify-around items-center w-full bg-secondary py-6 px-5 border-gray-100 border-2 background bg-white">
             <div>
-                <Image  src="/hummingBirdLogo.png" alt="Hummingbird Logo" height={50} width={50} />
+                <Link href="/">
+                    <Image src="/hummingBirdLogo.png" alt="Hummingbird Logo" height={50} width={50} />
+                </Link>
             </div>
             <div className="justify-between">
                 <Button variant={"ghost"} asChild>
-                    <Link href="/" className="text-black">
+                    <Link href="/timeVision" className="text-black">
                         Meu Fluxo 
                     </Link>
                 </Button>
