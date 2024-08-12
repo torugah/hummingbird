@@ -8,6 +8,7 @@ import { SignInForm } from "../_components/signInForm";
 import { SignUpForm } from "../_components/signUpForm";
 import { FaGoogle } from 'react-icons/fa';
 import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react"
 
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
   const [fadeOut, setFadeOut] = useState(false);
   const [showNewContent, setShowNewContent] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
+  const { data: session } = useSession()
 
   useEffect(() => {
     const handleResize = () => {
@@ -43,7 +45,11 @@ export default function Home() {
   return (
     
     <div className="flex min-h-screen flex-col items-center justify-between">
-      <Header />
+      {/*<Header />*/}
+      <div className="flex flex-row justify-around items-center w-full bg-secondary py-3 px-5 border-gray-100 border-2 background bg-white">
+        <p className='font-candara text-[#01C14C] text-4xl font-bold'>Hummingbird</p>  
+      </div>
+
       <div className="flex flex-row border-[2px] bg-[url('/fullSignInOnImage.jpg')] bg-cover border-gray-40 my-16 max-lg:w-[95%] max-lg:h-fit w-3/5 h-[80vh] ">
 
         <div className={`max-lg:w-full w-1/2 h-full bg-gray-100 p-10 transition-transform duration-500 ${isMoved ? 'transform translate-x-full' : ''}`}>
@@ -87,6 +93,9 @@ export default function Home() {
             )}
           </div>
         </div>
+      </div>
+      <div>
+        {session && <pre>{JSON.stringify(session, null, 2)}</pre>}
       </div>
       <Footer />
     </div>

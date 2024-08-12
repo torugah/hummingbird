@@ -11,6 +11,7 @@ import {
     TableRow,
   } from "@/components/ui/table";
 import { FaPen } from "react-icons/fa6";
+import { SignOutButton } from "../_components/signOutButton";
 
 const InitialPage = () => {
 

@@ -72,6 +72,9 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      fontFamily: {
+        candara: ['Candara', 'sans-serif'], // Defina 'Candara' como a nova fonte
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

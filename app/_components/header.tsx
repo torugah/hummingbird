@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react"
+import SheetContents from "./sheets";
 
 const Header = () => {
     return (
@@ -34,11 +34,7 @@ const Header = () => {
                 </Button>
             </div>
             <div>
-                <Button variant={"ghost"} asChild>
-                    <Link href="/dashboard" className="text-[#01C14C]">
-                        Account <ChevronRight className="h-4 w-4" />
-                    </Link>
-                </Button>
+                <SheetContents />
             </div>
             
         </div>

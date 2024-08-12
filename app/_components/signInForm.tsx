@@ -13,9 +13,12 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
-  username: z.string().min(6, {
+  email: z.string().min(6, {
     message: "Username must be at least 6 characters.",
   }),
   password: z.string().min(8, {
@@ -27,17 +30,42 @@ export function SignInForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   })
+
+  const router = useRouter()
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    const { email, password } = form.getValues(); 
+
+    try {
+      const response = await signIn('credentials', {
+        redirect: false,
+        email,
+        password
+      })
+
+      console.log('[LOGIN_RESPONSE]: ', response)
+
+      if(!response?.error) {
+        router.refresh()
+        router.push('/dashboard')
+      }
+    } catch (error) {
+      console.log('[LOGIN_ERROR]: ', error)
+    }
+  }
   
     return (
       <Form {...form}>
-        <form className="w-full space-y-6"> {/* TODO: OnSubmit method*/}
+        <form className="w-full space-y-6" onSubmit={handleLogin}>
         <FormField
           control={form.control}
-          name="username"
+          name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-gray-400">E-mail Addrres</FormLabel>
