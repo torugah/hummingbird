@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from "@/components/ui/button";
 import Footer from "../_components/footer";
 import Header from "../_components/header";
@@ -11,9 +13,35 @@ import {
     TableRow,
   } from "@/components/ui/table";
 import { FaPen } from "react-icons/fa6";
-import { SignOutButton } from "../_components/signOutButton";
+import { useSession } from 'next-auth/react';
+import { format, formatDistance, formatRelative, subDays } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 const InitialPage = () => {
+
+    const { data: session } = useSession()
+
+  const horaAtual = new Date();
+    const hora = horaAtual.getHours();
+
+    // Determina a saudação com base na hora
+    let saudacao;
+
+    if (hora >= 5 && hora < 12) {
+        saudacao = 'Bom dia';
+    } else if (hora >= 12 && hora < 18) {
+        saudacao = 'Boa tarde';
+    } else {
+        saudacao = 'Boa noite';
+    }
+
+    // Formatar a data para "8 de Abril, 2024"
+  const dataFormatada = format(horaAtual, "d 'de' MMMM, yyyy", { locale: ptBR });
+
+  // Obter o dia da semana "Segunda-Feira"
+  const diaDaSemana = format(horaAtual, 'eeee', { locale: ptBR });
+
+    const { data } = useSession();
 
     const invoices = [
         {
@@ -81,13 +109,13 @@ const InitialPage = () => {
             <div className="flex max-lg:w-[95%] flex-row justify-between mt-16 w-[74%]">
 
                 <div className="flex flex-col ">
-                    <h1 className="text-2xl font-bold">Bom dia, Fillipi!</h1>
+                    <h1 className="text-2xl font-bold">{saudacao + ", " + data?.user?.name}!</h1>
                     <p>Que bom vê-lo novamente!</p>
                 </div>
 
                 <div className="flex flex-col text-end">
-                    <h1 className="text-2xl font-bold">8 de Abril, 2024</h1>
-                    <p>Segunda-Feira</p>
+                    <h1 className="text-2xl font-bold">{dataFormatada}</h1>
+                    <p>{diaDaSemana}</p>
                 </div>
 
             </div>

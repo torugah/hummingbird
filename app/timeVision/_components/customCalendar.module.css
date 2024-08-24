@@ -1,0 +1,11 @@
+/* Aumentar o tamanho do DayPicker para 2x */
+.rdp {
+  transform: scale(2);
+  transform-origin: top left;
+}
+
+/* Cor verde para o dia selecionado */
+.rdp-day_selected {
+  background-color: green;
+  color: white; /* Ajusta a cor do texto se necessário */
+}

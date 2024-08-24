@@ -2,12 +2,13 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import SheetContents from "./sheets";
+import DropdownMenuPages from "./allMenuPages";
 
 const Header = () => {
     return (
         <div className="flex flex-row justify-around items-center w-full bg-secondary py-6 px-5 border-gray-100 border-2 background bg-white">
             <div>
-                <Link href="/">
+                <Link href="/dashboard">
                     <Image src="/hummingBirdLogo.png" alt="Hummingbird Logo" height={50} width={50} />
                 </Link>
             </div>
@@ -18,17 +19,18 @@ const Header = () => {
                     </Link>
                 </Button>
                 <Button variant={"ghost"} asChild>
-                    <Link href="/" className="text-black">
+                    <Link href="/dashboard" className="text-black">
                         Meus Investimentos 
                     </Link>
                 </Button>
+                <DropdownMenuPages />
                 <Button variant={"ghost"} asChild>
-                    <Link href="/" className="text-black">
+                    <Link href="/dashboard" className="text-black">
                         Ajuda 
                     </Link>
-                </Button>
+                </Button>                
                 <Button variant={"ghost"} asChild>
-                    <Link href="/" className="text-black">
+                    <Link href="/dashboard" className="text-black">
                         Sobre Nós 
                     </Link>
                 </Button>
@@ -41,4 +43,4 @@ const Header = () => {
     );
 }
 
-export default Header
+export default Header;

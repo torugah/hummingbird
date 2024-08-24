@@ -4,6 +4,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { LogOutIcon, UserIcon, LogInIcon, HomeIcon, CalendarIcon } from "lucide-react";
+import { FaGear } from "react-icons/fa6";
 import { useSession, signOut, signIn } from "next-auth/react";
 import Link from "next/link";
 
@@ -18,7 +19,7 @@ const SideMenu = () => {
     return ( 
     <>
         <SheetHeader className="text-left border-b border-solid border-secondary p-5">
-            <SheetTitle>My Account</SheetTitle>
+            <SheetTitle>Minha conta</SheetTitle>
         </SheetHeader>
 
         {data?.user ? (
@@ -31,7 +32,7 @@ const SideMenu = () => {
                 <h2 className="font-bold">{data.user.name}</h2>
             </div>
 
-            <Button variant="secondary" size="icon">
+            <Button variant="outline" size="icon">
                 <LogOutIcon onClick={handleLogoutClick} />
             </Button>
             </div>
@@ -51,19 +52,19 @@ const SideMenu = () => {
         <div className="flex flex-col gap-3 px-5">
             <Button variant="outline" className="justify-start" asChild>
             <Link href="/configurations">
-                <HomeIcon size={18} className="mr-2" />
+                <FaGear size={18} className="mr-2" />
                 Configurações
             </Link>
             </Button>
 
-            {data?.user && (
+            {/*data?.user && (
             <Button variant="outline" className="justify-start" asChild>
                 <Link href="/bookings">
                 <CalendarIcon size={18} className="mr-2" />
                 Agendamentos
                 </Link>
             </Button>
-            )}
+            )*/}
         </div>
     </> );
 }

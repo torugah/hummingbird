@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input"
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Loader2 } from 'lucide-react';
 
 const FormSchema = z.object({
   email: z.string().min(6, {
@@ -37,7 +38,10 @@ export function SignInForm() {
 
   const router = useRouter()
 
+  const [submitIsLoading, setSubmitIsLoading] = useState(false);
+
   const handleLogin = async (e: React.FormEvent) => {
+    setSubmitIsLoading(true);
     e.preventDefault()
 
     const { email, password } = form.getValues(); 
@@ -58,6 +62,7 @@ export function SignInForm() {
     } catch (error) {
       console.log('[LOGIN_ERROR]: ', error)
     }
+    setSubmitIsLoading(false);
   }
   
     return (
@@ -105,7 +110,10 @@ export function SignInForm() {
             {/* TODO: Fazer tela de Reset Password */}
           </div>          
         </div>        
-          <Button className="w-full" type="submit" variant="default">Sign In</Button>
+          <Button className="w-full" type="submit" variant="default" disabled={submitIsLoading}>
+            {submitIsLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Sign In
+          </Button>
         </form>
       </Form>
     );
