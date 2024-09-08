@@ -37,7 +37,10 @@ const InitialPage = async () => {
     const dataFormatada = format(horaAtual, "d 'de' MMMM, yyyy", { locale: ptBR });
 
     // Obter o dia da semana "Segunda-Feira"
-    const diaDaSemana = format(horaAtual, 'eeee', { locale: ptBR });
+    const diaDaSemanaNone = format(horaAtual, 'eeee', { locale: ptBR });
+
+    // Capitalizando a primeira letra do dia da semana
+    const diaDaSemana = diaDaSemanaNone.charAt(0).toUpperCase() + diaDaSemanaNone.slice(1);
 
     const data = await getServerSession(authOptions);
     console.log(data)
@@ -108,7 +111,7 @@ const InitialPage = async () => {
             <div className="flex max-lg:w-[95%] flex-row justify-between mt-16 w-[74%]">
 
                 <div className="flex flex-col ">
-                    <h1 className="text-2xl font-bold">{saudacao + ", " + data?.user?.name}!</h1>
+                    <h1 className="text-2xl font-bold">{saudacao + ", " + data?.user?.name || data?.user?.username }!</h1>
                     <p>Que bom vê-lo novamente!</p>
                 </div>
 

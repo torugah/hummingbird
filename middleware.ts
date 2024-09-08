@@ -1,11 +1,11 @@
 import { NextAuthMiddlewareOptions, NextRequestWithAuth, withAuth } from "next-auth/middleware"
 
 const middleware = (request: NextRequestWithAuth) => {
-    console.log('[MIDDLEWARE_NEXTAUTH_TOKEN]: ', request.nextauth.token);
+    //console.log('[MIDDLEWARE_NEXTAUTH_TOKEN]: ', request.nextauth.token);
     if (!request.nextauth.token) {
-        console.log('Token não encontrado, redirecionando para login.');
+        //console.log('Token não encontrado, redirecionando para login.');
     } else {
-        console.log('Token encontrado:', request.nextauth.token);
+        //console.log('Token encontrado:', request.nextauth.token);
     }
 }
 
