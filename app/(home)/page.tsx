@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import Image from "next/image";
 import Footer from "../_components/footer";
 import Header from '../_components/header';
-import { SignInForm } from "../_components/signInForm";
 import { SignUpForm } from "../_components/signUpForm";
 import { FaGoogle } from 'react-icons/fa';
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react"
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import SignInForm from '../_components/signInForm';
+import GoogleSignInButton from '../_components/GoogleSignInButton';
 
 
 export default function Home() {
@@ -86,9 +87,9 @@ export default function Home() {
                   <p className="text-sm pb-5 pr-1">Or </p>
                   <p className="text-sm pb-5 text-[#01C14C] font-semibold underline cursor-pointer hover:underline-offset-2" onClick={handleClickMoveWindow}>don't have an account?</p>
                 </div>            
-                <Button variant="outline" className="text-gray-400">
-                  <FaGoogle style={{ marginRight: '8px' }} /> Sign in with Google
-                </Button>
+                <GoogleSignInButton>
+                  <FaGoogle style={{ marginRight: '8px' }} /> Sign In with Google
+                </GoogleSignInButton>
                 <div className="flex items-center py-2">
                   <div className="flex-grow border-t-2 border-gray-300"></div>
                   <span className="px-4 text-gray-500 text-xs">Or continue with</span>
@@ -110,17 +111,14 @@ export default function Home() {
                   <span className="px-4 text-gray-500 text-xs">Or continue with</span>
                   <div className="flex-grow border-t-2 border-gray-300"></div>
                 </div>
-                <Button variant="outline" className="text-gray-400">
+                <GoogleSignInButton>
                   <FaGoogle style={{ marginRight: '8px' }} /> Sign Up with Google
-                </Button>
+                </GoogleSignInButton>
               </div>
             )}
           </div>
         </div>
       </div>
-      {/*<div>
-        {session && <pre>{JSON.stringify(session, null, 2)}</pre>}
-      </div>*/}
       <Footer />
     </div>
   );

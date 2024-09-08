@@ -18,7 +18,7 @@ model User {
   id                  Int       @id @default(autoincrement())
   account_id          Int?
   session_id          Int?
-  username            String    @unique
+  name                String    @unique
   password            String    
   email               String    @unique
   emailVerified       DateTime?
