@@ -16,8 +16,11 @@ import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../_lib/auth";
+import DialogDPV from "../_components/dialogDespesaVariavel.";
 
 const InitialPage = async () => {
+
+    {/* Talvez um background nesta cor? #9ACD32 */}
 
     const horaAtual = new Date();
     const hora = horaAtual.getHours();
@@ -129,9 +132,7 @@ const InitialPage = async () => {
                             <h3 className="text-xl font-semibold text-[#01C14C]">Despesas Variáveis</h3>
                             <p>Inclua aqui suas variáveis, até aquele açaí do final de semana 👀</p>
                         </div>
-                        <Button>
-                            Adicionar
-                        </Button>
+                        <DialogDPV />
                     </div>
 
 
@@ -176,9 +177,7 @@ const InitialPage = async () => {
                             <h3 className="text-xl font-semibold text-[#01C14C]">Despesas Fixas</h3>
                             <p>Inclua aqui suas despesas fixas, aluguel por exemplo 🏠</p>
                         </div>
-                        <Button>
-                            Adicionar
-                        </Button>
+                        <DialogDPV />
                     </div>
 
 

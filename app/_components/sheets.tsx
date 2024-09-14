@@ -9,6 +9,7 @@ import { ChevronRight } from "lucide-react"
 const SheetContents = () => {
   
   return (
+    <>
     <Sheet>
         <SheetTrigger asChild>
             <Button variant={"ghost"}>
@@ -21,6 +22,7 @@ const SheetContents = () => {
         <SideMenu />
         </SheetContent>
     </Sheet>
+    </>
   );
 };
 
