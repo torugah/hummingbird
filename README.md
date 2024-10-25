@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Mudanças
+## Página Inicial 
+> Caminho: app/(home)/page.tsx
+- Apenas algumas importações em desuso foram retiradas
+## Formulário de Despesas 
+> Caminho: app/_components/dialogDespesaVariavel.tsx
+- Inserção da validação pelo Zod
+- Adicionado interfaces do Bank e do ChildCompentProps
+- Iniciado a ação do submit para armazenar os dados do formulário
+- O dialog recebeu o componente "Form" para ter as funções de um formulário
+- Grande parte do código antigo foi comentado e deverá ser analisado para ver se tudo foi construído novamente e não há partes restantes
+## Interface do NextAuthOptions
+> Caminho: app/_lib/auth.ts
+- Foi inserido a passagem e armazenamento do ID do usuário no JWT e na Session
+## Criação da rota de inserção de transações no banco de dados
+> Caminho: app/api/expenses/create/royte.tsx
+- Criada nesta atualização e precisa de revisão para seu funcionamento (Contém erros).
+## Criação da rota para listar os Bancos
+> Caminho: app/api/getBanks/route.tsx
+- Esta rota foi criada nesta atualização e tem a função de fazer a busca e retorno dos bancos presentes no banco de dados.
+## Tela das Tabelas de Entradas e Saídas
+> Caminho: app/dashboard/page.tsx
+- Mudança no import do next-auth/react e do react
+- Alteração dos dados mockados das tabela de visualização de despesas variáveis, fixas e entradas.
+- Alteração das tabelas de visualização (Serão trabsformadas em DataTables em breve).
+- Os componentes dos Dialogs DialogDPV agora recebem, através de props, o ID do usuário da sessão.
+## Popover: Notificações do Sistema
+> Caminho: componentes/ui/popover.tsx
+- Inserção do código nesta atualização
+## Banco de Dados / Esquema do Prisma
+> Caminho: prisma/schema.prisma
+### Muitas modificações foram necessárias aqui e poderão ocorrer mais a medida que o necessário.
+- User
+  - Recebeu as ligações com Transações, Categorias, Cartões, Lista de Desejos e Decisão de Compra
+- Account
+  - Apenas recebeu a ligação correta com User
+- Session
+  - Recebeu uma formatação apenas
+- Transacao
+  - Recebeu as ligações corretas com User, Categoria, TipoTransacao (Enum), TipoMovimento (Enum), TipoPagamento, Cartao e TipoInvestimento (Atualmente uma Enum, mas futuramente pode ser uma tabela comum).
+- Categoria
+  - Recebeu ligações corretas com User, Transacao, DesicaoDeCompra
+  - Formatada pra melhor visualização
+- Cartao
+  - Ligações corretas: Transacao, Banco, User
+  - Formatada
+- Banco
+  - Ligações corretas: Cartao
+- Tabelas totalmente novas:
+  - TipoPagamento
+  - ListaDeDesejos
+  - DesicaoDeCompra
+- Enums:
+  - TipoTransacao
+  - TipoMovimento
+  - TipoInvestimento
+## Seed
+> Caminho: prisma/seed.mjs
+- Semente do prisma com funcionalidade de popular os bancos
+## Migrações realizadas pelo Prisma
+> Caminho: prisma/migrations/...
+- Gerenciado pelo Prisma ORM
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

@@ -15,7 +15,7 @@ datasource db {
 
 // Modelo de Usuários
 model User {
-  id                  String       @id @default(cuid())
+  id                  String    @id @default(cuid())
   username            String?   @unique
   account_id          Int?
   session_id          Int?
@@ -26,27 +26,33 @@ model User {
   image               String?
   accounts            Account[]
   sessions            Session[]
+  transacions         Transacao[]
+  categories          Categoria[]
+  cards               Cartao[]
+  wishLists           ListaDeDesejos[]
+  purchaseDecisions   DesicaoDeCompra[]
   dtm_createAt        DateTime  @default(now())
-  dtm_updatedAt        DateTime  @updatedAt
+  dtm_updatedAt       DateTime  @updatedAt
 
   @@map("users")
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String  @map("user_id")
-  type               String
-  provider           String
-  providerAccountId  String  @map("provider_account_id")
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
- 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                  String  @id @default(cuid())
+
+  userId              String  @map("user_id")
+  user                User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type                String
+  provider            String
+  providerAccountId   String  @map("provider_account_id")
+  refresh_token       String? @db.Text
+  access_token        String? @db.Text
+  expires_at          Int?
+  token_type          String?
+  scope               String?
+  id_token            String? @db.Text
+  session_state       String?
  
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -55,10 +61,12 @@ model Account {
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique @map("session_token")
+
   userId       String   @map("user_id")
-  expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
  
+  expires      DateTime
+
   @@map("sessions")
 }
  
@@ -73,23 +81,33 @@ model VerificationToken {
 
 // Modelo de Transações
 model Transacao {
-  transaction_id              Int       @id @default(autoincrement())
-  account_id                  Int
+  id                          Int       @id @default(autoincrement())
+  
+  user_id                     String
+  user                        User @relation(fields: [user_id], references: [id])
+
   str_category_id             Int
+  category                    Categoria @relation(fields: [str_category_id], references: [category_id])
+
   str_name                    String
-  dbl_valor                   Float
-  str_transactionType         String
-  str_movimentType            String
-  str_description             String?
+  dbl_valor                   Float @db.DoublePrecision
+  str_transactionType         TipoTransacao
+  str_movimentType            TipoMovimento
+  str_description             String? @db.Text
   bool_installment            Boolean?
   int_installmentCount        Int?
   dtm_currentInstallmentDate  DateTime?
-  str_paymentForm             String
+
+  int_paymentForm             Int
+  tipoPagamento               TipoPagamento @relation(fields: [int_paymentForm], references: [id])
+
   str_card_id                 Int
+  card                        Cartao @relation(fields: [str_card_id], references: [card_id])
+
   str_status                  String
   dtm_data                    DateTime
   str_brokerName              String?
-  str_investimentType         String?
+  str_investimentType         TipoInvestimento?
   dtm_createAt                DateTime  @default(now())
   dtm_updateAt                DateTime  @updatedAt
   bool_active                 Boolean
@@ -97,25 +115,38 @@ model Transacao {
 
 // Modelo de Categorias
 model Categoria {
-  category_id        Int       @id @default(autoincrement())
-  account_id         Int
-  str_categoryName   String
-  str_movimentType   String
+  category_id         Int       @id @default(autoincrement())
+  
+  user_id             String
+  user                User @relation(fields: [user_id],references: [id])
+
+  str_categoryName    String
+  str_movimentType    String
   bool_hasBudgetLimit Boolean
-  dbl_budgetLimit    Float?
-  str_image          String
-  dtm_createAt       DateTime  @default(now())
-  dtm_updateAt       DateTime  @updatedAt
-  bool_active        Boolean
+  dbl_budgetLimit     Float? @db.DoublePrecision
+  str_image           String
+  dtm_createAt        DateTime  @default(now())
+  dtm_updateAt        DateTime  @updatedAt
+  bool_active         Boolean
+
+  transactions        Transacao[]
+  purchaseDecisions   DesicaoDeCompra[] 
 }
 
 // Modelo de Cartões
 model Cartao {
-  card_id          Int       @id @default(autoincrement())
+  card_id             Int       @id @default(autoincrement())
+
   str_transaction_id  Int
+  transactions        Transacao[]
+
   str_bank_id         Int
-  account_id          Int
-  dbl_creditLimit     Float
+  bank                Banco @relation(fields: [str_bank_id], references: [bank_id])
+
+  str_user_id         String
+  user                User @relation(fields: [str_user_id], references: [id])
+
+  dbl_creditLimit     Float @db.DoublePrecision
   dtm_dueDate         DateTime
   str_lastNumbers     String
   dtm_createAt        DateTime  @default(now())
@@ -126,12 +157,59 @@ model Cartao {
 // Modelo de Bancos
 model Banco {
   bank_id      Int       @id @default(autoincrement())
-  str_card_id  Int
+  str_card_id  Cartao[]
   str_bankName String
   str_image    String?
   dtm_createAt DateTime  @default(now())
   dtm_updateAt DateTime  @updatedAt
   bool_active  Boolean
+}
+
+model TipoPagamento {
+  id                      Int @id @default(autoincrement())
+  str_nomeTipoPgto        String
+  transactions            Transacao[]
+  str_descricao           String? @db.Text
+  dtm_createAt DateTime   @default(now())
+  dtm_updateAt DateTime   @updatedAt
+  bool_active  Boolean
+}
+
+model ListaDeDesejos {
+  id                    Int @id @default(autoincrement())
+
+  str_user_id           String 
+  user                  User @relation(fields: [str_user_id], references: [id])
+
+  str_wishName          String
+  str_wishDescription   String? @db.Text
+  dbl_wishValue         Float @db.DoublePrecision
+  str_image             String?
+  dtm_createAt          DateTime  @default(now())
+  dtm_updateAt          DateTime  @updatedAt
+
+  purchaseDecisions     DesicaoDeCompra[]  
+}
+
+model DesicaoDeCompra {
+  id                    Int @id @default(autoincrement())
+
+  str_user_id           String 
+  user                  User @relation(fields: [str_user_id], references: [id])
+
+  int_category_id       Int 
+  category              Categoria @relation(fields: [int_category_id], references: [category_id])
+
+  int_wishList_id       Int?
+  wishList              ListaDeDesejos? @relation(fields: [int_wishList_id],references: [id])
+
+  str_brand             String?
+  str_descriptionOrLink String? @db.Text
+  bool_doIHaveMoney     Boolean
+  bool_doIReallyNeed    Boolean 
+  bool_doIPlanned       Boolean
+  dtm_createAt          DateTime  @default(now())
+  dtm_updateAt          DateTime  @updatedAt
 }
 
 // Enum de Tipo de Transação
@@ -147,5 +225,47 @@ enum TipoTransacao {
 enum TipoMovimento {
   Input
   Output
+}
+
+enum TipoInvestimento {
+  Poupanca
+  TesouroDireto  
+  Debentures
+  FundoDeAcoes
+  Acoes
+  AcoesPreferencias
+  AcoesOrdinarias
+  Futuros
+  FundoCambial
+  FundoDeDividaExterna
+  FundoDeVentureCapital
+  Cambio
+  PrecificacaoDeCarbono
+  Securitizacao
+  MoedasDigitaisCBDCs
+  InvestimentoEmArte
+  Imoveis
+  P2PLending
+  InvestimentoSocial
+  FundosLongAndShort
+  FundosDeInvestimentoImobiliario
+  FundoDeInvestimentoEmCadeiasAgroindustriais
+  LetrasDeCreditoDoAgronegocio
+  LetrasDeCreditoImobiliario
+  Criptomoedas
+  OpcoesBancarias
+  PrevidenciaPrivada
+  CertificadoDeDepositoBancario
+  CertificadosDeOperacoesEstruturadas
+  FundoDeIndiceETFs
+  StocksEOuAcoesInternacionais
+  Commodities
+  FundoMultimercado
+  Crowdfunding
+  LetraFinanceira
+  TitulosPublicos
+  BonusDeSubscricao
+  Derivativos  
+  Outros  
 }
 

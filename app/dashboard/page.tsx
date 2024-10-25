@@ -11,7 +11,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { FaPen } from "react-icons/fa6";
-import { useSession } from 'next-auth/react';
+import { useEffect, useState } from "react";
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { getServerSession } from "next-auth";
@@ -20,7 +20,7 @@ import DialogDPV from "../_components/dialogDespesaVariavel.";
 
 const InitialPage = async () => {
 
-    {/* Talvez um background nesta cor? #9ACD32 */}
+    {/* Talvez um background nesta cor? #9ACD32 */ }
 
     const horaAtual = new Date();
     const hora = horaAtual.getHours();
@@ -50,62 +50,62 @@ const InitialPage = async () => {
 
     const invoices = [
         {
-            invoice: "INV001",
-            paymentStatus: "Paid",
-            totalAmount: "$250.00",
-            paymentMethod: "Credit Card",
+            invoice: "Algum Item",
+            paymentStatus: "R$99,90",
+            totalAmount: "1 de 3",
+            paymentMethod: "Paid",
             date: "30/07/2024",
             type: "PIX - Banco Inter"
         },
         {
-            invoice: "INV002",
-            paymentStatus: "Pending",
-            totalAmount: "$150.00",
-            paymentMethod: "PayPal",
+            invoice: "Algum Item",
+            paymentStatus: "R$99,90",
+            totalAmount: "1 de 3",
+            paymentMethod: "Paid",
             date: "30/07/2024",
             type: "PIX - Banco Inter"
         },
         {
-            invoice: "INV003",
-            paymentStatus: "Unpaid",
-            totalAmount: "$350.00",
-            paymentMethod: "Bank Transfer",
+            invoice: "Algum Item",
+            paymentStatus: "R$99,90",
+            totalAmount: "1 de 3",
+            paymentMethod: "Paid",
             date: "30/07/2024",
             type: "PIX - Banco Inter"
         },
         {
-            invoice: "INV004",
-            paymentStatus: "Paid",
-            totalAmount: "$450.00",
-            paymentMethod: "Credit Card",
+            invoice: "Algum Item",
+            paymentStatus: "R$99,90",
+            totalAmount: "1 de 3",
+            paymentMethod: "Paid",
             date: "30/07/2024",
             type: "PIX - Banco Inter"
         },
         {
-            invoice: "INV005",
-            paymentStatus: "Paid",
-            totalAmount: "$550.00",
-            paymentMethod: "PayPal",
+            invoice: "Algum Item",
+            paymentStatus: "R$99,90",
+            totalAmount: "1 de 3",
+            paymentMethod: "Paid",
             date: "30/07/2024",
             type: "PIX - Banco Inter"
         },
         {
-            invoice: "INV006",
-            paymentStatus: "Pending",
-            totalAmount: "$200.00",
-            paymentMethod: "Bank Transfer",
+            invoice: "Algum Item",
+            paymentStatus: "R$99,90",
+            totalAmount: "1 de 3",
+            paymentMethod: "Paid",
             date: "30/07/2024",
             type: "PIX - Banco Inter"
         },
         {
-            invoice: "INV007",
-            paymentStatus: "Unpaid",
-            totalAmount: "$300.00",
-            paymentMethod: "Credit Card",
+            invoice: "Algum Item",
+            paymentStatus: "R$99,90",
+            totalAmount: "1 de 3",
+            paymentMethod: "Paid",
             date: "30/07/2024",
             type: "PIX - Banco Inter"
         },
-    ]
+    ] 
 
     return (
         <div className="flex flex-col items-center justify-between">
@@ -114,7 +114,7 @@ const InitialPage = async () => {
             <div className="flex max-lg:w-[95%] flex-row justify-between mt-16 w-[74%]">
 
                 <div className="flex flex-col ">
-                    <h1 className="text-2xl font-bold">{saudacao + ", " + data?.user?.name || data?.user?.username }!</h1>
+                    <h1 className="text-2xl font-bold">{saudacao + ", " + data?.user?.name || data?.user?.username}!</h1>
                     <p>Que bom vê-lo novamente!</p>
                 </div>
 
@@ -132,52 +132,7 @@ const InitialPage = async () => {
                             <h3 className="text-xl font-semibold text-[#01C14C]">Despesas Variáveis</h3>
                             <p>Inclua aqui suas variáveis, até aquele açaí do final de semana 👀</p>
                         </div>
-                        <DialogDPV />
-                    </div>
-
-
-
-                    <div className="my-6 bg-white rounded-md">
-                        <Table>
-
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="w-[100px]">Invoice</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead>Method</TableHead>
-                                    <TableHead className="text-right">Amount</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {invoices.map((invoice) => (
-                                    <TableRow key={invoice.invoice}>
-                                        <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                                        <TableCell>{invoice.paymentStatus}</TableCell>
-                                        <TableCell>{invoice.paymentMethod}</TableCell>
-                                        <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                            <TableFooter>
-                                <TableRow>
-                                    <TableCell colSpan={3}>Total</TableCell>
-                                    <TableCell className="text-right">$2,500.00</TableCell>
-                                </TableRow>
-                            </TableFooter>
-                        </Table>
-                    </div>
-
-
-
-
-                </div>
-                <div className="flex flex-col bg-gray-100 rounded-md p-8 mb-8">
-                    <div className="flex flex-row justify-between items-center">
-                        <div className="flex flex-col">
-                            <h3 className="text-xl font-semibold text-[#01C14C]">Despesas Fixas</h3>
-                            <p>Inclua aqui suas despesas fixas, aluguel por exemplo 🏠</p>
-                        </div>
-                        <DialogDPV />
+                        <DialogDPV userId={data?.user.id}/>
                     </div>
 
 
@@ -211,9 +166,61 @@ const InitialPage = async () => {
                             </TableBody>
                             <TableFooter>
                                 <TableRow>
-                                    <TableCell colSpan={3}>Total</TableCell>
+                                    <TableCell colSpan={1}>Total</TableCell>
                                     <TableCell>$2,500.00</TableCell>
-                                    <TableCell colSpan={3}></TableCell>
+                                    <TableCell colSpan={5}></TableCell>
+                                </TableRow>
+                            </TableFooter>
+                        </Table>
+                    </div>
+
+
+
+
+                </div>
+                <div className="flex flex-col bg-gray-100 rounded-md p-8 mb-8">
+                    <div className="flex flex-row justify-between items-center">
+                        <div className="flex flex-col">
+                            <h3 className="text-xl font-semibold text-[#01C14C]">Despesas Fixas</h3>
+                            <p>Inclua aqui suas despesas fixas, aluguel por exemplo 🏠</p>
+                        </div>
+                        <DialogDPV userId={data?.user.id}/>
+                    </div>
+
+
+
+                    <div className="my-6 bg-white rounded-md">
+                        <Table>
+
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="w-[100px]">Identificador</TableHead>
+                                    <TableHead>Valor</TableHead>
+                                    <TableHead>Nº da Parcela</TableHead>
+                                    <TableHead>Status</TableHead>
+                                    <TableHead>Data</TableHead>
+                                    <TableHead>Tipo</TableHead>
+                                    <TableHead></TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {invoices.map((invoice) => (
+                                    <TableRow key={invoice.invoice}>
+                                        <TableCell>{invoice.invoice}</TableCell>
+                                        <TableCell>{invoice.paymentStatus}</TableCell>
+                                        <TableCell>{invoice.paymentMethod}</TableCell>
+                                        <TableCell>{invoice.totalAmount}</TableCell>
+                                        <TableCell>{invoice.date}</TableCell>
+                                        <TableCell>{invoice.type}</TableCell>
+                                        <TableCell><FaPen className="text-[#FF9D0D]" /></TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                            <TableFooter>
+                                <TableRow>
+                                    <TableCell colSpan={1}>Total</TableCell>
+                                    <TableCell>$2,500.00</TableCell>
+                                    <TableCell colSpan={5}></TableCell>
                                 </TableRow>
                             </TableFooter>
                         </Table>
@@ -259,8 +266,9 @@ const InitialPage = async () => {
                             </TableBody>
                             <TableFooter>
                                 <TableRow>
-                                    <TableCell colSpan={3}>Total</TableCell>
-                                    <TableCell className="text-right">$2,500.00</TableCell>
+                                    <TableCell colSpan={1}>Total</TableCell>
+                                    <TableCell>$2,500.00</TableCell>
+                                    <TableCell colSpan={5}></TableCell>
                                 </TableRow>
                             </TableFooter>
                         </Table>

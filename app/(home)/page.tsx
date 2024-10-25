@@ -3,12 +3,10 @@
 import { useState, useEffect } from 'react';
 import Image from "next/image";
 import Footer from "../_components/footer";
-import Header from '../_components/header';
 import { SignUpForm } from "../_components/signUpForm";
 import { FaGoogle } from 'react-icons/fa';
-import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react"
-import { format, formatDistance, formatRelative, subDays } from 'date-fns';
+import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import SignInForm from '../_components/signInForm';
 import GoogleSignInButton from '../_components/GoogleSignInButton';
