@@ -5,7 +5,7 @@ import Header from '../_components/header';
 import Footer from '../_components/footer';
 import { FaRegCalendar } from "react-icons/fa6";
 import CalendarioCustomizado from './_components/CalendarioCustomizado';
-import ListaEventos from './_components/listaEventos';
+import ListaEventos from './_components/ListaEventos';
 
 function TimeVisionPage() {
 

@@ -62,6 +62,19 @@ interface Bank {
     str_bankName: string;    
 }
 
+interface Cartao {
+    card_id: number;
+    str_user_id: string; // ID do usuário
+    str_bank_id: number; // ID do banco associado
+    bank: Bank; // Relação com o banco
+    str_lastNumbers: string;
+}
+
+interface PaymentMethod {
+    id: number;
+    str_nomeTipoPgto: string;
+}
+
 // Define o tipo das props que o componente vai receber
 interface ChildComponentProps {
     userId: string | null | undefined;
@@ -285,44 +298,64 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
 
 
                             {/* Fourth Layer */}
-                            <div className="flex flex-row space-x-2">                                
+                            <div className="flex flex-row space-x-2">     
+                                {/* CHATGPT MODIFIQUE APENAS ESTA DIV */}
                                 <div className="w-1/2">
                                     <FormField
                                         control={form.control}
                                         name="paymentMethod"
                                         render={({ field }) => {
-                                            
-                                            const [banks, setBanks] = useState<Bank[]>([]);  // State for storing bank data
+                                            const [cards, setCards] = useState<Cartao[]>([]);
 
                                             useEffect(() => {
-                                                
-                                                const fetchBanks = async () => {
-                                                    const response = await fetch("/api/getBanks");
-                                                    const banksData = await response.json();
-                                                    setBanks(banksData);
+                                                const fetchUserCards = async () => {
+                                                    try {
+                                                        const response = await fetch("/api/getUserCards");
+                                                        const data = await response.json();
+                                                        setCards(data);
+                                                    } catch (error) {
+                                                        console.error("Erro ao buscar cartões:", error);
+                                                    }
                                                 };
 
-                                                fetchBanks();  // Fetch bank data when component mounts
+                                                fetchUserCards();
                                             }, []);
 
-                                            return (
+                                            return (                                                
+
                                                 <FormItem>
                                                     <FormControl>
                                                         <Select
-                                                            onValueChange={(value) => field.onChange(value)} // Captura o valor selecionado
-                                                            value={field.value?.toString()} // Vincula o valor ao campo do formulário
+                                                            onValueChange={(value) => field.onChange(value)}
+                                                            value={field.value ? field.value.toString() : undefined} // Evita string vazia
                                                         >
                                                             <SelectTrigger className="w-full">
-                                                                <SelectValue placeholder="Em qual conta?" />
+                                                                <SelectValue placeholder="Escolha um cartão" />
                                                             </SelectTrigger>
                                                             <SelectContent>
                                                                 <SelectGroup>
-                                                                    <SelectLabel>Seus bancos</SelectLabel>
-                                                                    {banks.map((bank) => (
-                                                                        <SelectItem key={bank.bank_id} value={bank.bank_id?.toString()}>
-                                                                            {bank.str_bankName}
-                                                                        </SelectItem>
-                                                                    ))}
+                                                                    <SelectLabel>Seus Cartões</SelectLabel>                                                                    
+                                                                    {cards.length > 0 ? (
+                                                                        cards.map((cartao, index) => {
+                                                                            console.log(`Cartão na posição ${index}:`, cartao);
+                                                                            console.log(`Banco associado:`, cartao.bank);
+
+                                                                            if (!cartao || cartao.card_id === undefined || cartao.card_id === null) {
+                                                                                console.warn(`Cartão inválido na posição ${index}:`, cartao);
+                                                                                return <p key={index}>Cartão inválido</p>;
+                                                                            }
+
+                                                                            return (
+                                                                                <SelectItem key={cartao.card_id.toString()} value={cartao.card_id.toString()}>
+                                                                                    {/*{cartao?.bank?.str_bankName ?? "Banco Desconhecido"} - Cartão {cartao.card_id}*/}
+                                                                                    {cartao.bank?.str_bankName ?? "Banco Desconhecido"} - Final {cartao.str_lastNumbers}
+
+                                                                                </SelectItem>
+                                                                            );
+                                                                        })
+                                                                    ) : (
+                                                                        <p>Nenhum cartão disponível</p>
+                                                                    )}
                                                                 </SelectGroup>
                                                             </SelectContent>
                                                         </Select>
@@ -333,36 +366,71 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                         }}
                                     />
                                 </div>
+                                {/* FIM DA MODIFICAÇÃO */}
+
+           
+
                                 <div className="w-1/2">
                                     <FormField
                                         control={form.control}
                                         name="cardID"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Select
-                                                        onValueChange={(value) => field.onChange(value)} // Captura o valor selecionado
-                                                        value={field.value} // Vincula o valor ao campo do formulário
-                                                    >
-                                                        <SelectTrigger className="w-full">
-                                                            <SelectValue placeholder="Forma de pagamento?" />
-                                                        </SelectTrigger>
-                                                        <SelectContent>
-                                                            <SelectGroup>
-                                                                <SelectLabel>Seus bancos</SelectLabel>
-                                                                <SelectItem value="1">Banco do Brasil</SelectItem>
-                                                                <SelectItem value="2">Itaú Unibanco</SelectItem>
-                                                                <SelectItem value="3">Nubank</SelectItem>
-                                                                <SelectItem value="4">Inter</SelectItem>
-                                                                <SelectItem value="5">Next</SelectItem>
-                                                                <SelectItem value="6">Bradesco</SelectItem>
-                                                            </SelectGroup>
-                                                        </SelectContent>
-                                                    </Select>
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
+                                        render={({ field }) => {
+
+                                            const [paymentMethod, setPaymentMehtod] = useState<PaymentMethod[]>([]);  // State for storing paymentMethod data
+
+                                            useEffect(() => {
+                                                
+                                                const fetchPaymentMehtod = async () => {
+                                                    const response = await fetch("/api/getPaymentMethod");
+                                                    const paymentMethodData = await response.json();
+                                                    setPaymentMehtod(paymentMethodData);
+                                                };
+
+                                                fetchPaymentMehtod();  // Fetch bank data when component mounts
+                                            }, []);
+
+                                            //Melhor digitação /Para não inserir acentos no banco de dados
+                                            const formatPaymentName = (name: string) => {
+                                                if (name === "dinheiro") return "Dinheiro em Espécie";
+                                                if (name === "pix") return "PIX";
+                                                if (name === "debito") return "Débito";
+                                                if (name === "credito") return "Crédito";
+                                                return name; // Padrão
+                                            };                                                                                        
+
+                                            return(
+
+                                                <FormItem>
+                                                    <FormControl>
+                                                        <Select
+                                                            onValueChange={(value) => field.onChange(value)} // Captura o valor selecionado
+                                                            value={field.value} // Vincula o valor ao campo do formulário
+                                                        >
+                                                            <SelectTrigger className="w-full">
+                                                                <SelectValue placeholder="Forma paga?" />
+                                                            </SelectTrigger>
+                                                            <SelectContent>                                                                
+                                                                <SelectGroup>
+                                                                    <SelectLabel>Opções:</SelectLabel>
+                                                                    {/*paymentMethod.map((paymentMethod) => (
+                                                                        <SelectItem key={paymentMethod.id} value={paymentMethod.id?.toString()}>
+                                                                            {paymentMethod.str_nomeTipoPgto}
+                                                                        </SelectItem>
+                                                                    ))*/}
+                                                                    {paymentMethod.map((payment) => (
+                                                                        <SelectItem key={payment.id} value={payment.id?.toString()}>
+                                                                            {formatPaymentName(payment.str_nomeTipoPgto)}
+                                                                        </SelectItem>
+                                                                    ))}
+                                                                </SelectGroup>
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+
+                                            );
+                                        }}
                                     />
                                 </div>
                             </div>

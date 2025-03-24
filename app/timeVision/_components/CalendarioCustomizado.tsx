@@ -5,9 +5,9 @@ import styles from './customCalendar.module.css';
 import { ptBR } from "date-fns/locale";
 
 const eventosMockados = [
-  { date: "2025-03-25", title: "Reunião de Equipe", description: "Discutir andamento do projeto." },
-  { date: "2025-03-28", title: "Entrega de Relatório", description: "Finalizar e enviar relatório mensal." },
-  { date: "2025-04-02", title: "Treinamento de Segurança", description: "Sessão sobre segurança da informação." }
+  { date: "2025-03-25", title: "Dividendos - HCTR11", description: "Entrada de dividendos mensais da HCTR11." },
+  { date: "2025-03-28", title: "Serviço Externo", description: "Rendimento através de serviços de desmontagem." },
+  { date: "2025-03-31", title: "Depósito Bancário", description: "Realizei um depósito bancário para minha mãe." }
 ];
 
 const CalendarioCustomizado: React.FC<{ onDateChange: (date: Date) => void}> = ({onDateChange}) => {
