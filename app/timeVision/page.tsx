@@ -14,13 +14,16 @@ function TimeVisionPage() {
     return (
         <div className="flex flex-col items-center justify-between">
             <Header />
-            <div className='max-lg:w-[95%] w-[75%]'>
-                <div className='flex flex-row items-center mt-6'>
-                    <FaRegCalendar /> 
-                    <p className='font-bold text-2xl pl-1'>Calendário</p>   
+            <div className="flex max-lg:w-[95%] flex-row justify-between mt-16 w-[74%]">
+                <div className='max-lg:w-[95%] w-[75%]'>
+                    <div className='flex flex-row items-center'>
+                        <FaRegCalendar /> 
+                        <p className='font-bold text-2xl pl-1'>Calendário</p>   
+                    </div>
+                    <p>Visualize seus eventos ao longo do tempo.</p>
                 </div>
             </div>
-                        
+                                    
             <div className='flex flex-row justify-between max-lg:w-[95%] w-[75%] background bg-white py-6'>
                 <div className="w-[50%] h-auto">
                     <CalendarioCustomizado onDateChange={setSelectedDate}/>

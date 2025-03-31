@@ -4,9 +4,10 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { LogOutIcon, UserIcon, LogInIcon, HomeIcon, CalendarIcon } from "lucide-react";
-import { FaGear } from "react-icons/fa6";
+import { FaGear , FaDoorClosed , FaDoorOpen } from "react-icons/fa6";
 import { useSession, signOut, signIn } from "next-auth/react";
 import Link from "next/link";
+import { useState } from "react";
 
 const SideMenu = () => {
 
@@ -15,6 +16,8 @@ const SideMenu = () => {
     const handleLogoutClick = () => signOut();
 
     const handleLoginClick = () => signIn("google");
+
+    const [hovered, setHovered] = useState(false);
 
     return ( 
     <>
@@ -32,8 +35,18 @@ const SideMenu = () => {
                 <h2 className="font-bold">{data.user.name}</h2>
             </div>
 
-            <Button variant="outline" size="icon">
-                <LogOutIcon onClick={handleLogoutClick} />
+            <Button 
+                variant="outline" 
+                size="icon"
+                onMouseEnter={() => setHovered(true)}  // Quando o mouse entra
+                onMouseLeave={() => setHovered(false)} // Quando o mouse sai
+                onClick={handleLogoutClick}
+            >
+                {hovered ? (
+                <FaDoorOpen />
+            ) : (
+                <FaDoorClosed />
+            )}
             </Button>
             </div>
         ) : (

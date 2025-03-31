@@ -17,29 +17,6 @@ export default function Home() {
   const [fadeOut, setFadeOut] = useState(false);
   const [showNewContent, setShowNewContent] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
-  const { data: session } = useSession()
-
-  const horaAtual = new Date();
-    const hora = horaAtual.getHours();
-
-    // Determina a saudação com base na hora
-    let saudacao;
-
-    if (hora >= 5 && hora < 12) {
-        saudacao = 'Bom dia';
-    } else if (hora >= 12 && hora < 18) {
-        saudacao = 'Boa tarde';
-    } else {
-        saudacao = 'Boa noite';
-    }
-
-    // Formatar a data para "8 de Abril, 2024"
-  const dataFormatada = format(horaAtual, "d 'de' MMMM, yyyy", { locale: ptBR });
-
-  // Obter o dia da semana "Segunda-Feira"
-  const diaDaSemana = format(horaAtual, 'eeee', { locale: ptBR });
-
-    const { data } = useSession();
 
   useEffect(() => {
     const handleResize = () => {

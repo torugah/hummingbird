@@ -17,7 +17,7 @@ export default function Categories() {
 
                 <div className="flex flex-col ">
                     <div className="flex flex-row items-center">
-                        <FaRegEdit className="h-6 w-8 pr-2"/>
+                        <FaRegEdit className="h-5 w-6 pr-2"/>
                         <h1 className="text-2xl font-bold"> Editar Categorias</h1>
                     </div>
                     <p>Adicione, defina limites e edite suas categorias!</p>
@@ -26,7 +26,7 @@ export default function Categories() {
                 <div className="flex flex-col text-end">
                     <div className="flex flex-row items-center justify-end">
                         <h1 className="text-2xl font-bold ">Meus Cartões</h1>
-                        <ChevronRight className="h-8 w-10 pl-2" />
+                        <ChevronRight className="h-6 w-8 pl-2" />
                     </div>
                     <p>Adicione e edite seus cartões</p>
                 </div>
