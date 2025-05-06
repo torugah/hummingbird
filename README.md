@@ -1,34 +1,11 @@
-# Mudanças do Commit (Finalizado a Idealização do Calendário)
-## Componente CalendarioCustomizado
-> Caminho: app/timeVision/_components\CalendarioCustomizado.tsx
-- Adicção de alguns dados mockados para teste.
-- Atualização do tamanho fixo do calendário.
-- Calendário agora se move para outro mês se o dia for de outro mês.
-- E outras modiificações por menores no desing.
-## Componente ListaEventos
-> Caminho: app/timeVision/_components\ListaEventos.tsx
-- Adicionado pela primeira vez.
-- Este componente mostra uma lista de eventos que foram armazenados no dia informado pelo calendário
-## Módulo CSS do CalendárioCustomizado
-> Caminho: app/timeVision/_components/customCalendar.module.css
-- Adicionado pela primeira.
-- Ainda deverá ser revisado e provamente retirado nos próximos updates.
-## Página TimeVision
-> app/timeVision/page.tsx
-- Página recebeu as variáveis necessárias para receber e enviar as datas para ListaEventos por meio do Calendario Customizado
-
-# Mudanças do Commit (Adcionado a busca por cartões do Usuário)
-## Rota API - getPaymentMethod
-> Caminho: app/api/getPaymentMethod/route.tsx
-- Adicionado pela primeira vez.
-- Este faz a busca pelas formas de pagamento inseridas no Banco de Dados
-## Rota API - getUserCards
-> Caminho: app/api/getUserCards/route.tsx
-- Adicionado pela primeira vez.
-- Este faz a busca pelos cartões do usuário atual da sessão.
-## Componente CalendarioCustomizado
-> Caminho: app/timeVision/_components\CalendarioCustomizado.tsx
-- Recebeu uma lista mockada dos eventos, será removida posteriormente
-## Componente ListaEventos
-> Caminho: app/timeVision/_components\ListaEventos.tsx
-- Pequenas mudanças na lista mockada.
+# Mudanças do Commit (Commit de Emergência Mecanica)
+> Possível falha crítica do ambiente de desenvolvimento.
+## Comentários rápidos afim de Backup:
+- TanStack - Tabelas adcionado.
+- Icone do Google melhor na tela de login/cadastro.
+- Correção e melhoria do tipo de dados no dialogDespesaVariavel e na API expenses\create.
+- Criado a API que retorna as despesas dos usuários.
+- Tela de configurações mostra o apelido ao invés do nome.
+- Na tela Dashboard foi inserido as importações do novo DataTable, feito a partir do TanStack, também já adicionado o consumo da API das despesas e a adição da tabela nova, ainda em desenvolvimento.
+- DataTableVariableExpenses é o arquivo de configuração do DataTable do TanStack, este mais especificamente para a tabela de despesas variáveis. 
+- VariableExpensesColumns é para a configuração das colunas da tabela de despesas variáveis. 

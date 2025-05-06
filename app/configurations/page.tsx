@@ -115,7 +115,7 @@ export default function Configurations() {
                             </div>
                         </div>
 
-                        <p className="pl-4 pr-2">{session?.user?.username ?? session?.user?.name ?? "Sem Nome"}</p>
+                        <p className="pl-4 pr-2 text-xl font-semibold">{session?.user?.username ?? session?.user?.name ?? "Sem Nome"}</p>
                         <FaPen className="cursor-pointer" onClick={openModalNickname}/>
 
                         {/* Dialog do Shadcn */}

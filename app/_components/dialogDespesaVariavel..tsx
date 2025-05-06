@@ -50,11 +50,11 @@ const FormSchema = z
         itemDescription: z.string(),
         boolInstallment: z.boolean(),
         intInstallment: z.number().min(1, "This cannot be divided into zero or less"),
-        cardID: z.string().optional(), 
+        cardID: z.number(), 
         Installmentdate: z.date().optional(),
-        paymentMethod: z.string().optional(),
+        paymentMethod: z.number(), 
         date: z.date(),
-        boolStatus: z.boolean()
+        boolStatus: z.string()
     });
 
 interface Bank {
@@ -98,11 +98,11 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
             itemDescription: "",
             boolInstallment: false,
             intInstallment: 1,
-            cardID: undefined,
-            Installmentdate: undefined,
+            cardID: 0,
+            Installmentdate: new Date(),
             paymentMethod: undefined,
             date: new Date(),
-            boolStatus: false
+            boolStatus: "Pago"
         },
     })
 
@@ -110,30 +110,32 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
 
         setIsLoading(true);
 
-        //const session = await getServerSession(authOptions);
+        const requestBody = {
+            userId : userId,
+            categoryId: 1,
+            itemName: data.itemName,
+            itemValue: data.itemValue,
+            transactionalType: 'Variable',
+            movimentType: 'Input',
+            itemDescription: data.itemDescription,
+            boolInstallment: data.boolInstallment,
+            intInstallment: data.intInstallment,
+            Installmentdate: data.Installmentdate,                            
+            cardID: data.cardID,   
+            paymentMethod: data.paymentMethod,         
+            boolStatus: data.boolStatus,
+            date: data.date,
+            boolActive: true
+        }
+
+        console.log("Request Body:", requestBody);
 
         const response = await fetch('/api/expenses/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                userId : userId,
-                categoryId: 1,
-                itemName: data.itemName,
-                itemValue: data.itemValue,
-                transactionalType: 'Variable',
-                movimentType: 'Input',
-                itemDescription: data.itemDescription,
-                boolInstallment: data.boolInstallment,
-                intInstallment: data.intInstallment,
-                Installmentdate: data.Installmentdate,            
-                paymentMethod: data.paymentMethod,
-                cardID: data.cardID,            
-                boolStatus: data.boolStatus,
-                date: data.date,
-                boolActive: true
-            })
+            body: JSON.stringify(requestBody)
         })
 
         if (response.ok) {
@@ -147,19 +149,11 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                 description: "Oops! Something when wrong!",
                 variant: "destructive"
             })
-        }
-
-        try {
-            
-            console.log("Form Data:", data);
-
         
-        } catch (error) {
-            console.error("Validation error:", error); 
-        } finally {
-            setIsLoading(false);
-            handleCancel;
         }
+        
+        setIsLoading(false);
+        handleCancel;
     };
 
     const { reset } = form;
@@ -179,7 +173,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                     <DialogHeader>
                         <DialogTitle>Nova Despesa</DialogTitle>
                         <DialogDescription>
-                            Inclua aqui suas despesas fixas, aluguel por exemplo 🏠 Clique em salver quando preencher tudo 😉.
+                            Inclua aqui suas despesas fixas, aluguel por exemplo 🏠 Clique em salvar quando preencher tudo 😉.
                         </DialogDescription>
                     </DialogHeader>
 
@@ -298,12 +292,11 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
 
 
                             {/* Fourth Layer */}
-                            <div className="flex flex-row space-x-2">     
-                                {/* CHATGPT MODIFIQUE APENAS ESTA DIV */}
+                            <div className="flex flex-row space-x-2">                                     
                                 <div className="w-1/2">
                                     <FormField
                                         control={form.control}
-                                        name="paymentMethod"
+                                        name="cardID"
                                         render={({ field }) => {
                                             const [cards, setCards] = useState<Cartao[]>([]);
 
@@ -326,8 +319,9 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                                 <FormItem>
                                                     <FormControl>
                                                         <Select
-                                                            onValueChange={(value) => field.onChange(value)}
-                                                            value={field.value ? field.value.toString() : undefined} // Evita string vazia
+                                                            onValueChange={(value) => field.onChange(Number(value))}
+                                                            value={field.value?.toString()}
+                                                            //value={field.value ? field.value.toString() : undefined} // Evita string vazia
                                                         >
                                                             <SelectTrigger className="w-full">
                                                                 <SelectValue placeholder="Escolha um cartão" />
@@ -337,8 +331,8 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                                                     <SelectLabel>Seus Cartões</SelectLabel>                                                                    
                                                                     {cards.length > 0 ? (
                                                                         cards.map((cartao, index) => {
-                                                                            console.log(`Cartão na posição ${index}:`, cartao);
-                                                                            console.log(`Banco associado:`, cartao.bank);
+                                                                            //console.log(`Cartão na posição ${index}:`, cartao);
+                                                                            //console.log(`Banco associado:`, cartao.bank);
 
                                                                             if (!cartao || cartao.card_id === undefined || cartao.card_id === null) {
                                                                                 console.warn(`Cartão inválido na posição ${index}:`, cartao);
@@ -366,24 +360,23 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                         }}
                                     />
                                 </div>
-                                {/* FIM DA MODIFICAÇÃO */}
 
            
-
+                                {/*Forma de Pagamento*/}
                                 <div className="w-1/2">
                                     <FormField
                                         control={form.control}
-                                        name="cardID"
+                                        name="paymentMethod"
                                         render={({ field }) => {
 
-                                            const [paymentMethod, setPaymentMehtod] = useState<PaymentMethod[]>([]);  // State for storing paymentMethod data
+                                            const [paymentMethod, setPaymentMethod] = useState<PaymentMethod[]>([]);  // State for storing paymentMethod data
 
                                             useEffect(() => {
                                                 
                                                 const fetchPaymentMehtod = async () => {
                                                     const response = await fetch("/api/getPaymentMethod");
                                                     const paymentMethodData = await response.json();
-                                                    setPaymentMehtod(paymentMethodData);
+                                                    setPaymentMethod(paymentMethodData);
                                                 };
 
                                                 fetchPaymentMehtod();  // Fetch bank data when component mounts
@@ -403,8 +396,8 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                                 <FormItem>
                                                     <FormControl>
                                                         <Select
-                                                            onValueChange={(value) => field.onChange(value)} // Captura o valor selecionado
-                                                            value={field.value} // Vincula o valor ao campo do formulário
+                                                            onValueChange={(value) => field.onChange(Number(value))} // Captura o valor selecionado
+                                                            value={field.value?.toString()} // Vincula o valor ao campo do formulário
                                                         >
                                                             <SelectTrigger className="w-full">
                                                                 <SelectValue placeholder="Forma paga?" />
@@ -412,13 +405,8 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                                             <SelectContent>                                                                
                                                                 <SelectGroup>
                                                                     <SelectLabel>Opções:</SelectLabel>
-                                                                    {/*paymentMethod.map((paymentMethod) => (
-                                                                        <SelectItem key={paymentMethod.id} value={paymentMethod.id?.toString()}>
-                                                                            {paymentMethod.str_nomeTipoPgto}
-                                                                        </SelectItem>
-                                                                    ))*/}
                                                                     {paymentMethod.map((payment) => (
-                                                                        <SelectItem key={payment.id} value={payment.id?.toString()}>
+                                                                        <SelectItem key={payment.id} value={payment.id.toString()}>
                                                                             {formatPaymentName(payment.str_nomeTipoPgto)}
                                                                         </SelectItem>
                                                                     ))}
@@ -483,12 +471,30 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                             <FormItem>
                                                 <FormControl>
                                                     <div className="flex items-center justify-center gap-2">
+                                                        {/*  
                                                         <Switch
                                                             id="isStatusPago"
                                                             checked={field.value}
                                                             onCheckedChange={field.onChange} // Sincroniza o estado do switch
-                                                        />
+                                                        
                                                         <Label htmlFor="isStatusPago">Pago?</Label>
+                                                        />*/}
+                                                        <Select
+                                                            onValueChange={(value) => field.onChange(value)} // Captura o valor selecionado
+                                                            value={field.value} // Vincula o valor ao campo do formulário
+                                                        >
+                                                            <SelectTrigger className="w-full">
+                                                                <SelectValue placeholder="Status" />
+                                                            </SelectTrigger>
+                                                            <SelectContent>                                                                
+                                                                <SelectGroup>                                                                        
+                                                                    <SelectItem value="pago">Pago</SelectItem>
+                                                                    <SelectItem value="emAberto">Em aberto</SelectItem>
+                                                                    <SelectItem value="futura">Futura</SelectItem>
+                                                                    <SelectItem value="atrasada">Atrasada</SelectItem>                                                                      
+                                                                </SelectGroup>
+                                                            </SelectContent>
+                                                        </Select>
                                                     </div>
                                                 </FormControl>
                                                 <FormMessage />

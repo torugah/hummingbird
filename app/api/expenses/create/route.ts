@@ -8,18 +8,18 @@ const transactionSchema = z
   .object({
     userId: z.string(),
     categoryId: z.number(),
-    name: z.string(),
-    value: z.number(),
+    itemName: z.string(),
+    itemValue: z.number(),
     transactionalType: z.nativeEnum(TipoTransacao),
     movimentType: z.nativeEnum(TipoMovimento),
     itemDescription: z.string().nullish(),
     boolInstallment: z.boolean(),
     intInstallment: z.number().nullish(),
-    Installmentdate: z.date().nullish(),
+    Installmentdate: z.coerce.date().nullish(),
     paymentMethod: z.number(),
     cardID: z.number(),      
     boolStatus: z.string(),
-    date: z.date(),
+    date: z.coerce.date(),
     boolActive: z.boolean(),
   })
 
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     try {
       const body = await req.json();
       const { 
-        userId, categoryId, name, value, transactionalType, 
+        userId, categoryId, itemName, itemValue, transactionalType, 
         movimentType, itemDescription, boolInstallment, intInstallment, 
         Installmentdate, paymentMethod, cardID, boolStatus, date, 
         boolActive 
@@ -37,8 +37,8 @@ export async function POST(req: Request) {
         data: {
           user_id: userId,
           str_category_id: categoryId,
-          str_name: name,
-          dbl_valor: value,
+          str_name: itemName,
+          dbl_valor: itemValue,
           str_transactionType: transactionalType,
           str_movimentType: movimentType,
           str_description: itemDescription,

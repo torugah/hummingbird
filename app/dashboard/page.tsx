@@ -17,6 +17,8 @@ import { ptBR } from 'date-fns/locale';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../_lib/auth";
 import DialogDPV from "../_components/dialogDespesaVariavel.";
+import { DataTableVariableExpenses } from "./_components/dataTableVariableExpenses";
+import { Transaction, columns } from "./_components/variableExpensesColumns";
 
 const InitialPage = async () => {
 
@@ -105,7 +107,52 @@ const InitialPage = async () => {
             date: "30/07/2024",
             type: "PIX - Banco Inter"
         },
-    ] 
+    ]
+
+    async function getDataMocked(): Promise<Transaction[]> {
+        return [
+            {
+                id: 1234,
+                category_id: 2,
+                str_name: "MacDonalds",
+                dbl_valor: 88.00,
+                str_descricao: "Fui ao MacDonalds com a Lulu, e compramos dois Quarteirões",
+                int_installmentCount: 1,
+                int_paymentForm: 2,
+                str_card_id: 7216,
+                str_status: "Pago",
+                dtm_data: new Date("April 6, 2025 15:24:00")
+            },
+        ]        
+    }
+
+    const userId = data?.user.id;
+
+    // Function to fetch data from the new API endpoint
+    async function getTransactions(userId: string | undefined): Promise<Transaction[]> {
+        // If no userId, don't attempt to fetch
+        if (!userId) {
+            console.log("No user ID found, skipping transaction fetch.");
+            return [];
+        } 
+
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/getTransactions?userId=${userId}`, {
+            //const response = await fetch(`/api/getTransactions`, {
+                cache: 'no-store', 
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to fetch transactions: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Error in getTransactions:", error);
+            return []; // Return empty array on error
+        }
+    }
+
+    //const dataMocked = await getDataMocked();
+    const transactionsData = await getTransactions(userId);
 
     return (
         <div className="flex flex-col items-center justify-between">
@@ -126,13 +173,35 @@ const InitialPage = async () => {
             </div>
 
             <div className="my-16 max-lg:w-[95%] max-lg:h-fit w-9/12 h-auto">
+
                 <div className="flex flex-col bg-gray-100 rounded-md p-8 mb-8">
                     <div className="flex flex-row justify-between items-center">
                         <div className="flex flex-col">
                             <h3 className="text-xl font-semibold text-[#01C14C]">Despesas Variáveis</h3>
                             <p>Inclua aqui suas variáveis, até aquele açaí do final de semana 👀</p>
                         </div>
-                        <DialogDPV userId={data?.user.id}/>
+                        <DialogDPV userId={data?.user.id} />
+                    </div>
+
+
+
+                    <div className="my-6 bg-white rounded-md">
+                        <DataTableVariableExpenses columns={columns} data={transactionsData} />
+                    </div>
+
+
+
+
+                </div>
+
+
+                <div className="flex flex-col bg-gray-100 rounded-md p-8 mb-8">
+                    <div className="flex flex-row justify-between items-center">
+                        <div className="flex flex-col">
+                            <h3 className="text-xl font-semibold text-[#01C14C]">Despesas Variáveis</h3>
+                            <p>Inclua aqui suas variáveis, até aquele açaí do final de semana 👀</p>
+                        </div>
+                        <DialogDPV userId={data?.user.id} />
                     </div>
 
 
@@ -184,7 +253,7 @@ const InitialPage = async () => {
                             <h3 className="text-xl font-semibold text-[#01C14C]">Despesas Fixas</h3>
                             <p>Inclua aqui suas despesas fixas, aluguel por exemplo 🏠</p>
                         </div>
-                        <DialogDPV userId={data?.user.id}/>
+                        <DialogDPV userId={data?.user.id} />
                     </div>
 
 

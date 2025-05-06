@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from "next/image";
 import Footer from "../_components/footer";
 import { SignUpForm } from "../_components/signUpForm";
-import { FaGoogle } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 import { useSession } from "next-auth/react"
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -63,7 +63,14 @@ export default function Home() {
                   <p className="text-sm pb-5 text-[#01C14C] font-semibold underline cursor-pointer hover:underline-offset-2" onClick={handleClickMoveWindow}>don't have an account?</p>
                 </div>            
                 <GoogleSignInButton>
-                  <FaGoogle style={{ marginRight: '8px' }} /> Sign In with Google
+                  <FcGoogle style={{  
+                    marginRight: '8px', 
+                    backgroundColor: '#eeeeee', 
+                    padding: '5px', 
+                    borderRadius: '100%' ,
+                    width: '25px',
+                    height: '25px'
+                  }} /> Sign Up with Google
                 </GoogleSignInButton>
                 <div className="flex items-center py-2">
                   <div className="flex-grow border-t-2 border-gray-300"></div>
@@ -87,7 +94,14 @@ export default function Home() {
                   <div className="flex-grow border-t-2 border-gray-300"></div>
                 </div>
                 <GoogleSignInButton>
-                  <FaGoogle style={{ marginRight: '8px' }} /> Sign Up with Google
+                  <FcGoogle style={{  
+                    marginRight: '8px', 
+                    backgroundColor: '#eeeeee', 
+                    padding: '5px', 
+                    borderRadius: '100%' ,
+                    width: '25px',
+                    height: '25px'
+                  }} /> Sign Up with Google
                 </GoogleSignInButton>
               </div>
             )}
