@@ -1,14 +1,19 @@
-'use client'
+'use server'
 
 import React from 'react'
 import Header from '../_components/header'
 import Footer from '../_components/footer'
 import { ChevronRight } from "lucide-react"
 import { FaRegEdit } from "react-icons/fa";
-import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
-import { FaRegMoneyBill1 } from "react-icons/fa6";
+import Link from 'next/link'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../_lib/auth'
+import CategoryCardList from './_components/categoryCardList'
 
-export default function Categories() {    
+export default async function Categories() {    
+
+    const data = await getServerSession(authOptions);
+    const userId = data?.user.id;
 
     return (
         <div className="flex flex-col items-center justify-between">
@@ -24,66 +29,17 @@ export default function Categories() {
                 </div>
 
                 <div className="flex flex-col text-end">
-                    <div className="flex flex-row items-center justify-end">
+                    <Link href="/cards" className="text-black flex flex-row items-center justify-end">           
                         <h1 className="text-2xl font-bold ">Meus Cartões</h1>
                         <ChevronRight className="h-6 w-8 pl-2" />
-                    </div>
+                    </Link>  
                     <p>Adicione e edite seus cartões</p>
                 </div>
 
             </div>
-            <div className="flex max-lg:w-[95%] flex-row justify-around mt-16 w-[74%] p-1">
-                <div className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg'>
-                    <div className="bg-[url('/Paisagem-1.jpg')] bg-cover h-5/6 rounded-sm">
-                    </div>
-                    <div className='flex flex-row h-2/6 justify-between p-1'>
-                        <div className='flex flex-col justify-around'>
-                            <p>Casa</p>
-                            <div className='flex flex-row items-center'>
-                                <FaRegMoneyBill1 className='pr-2 h-4 w-6'/>
-                                <p className='text-xs'>Meu limite de gastos é R$3.500,00</p>
-                            </div>
-                            
-                        </div>
-                        <div className='flex flex-col text-end self-center'>
-                            <PiDotsThreeOutlineVerticalFill />
-                        </div>
-                    </div>
-                </div>
-                <div className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg'>
-                    <div className="bg-[url('/Paisagem-1.jpg')] bg-cover h-5/6 rounded-sm">
-                    </div>
-                    <div className='flex flex-row h-2/6 justify-between p-1'>
-                        <div className='flex flex-col justify-around'>
-                            <p>Casa</p>
-                            <div className='flex flex-row items-center'>
-                                <FaRegMoneyBill1 className='pr-2 h-4 w-6'/>
-                                <p className='text-xs'>Meu limite de gastos é R$3.500,00</p>
-                            </div>
-                            
-                        </div>
-                        <div className='flex flex-col text-end self-center'>
-                            <PiDotsThreeOutlineVerticalFill />
-                        </div>
-                    </div>
-                </div>
-                <div className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg'>
-                    <div className="bg-[url('/Paisagem-1.jpg')] bg-cover h-5/6 rounded-sm">
-                    </div>
-                    <div className='flex flex-row h-2/6 justify-between p-1'>
-                        <div className='flex flex-col justify-around'>
-                            <p>Casa</p>
-                            <div className='flex flex-row items-center'>
-                                <FaRegMoneyBill1 className='pr-2 h-4 w-6'/>
-                                <p className='text-xs'>Meu limite de gastos é R$3.500,00</p>
-                            </div>
-                            
-                        </div>
-                        <div className='flex flex-col text-end self-center'>
-                            <PiDotsThreeOutlineVerticalFill />
-                        </div>
-                    </div>
-                </div>
+            {/* Container para os cards de categoria */}
+            <div className="flex flex-row flex-wrap max-lg:w-[95%] justify-start my-16 w-[74%] p-1 gap-4">
+                <CategoryCardList userId={userId} />
             </div>
             <Footer />
         </div>

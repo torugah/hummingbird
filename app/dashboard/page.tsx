@@ -48,7 +48,7 @@ const InitialPage = async () => {
     const diaDaSemana = diaDaSemanaNone.charAt(0).toUpperCase() + diaDaSemanaNone.slice(1);
 
     const data = await getServerSession(authOptions);
-    console.log(data)
+    // console.log(data)
 
     const invoices = [
         {
@@ -109,23 +109,6 @@ const InitialPage = async () => {
         },
     ]
 
-    async function getDataMocked(): Promise<Transaction[]> {
-        return [
-            {
-                id: 1234,
-                category_id: 2,
-                str_name: "MacDonalds",
-                dbl_valor: 88.00,
-                str_descricao: "Fui ao MacDonalds com a Lulu, e compramos dois Quarteirões",
-                int_installmentCount: 1,
-                int_paymentForm: 2,
-                str_card_id: 7216,
-                str_status: "Pago",
-                dtm_data: new Date("April 6, 2025 15:24:00")
-            },
-        ]        
-    }
-
     const userId = data?.user.id;
 
     // Function to fetch data from the new API endpoint
@@ -151,7 +134,6 @@ const InitialPage = async () => {
         }
     }
 
-    //const dataMocked = await getDataMocked();
     const transactionsData = await getTransactions(userId);
 
     return (

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import SideMenu from "./ui/side-menu";

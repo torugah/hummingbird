@@ -5,9 +5,6 @@ import Image from "next/image";
 import Footer from "../_components/footer";
 import { SignUpForm } from "../_components/signUpForm";
 import { FcGoogle } from 'react-icons/fc';
-import { useSession } from "next-auth/react"
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import SignInForm from '../_components/signInForm';
 import GoogleSignInButton from '../_components/GoogleSignInButton';
 

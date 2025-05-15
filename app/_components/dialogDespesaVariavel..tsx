@@ -82,12 +82,7 @@ interface ChildComponentProps {
 
 const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
 
-    const [isParcelado, setIsParcelado] = useState(false);
-    const [isStatusPago, setIsStatusPago] = useState(false);
-    const [date, setDate] = React.useState<Date>()
-
     const { toast } = useToast();
-    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<z.infer<typeof FormSchema>>({
@@ -128,7 +123,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
             boolActive: true
         }
 
-        console.log("Request Body:", requestBody);
+        // console.log("Request Body:", requestBody);
 
         const response = await fetch('/api/expenses/create', {
             method: 'POST',
@@ -163,9 +158,19 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
         reset(); // Reseta os valores do formulário para os valores padrão
     };
 
+    const [isOpen, setIsOpen] = useState(false); 
+    // Função para lidar com a mudança de estado do diálogo (abrir/fechar)
+    const handleOpenChange = (open: boolean) => {
+        if (!open) {
+            // Se o diálogo estiver fechando (por qualquer motivo: X, clique fora, Esc, botão Cancelar)
+            handleCancel();
+        }
+        setIsOpen(open);
+    };
+
     return (
         <>
-            <Dialog>
+            <Dialog open={isOpen} onOpenChange={handleOpenChange}>
                 <DialogTrigger asChild>
                     <Button>Adicionar</Button>
                 </DialogTrigger>
@@ -505,126 +510,6 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                             </div>
                         </form>
                     </Form>
-
-                    {<div /* className="grid gap-4 py-4" */>
-                        {/* <div className="flex items-center space-x-2">
-                            <div className="flex items-center gap-2">
-                                <Input
-                                    id="identificador"
-                                    placeholder="Nome do Item"
-                                    className="col-span-3"
-                                    type="text"
-                                />
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <Input
-                                    id="itemValue"
-                                    placeholder="R$ #.###,##"
-                                    className="col-span-3"
-                                    type="text"
-                                />
-                            </div>
-                        </div> 
-                        <div>
-                            <Input
-                                id="description"
-                                placeholder="Descrição (Opcional)"
-                                className="col-span-3 w-full"
-                                type="text"
-                            />
-                        </div>*/}
-                        {/* <div className={`flex items-center justify-${isParcelado ? 'between' : 'center'} space-x-2 transition-all duration-300 ease-in-out`}>
-                            <div className="flex items-center gap-2">
-                                <Switch
-                                    id="parcelado"
-                                    checked={isParcelado}
-                                    onCheckedChange={setIsParcelado} // Atualiza o estado com o valor do switch
-                                />
-                                <Label htmlFor="parcelado">Está parcelado?</Label>
-                            </div> */}
-
-                        {/* Campo condicional que aparece suavemente se isParcelado for true */}
-                        {/* <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isParcelado ? 'opacity-100 w-3/6' : 'opacity-0 max-w-0'}`}>
-                                <Input
-                                    id="num-parcelas"
-                                    placeholder="Quantas Parcelas?"
-                                    className="col-span-3 w-full"
-                                    type="number"
-                                />
-                            </div>
-                        </div> */}
-
-                        {/* <div className="flex flex-row items-center justify-between space-x-2">
-                            <Select>
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Em qual conta?" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        <SelectLabel>Seus bancos</SelectLabel>
-                                        <SelectItem value="1">Banco do Brasil</SelectItem> */} {/*Values serão alterados posteriomente*/}
-                        {/* <SelectItem value="2">Itaú Unibanco</SelectItem>
-                                        <SelectItem value="3">Nubank</SelectItem>
-                                        <SelectItem value="4">Inter</SelectItem>
-                                        <SelectItem value="5">Next</SelectItem>
-                                        <SelectItem value="6">Bradesco</SelectItem> */}
-                        {/*Deverá também ter forma de pagamento com dinhero físico*/}
-                        {/* </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                            <Select>
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Forma Paga?" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        <SelectLabel>Formas de Pagamento</SelectLabel>
-                                        <SelectItem value="1">Débito</SelectItem>
-                                        <SelectItem value="2">Crédito</SelectItem>
-                                        <SelectItem value="3">PIX Débito</SelectItem>
-                                        <SelectItem value="4">PIX Crédito</SelectItem>
-                                        <SelectItem value="5">Boleto</SelectItem>
-                                        <SelectItem value="6">Outro</SelectItem>
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                        </div> */}
-
-                        {/* {<div className="flex flex-row items-center justify-between space-x-2">
-                            <div className="w-1/2">
-                                <Popover >
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            variant={"outline"}
-                                            className={cn(
-                                                "w-full justify-start text-left font-normal",
-                                                !date && "text-muted-foreground"
-                                            )}
-                                        >
-                                            <CalendarIcon className="mr-2 h-4 w-4" />
-                                            {date ? format(date, "dd/MM/yyyy") : <span>Qual a data?</span>}
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-auto p-0">
-                                        <Calendar
-                                            mode="single"
-                                            selected={date}
-                                            onSelect={setDate}
-                                            initialFocus
-                                        />
-                                    </PopoverContent>
-                                </Popover>
-                            </div>
-                            <div className="flex items-center justify-center gap-2 w-1/2">
-                                <Switch
-                                    id="parcelado"
-                                    checked={isStatusPago}
-                                    onCheckedChange={setIsStatusPago} // Atualiza o estado com o valor do switch
-                                />
-                                <Label htmlFor="parcelado">Pago?</Label>
-                            </div>
-                        </div> */}
-                    </div>}
                     <DialogFooter>
                         <DialogClose asChild>
                             <Button type="button" variant="ghost" onClick={handleCancel} >

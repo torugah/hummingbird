@@ -120,6 +120,13 @@ const DropdownMenuPages = () => {
                             </Link>
                         </Button>
                     </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <Button variant={"ghost"} asChild>
+                            <Link href="/cards" className="text-black">
+                                Meus Cartões 
+                            </Link>
+                        </Button>
+                    </DropdownMenuItem>
                     
                 </DropdownMenuContent>
             </DropdownMenu>

@@ -12,28 +12,32 @@ const Header = () => {
                     <Image src="/hummingBirdLogo.png" alt="Hummingbird Logo" height={50} width={50} />
                 </Link>
             </div>
-            <div className="justify-between">
+            <div className="flex flex-row justify-between items-center">
                 <Button variant={"ghost"} asChild>
                     <Link href="/timeVision" className="text-black">
-                        Meu Fluxo 
+                        Calendário 
                     </Link>
                 </Button>
+                <b className="px-1 text-gray-200 text-xs">|</b>
                 <Button variant={"ghost"} asChild>
                     <Link href="/dashboard" className="text-black">
-                        Meus Investimentos 
+                        Início 
                     </Link>
                 </Button>
-                <DropdownMenuPages />
-                <Button variant={"ghost"} asChild>
-                    <Link href="/dashboard" className="text-black">
-                        Ajuda 
-                    </Link>
-                </Button>                
+                <b className="px-1 text-gray-200 text-xs">|</b>
+                <DropdownMenuPages />       
+                <b className="px-1 text-gray-200 text-xs">|</b>      
                 <Button variant={"ghost"} asChild>
                     <Link href="/dashboard" className="text-black">
                         Sobre Nós 
                     </Link>
                 </Button>
+                <b className="px-1 text-gray-200 text-xs">|</b>
+                <Button variant={"ghost"} asChild>
+                    <Link href="/dashboard" className="text-black">
+                        Ajuda 
+                    </Link>
+                </Button>   
             </div>
             <div>
                 <SheetContents />

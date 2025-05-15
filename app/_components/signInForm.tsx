@@ -45,6 +45,8 @@ const SignInForm = () => {
       redirect: false,
     });
 
+    console.log('LOGIN >>>>>>>>>>> ',signInData)
+
     if(signInData?.error){
       toast({
         title: "Error",
@@ -102,14 +104,14 @@ const SignInForm = () => {
           {/* TODO: Fazer tela de Reset Password */}
         </div>          
       </div>        
-      <Button className="w-full" type="submit" variant="default" disabled={isLoading}>
+      <Button className="w-full disabled:cursor-progress" type="submit" variant="default" disabled={isLoading}>
         {isLoading ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Signing Up...
+            Signing In...
           </>
         ) : (
-          "Sign Up"
+          "Sign In"
         )}
       </Button>
       </form>
