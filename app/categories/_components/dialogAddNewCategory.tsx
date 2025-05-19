@@ -23,14 +23,18 @@ import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/components/hooks/use-toast"
 import { cn } from "@/lib/utils"
 import { NumericFormat } from 'react-number-format';
+import { useRouter } from 'next/navigation';
 
 const FormSchema = z
     .object({
         categoryName: z.string().min(2, "Item name must be at least 3 characters.").max(50),
-        stringMovimentType: z.string(),
+        stringMovimentType: z.enum(["Input", "Output"], { errorMap: () => ({ message: "Selecione um tipo de movimentação." }) }),
         boolHasBudgetLimit: z.boolean(),
         doubleBudgetLimit: z.number().nullable(),
-    });
+    }).refine(data => { // Adicionando refine similar ao de edição para consistência
+        if (data.boolHasBudgetLimit && (data.doubleBudgetLimit === null || data.doubleBudgetLimit === undefined || data.doubleBudgetLimit <= 0)) return false;
+        return true;
+    }, { message: "O limite do orçamento deve ser um valor positivo quando habilitado.", path: ["doubleBudgetLimit"] });
 
 interface ChildComponentProps {
     userId: string | null | undefined;
@@ -59,6 +63,8 @@ const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
     };
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const router = useRouter();
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
 
@@ -91,6 +97,7 @@ const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
             });
             handleCancel(); // Reseta os valores do formulário
             setIsOpen(false); // Fecha o diálogo
+            router.refresh();
         } else {
             toast({
                 title: "Erro",
@@ -157,7 +164,7 @@ const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
                                                         htmlFor="moviment-type-switch"
                                                         className={cn(
                                                             "cursor-pointer transition-colors py-2.5",
-                                                            field.value === "input" ? "text-gray-400" : "text-black dark:text-white"
+                                                            field.value === "Input" ? "text-gray-400" : "text-black dark:text-white"
                                                         )}
                                                     >
                                                         Saída
@@ -176,7 +183,7 @@ const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
                                                         htmlFor="moviment-type-switch"
                                                         className={cn(
                                                             "cursor-pointer transition-colors",
-                                                            field.value === "output" ? "text-gray-400" : "text-black dark:text-white"
+                                                            field.value === "Output" ? "text-gray-400" : "text-black dark:text-white"
                                                         )}
                                                     >
                                                         Entrada

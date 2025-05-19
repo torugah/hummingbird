@@ -1,52 +1,17 @@
 # Mudanças
-## Página Inicial 
-> Caminho: app/(home)/page.tsx
-- Apenas algumas importações em desuso foram retiradas.
-## Barra de Navegação
-> Caminho: app\_components\allMenuPages.tsx
-- Inserção do acesso a pagina de cartões.
-## Card de Despesa Variável 
-> Caminho: app\_components\dialogDespesaVariavel.tsx.
-- página com remoção de constantes initulizados.
-- Inserção de verificador de abertura e fechamento da janela.
-- Remoção de código de teste. 
-## Cabeçalho 
-> Caminho: app\_components\header.tsx.
-- Mudança leve na estilização. 
-## Formulário de SignIn 
-> Caminho: app\_components\signInForm.tsx.
-- Correção de texto dos botões. 
-- Remoção de comentários em console.
-## Criação das API
-> Caminho: app\api\categories\...
-- Foram adicionados as funções de create, delete e getByUserId
-## Criação da página de cartões
-> Caminho: app\cards
-## Alterações da página de categorias
-> Caminho: app\categories
-- Renderização corrigida para 'use server'.
-- Componente se torna async, recebe e armazena informações da sessão que são enviados aos componentes filhos.
-- Trecho de código teste foi removido.
-- Componente filho CategoryCardList adicionado.
-## Criação dos componentes filhos da página de Categoria
-> Caminho: app\categories\_components\...
-- categoryCardList: Componente responsavél pela renderização dos cards.
-- dialogAddNewCategory: Componente que adiciona um card de inserção de novas categorias.
-- categoryActions: Componente que realiza as ações de edit e delete de uma categoria.
-## Limpeza da Dashboard
-> Caminho: app\dashboard
-- Limpeza de console.logs e JSON de testes da tabela.
-## Instalações do Shadcn/UI:
-> Caminho: components\ui
-- Adicionado o alert-dialog.tsx
-- Alterações no componente do button.tsx
-## Modificações do Utils.ts
-> Caminho: lib\utils.ts
-- Inserida a função de formatação de valores em moeda brasileira.
-### Limpeza de Código
-> Caminhos: app\home, app\_components\side-menu.tsx e app\_components\sheets.tsx
-- (home) e sheets com revisão e remoção de importações inutilizado.
-- side-menu com remoção de código inutilizado.
-### Arquivos de Configuração 
-- package.json e package-lock.json com diversos updates e adições.
-#### Imagens de Teste inseridas em public
+## Remoção da CategoryActions
+> Caminho: app\categories\_components\CategoryActions.tsx
+- Componente era utilizado pra agrupar outros dois componente que eram responsáveis pelo UPDATE e DELETE da categoria. O motivo da exclusão é que devido a complexidade de agrupar mais de um serviço a um único Dialog eram causados erros no Radix, responsável pela hieraquia das janelas/dialogs, que causava o congelamento de ações em toda a aplicação.
+## Criação de API
+> Caminho: app\api\categories\update\route.ts
+- Criado a API responsável pela atualização de uma categoria.
+## CategoryCardList
+> Caminho: app\categories\_components\categoryCardList.tsx
+- Remodelado a fim de encaixar nova estrutura de dialog
+## Dialog de Nova Categoria
+> Caminho: app\categories\_components\dialogAddNewCategory.tsx
+- Adição de refinamento, responsável por não permitir que uma categoria tem limite de orçamento vazio.
+- Ao ser utilizado e não houver falhas na API, o usuário que já era notificado por um toast, agora também é forçado a um refresh para confirmar de que uma nova categoria foi criada.
+## Dialog de Edição e Remoção de Categoria
+> Caminho: app\categories\_components\dialogEditCategory.tsx
+- Este arquivo não havia sido salvo em atualizações anteriores, mas o mesmo era um dialog que apenas fazia a ação de atualizar uma categoria, porém com os problemas citados na CategoryActions foi necessário sua reformulação e integração com a ação de DELETE que estava presente em CategoryActions.

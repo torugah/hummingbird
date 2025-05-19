@@ -5,7 +5,7 @@ import { FaPen, FaRegMoneyBill1, FaTrashCan } from "react-icons/fa6";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import DialogAddNewCategory from './dialogAddNewCategory';
 import { formatCurrency } from '@/lib/utils';
-import CategoryActions from './CategoryActions'; // Importar o novo componente
+import DialogEditCategory from './dialogEditCategory';
 
 // Define the type for a Category based on your API response
 interface Category {
@@ -87,7 +87,7 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId }) => 
                         </div>
                         {/* Manter este wrapper para o posicionamento correto do menu de ações */}
                         <div className='flex flex-col text-end self-center'> 
-                            <CategoryActions category={category} />
+                            <DialogEditCategory  category={category} userId={userId}/>
                         </div>
                     </div>
                 </div>
