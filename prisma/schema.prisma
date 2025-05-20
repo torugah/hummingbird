@@ -9,8 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
 }
 
 // Modelo de Usuários
@@ -124,7 +124,7 @@ model Categoria {
   str_movimentType    String
   bool_hasBudgetLimit Boolean
   dbl_budgetLimit     Float? @db.DoublePrecision
-  str_image           String
+  str_image           String?
   dtm_createAt        DateTime  @default(now())
   dtm_updateAt        DateTime  @updatedAt
   bool_active         Boolean

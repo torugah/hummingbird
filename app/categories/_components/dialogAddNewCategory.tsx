@@ -76,7 +76,7 @@ const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
             str_movimentType: data.stringMovimentType,
             bool_hasBudgetLimit: data.boolHasBudgetLimit,
             dbl_budgetLimit: data.doubleBudgetLimit,
-            str_image: "none",
+            str_image: null,
             bool_active: true
         }
 

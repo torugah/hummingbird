@@ -1,9 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 async function main() {
-
   const bancos = [
     { str_bankName: 'Itaú Unibanco', str_image: 'https://github.com/negronnie/bancosdobrasil/blob/master/64px/652%20-%20itau.png?raw=true', bool_active: true },
     { str_bankName: 'Banco do Brasil', str_image: 'https://github.com/negronnie/bancosdobrasil/blob/master/64px/001%20-%20banco%20do%20brasil.png?raw=true', bool_active: true },
@@ -28,14 +27,69 @@ async function main() {
     { str_bankName: 'Mercantil do Brasil', str_image: 'https://github.com/negronnie/bancosdobrasil/blob/master/64px/389%20-%20banco%20mercantil.png?raw=true', bool_active: true },
   ];
 
-  // Inserir os dados na tabela Banco
+  const tiposPagamento = [
+    { id: 1, str_nomeTipoPgto: 'Dinheiro', bool_active: true, str_descricao: 'Primeira Versão' },
+    { id: 2, str_nomeTipoPgto: 'Cartão de Crédito', bool_active: true, str_descricao: 'Primeira Versão' },
+    { id: 3, str_nomeTipoPgto: 'Cartão de Débito', bool_active: true, str_descricao: 'Primeira Versão' },
+    { id: 4, str_nomeTipoPgto: 'Pix', bool_active: true, str_descricao: 'Primeira Versão' },
+    { id: 5, str_nomeTipoPgto: 'Boleto', bool_active: true, str_descricao: 'Primeira Versão' },
+    { id: 6, str_nomeTipoPgto: 'Transferência', bool_active: true, str_descricao: 'Primeira Versão' },
+    { id: 7, str_nomeTipoPgto: 'Cheque', bool_active: false, str_descricao: 'Primeira Versão' },
+  ];
+
+  const users = [
+    {
+      id: 'cmavoww810002d7gb6l2lmqhd',
+      name: 'User Test',
+      password: '$2b$10$N90EOLrW6mlFCVJ.7Fdf1.4wuxnQ2VQFBuX9p0RYNF4GA8AM6.oBa',
+      email: 'user@test.com',
+    }
+  ]
+
+  const cartoes = [
+    {
+      card_id: 1,
+      str_transaction_id: 0,
+      str_bank_id: 11,
+      dbl_creditLimit: 2850,
+      dtm_dueDate: "2020-01-18 00:00:00",
+      str_lastNumbers: "7414",
+      dtm_createAt: "2024-10-23 16:23:09.598",
+      dtm_updateAt: "2024-10-23 16:23:09.598",
+      bool_active: true,
+      str_user_id: "cmavoww810002d7gb6l2lmqhd"
+    },
+    {
+      card_id: 2,
+      str_transaction_id: 0,
+      str_bank_id: 11,
+      dbl_creditLimit: 3600,
+      dtm_dueDate: "2020-01-05 00:00:00",
+      str_lastNumbers: "1861",
+      dtm_createAt: "2024-10-23 16:23:09.598",
+      dtm_updateAt: "2024-10-23 16:23:09.598",
+      bool_active: true,
+      str_user_id: "cmavoww810002d7gb6l2lmqhd"
+    }
+  ]
+
   for (const banco of bancos) {
-    await prisma.banco.create({
-      data: banco,
-    });
+    await prisma.banco.create({ data: banco });
   }
 
-  console.log('Dados inseridos na tabela Banco!');
+  for (const tipo of tiposPagamento) {
+    await prisma.tipoPagamento.create({ data: tipo });
+  }
+
+  for (const user of users) {
+    await prisma.user.create({ data: user });
+  }
+
+  for (const cartao of cartoes) {
+    await prisma.cartao.create({ data: cartao });
+  }
+
+  console.log('Seed concluída com sucesso!');
 }
 
 main()

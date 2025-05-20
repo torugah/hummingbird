@@ -9,7 +9,7 @@ const categorySchema = z.object({
     str_movimentType: z.nativeEnum(TipoMovimento),	
     bool_hasBudgetLimit: z.boolean(),	
     dbl_budgetLimit: z.number().nullable(),
-    str_image: z.string(),
+    str_image: z.string().nullable(),
     bool_active: z.boolean(),	    
 })
 
@@ -32,7 +32,7 @@ export async function POST(req: Request){
                 str_movimentType: str_movimentType,
                 bool_hasBudgetLimit: bool_hasBudgetLimit,
                 dbl_budgetLimit: dbl_budgetLimit,
-                str_image: str_image,
+                str_image: str_image ?? "",
                 bool_active: bool_active,
                 user_id: user_id
             }, 
