@@ -40,19 +40,18 @@ import { z } from "zod"
 import { useToast } from "@/components/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import { NumericFormat } from 'react-number-format';
-import { getServerSession } from "next-auth";
-import { authOptions } from "../_lib/auth";
 
 const FormSchema = z
     .object({
-        itemName: z.string().min(2, "Item name must be at least 3 characters.").max(50),
-        itemValue: z.number().min(0.01, "Item cannot be less than R$0.01").optional(),
+        itemName: z.string().min(3, "Item name must be at least 3 characters.").max(50),
+        itemValue: z.number().min(0.01, "Item não pode ser menor que R$0,01"),
         itemDescription: z.string(),
+        category: z.number().nullable(),
         boolInstallment: z.boolean(),
         intInstallment: z.number().min(1, "This cannot be divided into zero or less"),
-        cardID: z.number(), 
+        cardID: z.number().nonnegative("Obrigatório"), 
         Installmentdate: z.date().optional(),
-        paymentMethod: z.number(), 
+        paymentMethod: z.number().nonnegative("Obrigatório"), 
         date: z.date(),
         boolStatus: z.string()
     });
@@ -75,6 +74,11 @@ interface PaymentMethod {
     str_nomeTipoPgto: string;
 }
 
+interface Categoria {
+    category_id: number;
+    str_categoryName: string;
+}
+
 // Define o tipo das props que o componente vai receber
 interface ChildComponentProps {
     userId: string | null | undefined;
@@ -82,22 +86,80 @@ interface ChildComponentProps {
 
 const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
 
+    const router = useRouter(); 
+
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
+
+    const [categories, setCategories] = useState<Categoria[]>([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            if (!userId) return;
+            try {
+                const response = await fetch(`/api/categories/getByUserId?userId=${userId}`);
+                if (!response.ok) {
+                    console.error(`Failed to fetch categories`);
+                    return;
+                }
+                const data = await response.json();
+                setCategories(data);
+            } catch (error) {
+                console.error("Erro ao buscar categorias:", error);
+            }
+        };
+        fetchCategories();
+    }, [userId]); 
+
+    const [cards, setCards] = useState<Cartao[]>([]);
+
+    useEffect(() => {
+        const fetchUserCards = async () => {
+            try {
+                const response = await fetch("/api/getUserCards");
+                const data = await response.json();
+                setCards(data);
+            } catch (error) {
+                console.error("Erro ao buscar cartões:", error);
+            }
+        };
+
+        fetchUserCards();
+    }, []);
+
+    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod[]>([]);  // State for storing paymentMethod data
+
+    useEffect(() => {
+        
+        const fetchPaymentMehtod = async () => {
+            const response = await fetch("/api/getPaymentMethod");
+            const paymentMethodData = await response.json();
+            setPaymentMethod(paymentMethodData);
+        };
+
+        fetchPaymentMehtod();  // Fetch bank data when component mounts
+    }, []);
+
+    //Melhor digitação /Para não inserir acentos no banco de dados
+    const formatPaymentName = (name: string) => {
+        if (name === "dinheiro") return "Dinheiro em Espécie";
+        if (name === "pix") return "PIX";
+        if (name === "debito") return "Débito";
+        if (name === "credito") return "Crédito";
+        return name; // Padrão
+    };   
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             itemName: "",
-            itemValue: undefined,
+            itemValue: 0,
             itemDescription: "",
             boolInstallment: false,
             intInstallment: 1,
-            cardID: 0,
             Installmentdate: new Date(),
             paymentMethod: undefined,
             date: new Date(),
-            boolStatus: "Pago"
         },
     })
 
@@ -107,25 +169,23 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
 
         const requestBody = {
             userId : userId,
-            categoryId: 1,
+            categoryId: data.category,
             itemName: data.itemName,
             itemValue: data.itemValue,
-            transactionalType: 'Variable',
-            movimentType: 'Input',
+            transactionalType: 'Variable', //Valor fixo para este componente
+            movimentType: 'Input', //Mesmo Sentido
             itemDescription: data.itemDescription,
             boolInstallment: data.boolInstallment,
             intInstallment: data.intInstallment,
             Installmentdate: data.Installmentdate,                            
             cardID: data.cardID,   
-            paymentMethod: data.paymentMethod,         
+            paymentMethod: data.paymentMethod,  //TODO: Rever itens e IDs em banco.       
             boolStatus: data.boolStatus,
             date: data.date,
             boolActive: true
         }
 
-        // console.log("Request Body:", requestBody);
-
-        const response = await fetch('/api/expenses/create', {
+        const response = await fetch('/api/transactions/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -141,14 +201,15 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
         } else {
             toast({
                 title: "Error",
-                description: "Oops! Something when wrong!",
+                description: `Oops! Something when wrong! Status: ${response.status}`,
                 variant: "destructive"
             })
         
         }
         
         setIsLoading(false);
-        handleCancel;
+        handleCancel();
+        router.refresh(); //TODO: Comando não está sendo obdecido.
     };
 
     const { reset } = form;
@@ -185,7 +246,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                     <Form {...form}>
                         <form id="dialogForm" className="w-full space-y-4 py-4" onSubmit={form.handleSubmit(onSubmit)}>
 
-                            {/* First Layer */}
+        {/* First Layer */}
                             <div className="flex flex-row space-x-2">
                                 <div className="w-1/2">
                                     <FormField
@@ -218,6 +279,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                                         prefix="R$ " // Prefixo de reais
                                                         fixedDecimalScale={true} // Mantém duas casas decimais
                                                         decimalScale={2} // Quantidade de casas decimais
+                                                        allowLeadingZeros={true} // Permite zeros a esquerda
                                                         placeholder="R$ #.###,##" // Placeholder
                                                         customInput={Input} // Usa o componente Input como base
                                                     />
@@ -229,7 +291,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                 </div>
                             </div>
 
-                            {/* Second Layer */}
+        {/* Second Layer */}
                             <div>
                                 <FormField
                                     control={form.control}
@@ -244,89 +306,108 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                     )}
                                 />
                             </div>
+        {/* Third Layer */}
+                            <div>
+                                <FormField
+                                    control={form.control}
+                                    name="category"
+                                    render={({ field }) => {
+                                        const handleChange = (val: string) => field.onChange(Number(val));
 
-                            {/* Third Layer */}
-                            <FormField
+                                        return (
+                                        <FormItem>
+                                            <FormControl>
+                                            <Select onValueChange={handleChange} value={field.value?.toString()}>
+                                                <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Escolha a categoria" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectGroup>
+                                                            <SelectLabel>Suas Categorias</SelectLabel>
+                                                            {categories.length > 0 ? (
+                                                                categories.map((cat) => (
+                                                                    <SelectItem key={cat.category_id} value={cat.category_id.toString()}>
+                                                                        {cat.str_categoryName}
+                                                                    </SelectItem>
+                                                                ))
+                                                            ) : (
+                                                                <SelectItem disabled value="">
+                                                                    Nenhuma categoria disponível
+                                                                </SelectItem>
+                                                            )}
+                                                        </SelectGroup>
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}}
+                                />
+
+                            </div>
+
+        {/* Fourth Layer */}
+                            <div className={`flex items-center`}>
+                                <FormField
                                 control={form.control}
                                 name="boolInstallment"
                                 render={({ field }) => (
-                                    <FormItem>
+                                    <FormItem className={`flex items-center w-1/2`}> 
                                         <FormControl>
-                                            <div className={`flex items-center transition-all duration-300 ease-in-out`}>
-                                                {/* Container que irá controlar a posição do Switch e do Input */}
-                                                <div className={`flex items-center justify-between w-full`}>
-                                                    {/* Switch e Label */}
-                                                    <div className={`flex items-center gap-2 transition-all duration-300 ease-in-out ${field.value ? 'w-1/2' : 'w-full justify-center'}`}>
-                                                        <Switch
-                                                            id="parcelado"
-                                                            checked={field.value}
-                                                            onCheckedChange={field.onChange}
-                                                        />
-                                                        <Label htmlFor="parcelado">Está parcelado?</Label>
-                                                    </div>
-
-                                                    {/* Campo condicional de número de parcelas com 50% */}
-                                                    <div className={`transition-opacity duration-300 ease-in-out ${field.value ? 'opacity-100 w-1/2' : 'opacity-0 w-0 pointer-events-none'}`}>
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="intInstallment"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormControl>
-                                                                        <Input
-                                                                            id="num-parcelas"
-                                                                            placeholder="Quantas Parcelas?"
-                                                                            type="number"
-                                                                            {...field || 1}
-                                                                            onChange={(e) => field.onChange(e.target.value === "" ? undefined : parseFloat(e.target.value))}
-                                                                        />
-                                                                    </FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                    </div>
-                                                </div>
+                                            <div className="flex items-center gap-2 content-center w-full">
+                                                <Switch
+                                                    id="parcelado"
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                />
+                                                <Label htmlFor="parcelado">
+                                                    Está parcelado?
+                                                </Label>
                                             </div>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
-                                )}
-                            />
+                                    )}
+                                />
 
-
-
-                            {/* Fourth Layer */}
+                                <FormField
+                                control={form.control}
+                                name="intInstallment"
+                                render={({ field }) => (
+                                    <FormItem className={`flex items-center w-1/2`}>
+                                        <FormControl>
+                                            <div className={`flex items-center gap-2 w-full`}>
+                                                <Input
+                                                    id="num-parcelas"
+                                                    placeholder="Quantas Parcelas?"
+                                                    type="number"
+                                                    {...field}
+                                                    onChange={(e) =>
+                                                        field.onChange(
+                                                        e.target.value === "" ? undefined : parseFloat(e.target.value)
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                    )}
+                                />
+                            </div>
+        {/* Fifth Layer */}
                             <div className="flex flex-row space-x-2">                                     
                                 <div className="w-1/2">
                                     <FormField
                                         control={form.control}
                                         name="cardID"
-                                        render={({ field }) => {
-                                            const [cards, setCards] = useState<Cartao[]>([]);
-
-                                            useEffect(() => {
-                                                const fetchUserCards = async () => {
-                                                    try {
-                                                        const response = await fetch("/api/getUserCards");
-                                                        const data = await response.json();
-                                                        setCards(data);
-                                                    } catch (error) {
-                                                        console.error("Erro ao buscar cartões:", error);
-                                                    }
-                                                };
-
-                                                fetchUserCards();
-                                            }, []);
-
+                                        render={({ field }) => {                                            
                                             return (                                                
-
                                                 <FormItem>
                                                     <FormControl>
                                                         <Select
                                                             onValueChange={(value) => field.onChange(Number(value))}
-                                                            value={field.value?.toString()}
-                                                            //value={field.value ? field.value.toString() : undefined} // Evita string vazia
+                                                            value={field.value != null ? field.value.toString() : ""}
                                                         >
                                                             <SelectTrigger className="w-full">
                                                                 <SelectValue placeholder="Escolha um cartão" />
@@ -353,7 +434,9 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                                                             );
                                                                         })
                                                                     ) : (
-                                                                        <p>Nenhum cartão disponível</p>
+                                                                        <SelectItem disabled value="">
+                                                                            Nenhum cartão disponível
+                                                                        </SelectItem>
                                                                     )}
                                                                 </SelectGroup>
                                                             </SelectContent>
@@ -373,36 +456,12 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                         control={form.control}
                                         name="paymentMethod"
                                         render={({ field }) => {
-
-                                            const [paymentMethod, setPaymentMethod] = useState<PaymentMethod[]>([]);  // State for storing paymentMethod data
-
-                                            useEffect(() => {
-                                                
-                                                const fetchPaymentMehtod = async () => {
-                                                    const response = await fetch("/api/getPaymentMethod");
-                                                    const paymentMethodData = await response.json();
-                                                    setPaymentMethod(paymentMethodData);
-                                                };
-
-                                                fetchPaymentMehtod();  // Fetch bank data when component mounts
-                                            }, []);
-
-                                            //Melhor digitação /Para não inserir acentos no banco de dados
-                                            const formatPaymentName = (name: string) => {
-                                                if (name === "dinheiro") return "Dinheiro em Espécie";
-                                                if (name === "pix") return "PIX";
-                                                if (name === "debito") return "Débito";
-                                                if (name === "credito") return "Crédito";
-                                                return name; // Padrão
-                                            };                                                                                        
-
                                             return(
-
                                                 <FormItem>
                                                     <FormControl>
                                                         <Select
                                                             onValueChange={(value) => field.onChange(Number(value))} // Captura o valor selecionado
-                                                            value={field.value?.toString()} // Vincula o valor ao campo do formulário
+                                                            value={field.value != null ? field.value.toString() : ""}
                                                         >
                                                             <SelectTrigger className="w-full">
                                                                 <SelectValue placeholder="Forma paga?" />
@@ -421,14 +480,13 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
-
                                             );
                                         }}
                                     />
                                 </div>
                             </div>
 
-                            {/* Fifth Layer */}
+        {/* Sixth Layer */}
                             <div className="flex flex-row items-center justify-between space-x-2">
                                 {/* Calendário com Popover */}
                                 <div className="w-1/2">
@@ -451,11 +509,16 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                                                 {field.value ? format(field.value, "dd/MM/yyyy") : <span>Qual a data?</span>}
                                                             </Button>
                                                         </PopoverTrigger>
-                                                        <PopoverContent className="w-auto p-0">
+                                                        <PopoverContent 
+                                                            className="w-auto p-0"  
+                                                            style={{ pointerEvents: 'auto' }}
+                                                        >
                                                             <Calendar
                                                                 mode="single"
                                                                 selected={field.value}
-                                                                onSelect={field.onChange}
+                                                                onSelect={(date) => {
+                                                                    field.onChange(date);
+                                                                }}
                                                                 initialFocus
                                                             />
                                                         </PopoverContent>
@@ -467,7 +530,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                     />
                                 </div>
 
-                                {/* Switch de status de pagamento */}
+                                {/* Select de status de pagamento */}
                                 <div className="w-1/2">
                                     <FormField
                                         control={form.control}
@@ -476,14 +539,6 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                                             <FormItem>
                                                 <FormControl>
                                                     <div className="flex items-center justify-center gap-2">
-                                                        {/*  
-                                                        <Switch
-                                                            id="isStatusPago"
-                                                            checked={field.value}
-                                                            onCheckedChange={field.onChange} // Sincroniza o estado do switch
-                                                        
-                                                        <Label htmlFor="isStatusPago">Pago?</Label>
-                                                        />*/}
                                                         <Select
                                                             onValueChange={(value) => field.onChange(value)} // Captura o valor selecionado
                                                             value={field.value} // Vincula o valor ao campo do formulário

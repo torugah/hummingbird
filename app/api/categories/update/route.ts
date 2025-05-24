@@ -84,9 +84,3 @@ export async function PUT(request: Request) {
         return NextResponse.json({ message: 'Erro interno do servidor ao atualizar a categoria.', error: error.message }, { status: 500 });
     }
 }
-
-// You might also want to add handlers for other HTTP methods if needed,
-// but based on the frontend, only PUT is used for update.
-// export async function GET(request: Request) {}
-// export async function POST(request: Request) {}
-// export async function DELETE(request: Request) {}

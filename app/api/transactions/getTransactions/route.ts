@@ -17,12 +17,12 @@ export async function GET(request: NextRequest) {
     // Fetch all records from the 'Trasacao' table
     const transactions = await prisma.transacao.findMany({
       // 3. Filter transactions by the logged-in user's ID
-      where: { user_id: userId , bool_active: true}, 
+      where: { user_id: userId , bool_active: true , str_transactionType: "Variable"}, 
       /*orderBy: {
         dtm_data: 'desc',
       },*/
-      // Include related data if needed (adjust based on your schema relations)
-      // include: { paymentMethod: true, card: { include: { bank: true } }, category: true }
+      include: { category: true , tipoPagamento: true}
+      //include: { paymentMethod: true, card: { include: { bank: true } }, category: true }
     });
 
     return NextResponse.json(transactions, { status: 200 });

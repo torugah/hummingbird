@@ -111,18 +111,6 @@ const DialogEditCategory: React.FC<DialogEditCategoryProps> = ({
 
     const { reset } = form;
 
-    const handleCancel = () => {
-        reset(); // Reseta os valores do formulário para os valores padrão
-    };
-
-    const handleOpenChange = (open: boolean) => {
-        if (!open) {
-            // Se o diálogo estiver fechando (por qualquer motivo: X, clique fora, Esc, botão Cancelar)
-            handleCancel();
-        }
-        setIsOpen(open);
-    };
-
     const onSubmit = async (data: EditFormValues) => {
         setIsLoading(true);
 

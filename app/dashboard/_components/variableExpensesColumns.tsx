@@ -1,24 +1,32 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import internal from "stream"
+import ActionsCell from "./actionsForColumns"; // Renomear a importação e o componente
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+// This type is used to define the shape of data.
 export type Transaction = {
-    id: number
-    category_id: number
-    str_name: string
-    dbl_valor: number
-    str_descricao: string
-    int_installmentCount: number
-    int_paymentForm: number
-    str_card_id: number
-    str_status: string
-    dtm_data: Date
+    id: number;
+    category_id: number;
+    str_name: string;
+    dbl_valor: number;
+    str_description: string;
+    int_installmentCount: number;
+    int_paymentForm: number;
+    tipoPagamento?: {
+        str_nomeTipoPgto?: string;
+    };
+    str_card_id: number;
+    str_status: string;
+    dtm_data: Date;
+    category: {
+        category_id: number;
+        str_categoryName?: string
+    }
+    user_id: string;
 }
 
 export const columns: ColumnDef<Transaction>[] = [
+
     {
         accessorKey: "str_name",
         header: "Item",
@@ -36,7 +44,7 @@ export const columns: ColumnDef<Transaction>[] = [
 
             return <div>{formatted}</div>
         }
-        
+
     },
     {
         accessorKey: "int_installmentCount",
@@ -53,22 +61,15 @@ export const columns: ColumnDef<Transaction>[] = [
         }
     },
     {
-        accessorKey: "int_paymentForm",
+        accessorKey: "tipoPagamento.str_nomeTipoPgto",
         header: "Forma",
         cell: ({ row }) => {
-            const paymentForm = row.getValue("int_paymentForm") as number;
-
-            if (paymentForm === 1) {
-                return <span>Dinheiro</span>; 
-            } else if (paymentForm === 2) {
-                return <span>PIX</span>;   
-            } else if (paymentForm === 3) {
-                return <span>Débito</span>;                    
-            } else if (paymentForm === 4) {
-                return <span>Crédito</span>;
-            }    
-            return <span>-</span>;
-        }    
+            const paymentFormNameFromType = row.original.tipoPagamento?.str_nomeTipoPgto;
+            if (paymentFormNameFromType) {
+                return <span>{paymentFormNameFromType}</span>;
+            }
+            return <span>"[Desconhecido]"</span>
+        }
     },
     {
         accessorKey: "str_status",
@@ -84,14 +85,23 @@ export const columns: ColumnDef<Transaction>[] = [
     {
         accessorKey: "dtm_data",
         header: "Data",
-        cell: ({row}) => {
+        cell: ({ row }) => {
             const date = row.getValue("dtm_data") as Date;
 
-            return new Date(date).toLocaleDateString('pt-BR' , { timeZone: 'UTC' })
+            return new Date(date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })
         }
     },
     {
-        accessorKey: "category_id",
+        accessorKey: "category.str_categoryName",
         header: "Categoria",
+    },
+    {
+        id: "actions",
+        header: "Ações",
+        cell: ({ row }) => {
+            return (
+                <ActionsCell transaction={row.original} /> 
+            )
+        },
     },
 ]

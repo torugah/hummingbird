@@ -11,12 +11,11 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { FaPen } from "react-icons/fa6";
-import { useEffect, useState } from "react";
-import { format, formatDistance, formatRelative, subDays } from 'date-fns';
+import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../_lib/auth";
-import DialogDPV from "../_components/dialogDespesaVariavel.";
+import DialogDPV from "../_components/dialogDespesaVariavel";
 import { DataTableVariableExpenses } from "./_components/dataTableVariableExpenses";
 import { Transaction, columns } from "./_components/variableExpensesColumns";
 
@@ -52,7 +51,7 @@ const InitialPage = async () => {
 
     const invoices = [
         {
-            invoice: "Algum Item",
+            invoice: "Algum Item 1",
             paymentStatus: "R$99,90",
             totalAmount: "1 de 3",
             paymentMethod: "Paid",
@@ -60,7 +59,7 @@ const InitialPage = async () => {
             type: "PIX - Banco Inter"
         },
         {
-            invoice: "Algum Item",
+            invoice: "Algum Item 2",
             paymentStatus: "R$99,90",
             totalAmount: "1 de 3",
             paymentMethod: "Paid",
@@ -68,7 +67,7 @@ const InitialPage = async () => {
             type: "PIX - Banco Inter"
         },
         {
-            invoice: "Algum Item",
+            invoice: "Algum Item 3",
             paymentStatus: "R$99,90",
             totalAmount: "1 de 3",
             paymentMethod: "Paid",
@@ -76,7 +75,7 @@ const InitialPage = async () => {
             type: "PIX - Banco Inter"
         },
         {
-            invoice: "Algum Item",
+            invoice: "Algum Item 4",
             paymentStatus: "R$99,90",
             totalAmount: "1 de 3",
             paymentMethod: "Paid",
@@ -84,7 +83,7 @@ const InitialPage = async () => {
             type: "PIX - Banco Inter"
         },
         {
-            invoice: "Algum Item",
+            invoice: "Algum Item 5",
             paymentStatus: "R$99,90",
             totalAmount: "1 de 3",
             paymentMethod: "Paid",
@@ -92,7 +91,7 @@ const InitialPage = async () => {
             type: "PIX - Banco Inter"
         },
         {
-            invoice: "Algum Item",
+            invoice: "Algum Item 6",
             paymentStatus: "R$99,90",
             totalAmount: "1 de 3",
             paymentMethod: "Paid",
@@ -100,7 +99,7 @@ const InitialPage = async () => {
             type: "PIX - Banco Inter"
         },
         {
-            invoice: "Algum Item",
+            invoice: "Algum Item 7",
             paymentStatus: "R$99,90",
             totalAmount: "1 de 3",
             paymentMethod: "Paid",
@@ -120,7 +119,7 @@ const InitialPage = async () => {
         } 
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/getTransactions?userId=${userId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/transactions/getTransactions?userId=${userId}`, {
             //const response = await fetch(`/api/getTransactions`, {
                 cache: 'no-store', 
             });
@@ -175,60 +174,7 @@ const InitialPage = async () => {
 
 
                 </div>
-
-
-                <div className="flex flex-col bg-gray-100 rounded-md p-8 mb-8">
-                    <div className="flex flex-row justify-between items-center">
-                        <div className="flex flex-col">
-                            <h3 className="text-xl font-semibold text-[#01C14C]">Despesas Variáveis</h3>
-                            <p>Inclua aqui suas variáveis, até aquele açaí do final de semana 👀</p>
-                        </div>
-                        <DialogDPV userId={data?.user.id} />
-                    </div>
-
-
-
-                    <div className="my-6 bg-white rounded-md">
-                        <Table>
-
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="w-[100px]">Identificador</TableHead>
-                                    <TableHead>Valor</TableHead>
-                                    <TableHead>Nº da Parcela</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead>Data</TableHead>
-                                    <TableHead>Tipo</TableHead>
-                                    <TableHead></TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {invoices.map((invoice) => (
-                                    <TableRow key={invoice.invoice}>
-                                        <TableCell>{invoice.invoice}</TableCell>
-                                        <TableCell>{invoice.paymentStatus}</TableCell>
-                                        <TableCell>{invoice.paymentMethod}</TableCell>
-                                        <TableCell>{invoice.totalAmount}</TableCell>
-                                        <TableCell>{invoice.date}</TableCell>
-                                        <TableCell>{invoice.type}</TableCell>
-                                        <TableCell><FaPen className="text-[#FF9D0D]" /></TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                            <TableFooter>
-                                <TableRow>
-                                    <TableCell colSpan={1}>Total</TableCell>
-                                    <TableCell>$2,500.00</TableCell>
-                                    <TableCell colSpan={5}></TableCell>
-                                </TableRow>
-                            </TableFooter>
-                        </Table>
-                    </div>
-
-
-
-
-                </div>
+                
                 <div className="flex flex-col bg-gray-100 rounded-md p-8 mb-8">
                     <div className="flex flex-row justify-between items-center">
                         <div className="flex flex-col">

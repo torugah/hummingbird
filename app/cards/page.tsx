@@ -32,7 +32,7 @@ function CardPage() {
 
         <div className="flex max-lg:w-[95%] flex-row justify-around mt-16 w-[74%] p-1">
 
-            <p>Pingas!</p>
+            <p>TODO: Criar um CRUD e Exibição dos Cartões do Usuário Aqui!</p>
 
         </div>
 
