@@ -157,9 +157,15 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
     // Fetch Cards
     useEffect(() => {
         const fetchUserCards = async () => {
-            if (!isOpen) return; // Só busca se o diálogo estiver aberto
+            if (!isOpen) return; 
             try {
-                const response = await fetch("/api/getUserCards"); // Considere passar userId se a API precisar
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/cards?userId=${userId}`, {
+                                                cache: 'no-store',
+                                                method: 'GET',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                },
+                                            }); 
                 const data = await response.json();
                 setCards(data);
             } catch (error) {
@@ -172,7 +178,7 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
     // Fetch Payment Methods
     useEffect(() => {
         const fetchPaymentMethod = async () => {
-            if (!isOpen) return; // Só busca se o diálogo estiver aberto
+            if (!isOpen) return;             
             const response = await fetch("/api/getPaymentMethod");
             const data = await response.json();
             setPaymentMethodData(data);
@@ -214,7 +220,6 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
             boolActive: true // Assumindo que este campo é relevante para update
         };
 
-        // TODO: Ajuste o endpoint da API para o de atualização
         const response = await fetch('/api/transactions/update', { 
             method: 'PUT', // ou PATCH
             headers: {

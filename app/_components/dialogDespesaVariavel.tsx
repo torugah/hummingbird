@@ -116,7 +116,13 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
     useEffect(() => {
         const fetchUserCards = async () => {
             try {
-                const response = await fetch("/api/getUserCards");
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/cards?userId=${userId}`, {
+                                                cache: 'no-store',
+                                                method: 'GET',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                }
+                                            });
                 const data = await response.json();
                 setCards(data);
             } catch (error) {
@@ -172,8 +178,8 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
             categoryId: data.category,
             itemName: data.itemName,
             itemValue: data.itemValue,
-            transactionalType: 'Variable', //Valor fixo para este componente
-            movimentType: 'Input', //Mesmo Sentido
+            transactionalType: 'Variable', 
+            movimentType: 'Input', 
             itemDescription: data.itemDescription,
             boolInstallment: data.boolInstallment,
             intInstallment: data.intInstallment,

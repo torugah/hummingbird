@@ -114,14 +114,14 @@ const DropdownMenuPages = () => {
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />*/}
                     <DropdownMenuItem>
-                        <Button variant={"ghost"} asChild>
+                        <Button variant={"ghost"} className="w-full justify-start" asChild>
                             <Link href="/categories" className="text-black">
                                 Minhas Categorias 
                             </Link>
                         </Button>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        <Button variant={"ghost"} asChild>
+                        <Button variant={"ghost"} className="w-full justify-start" asChild>
                             <Link href="/cards" className="text-black">
                                 Meus Cartões 
                             </Link>

@@ -1,53 +1,56 @@
 # Mudanças
-## Dialog das Despesas Variáveis
-> app/_components/dialogDespesaVariavel.tsx
-- Correção no nome do arquivo que antes tinha dois pontos antes de tsx.
-- Limpeza de importações.
-- Correções no FormSchema.
-- Adicionado a interface para Categoria.
-- Utilização de useRouter, mas que ainda precisa ser corrigido.
-- Adição de constantes e useEffects que utilizam APIs para trazer informações e mostrar ao usuário, como suas categorias.
-- Correções e implementações nos defaultValues, gerenciados pelo zod.
-- Correções também no requestBody da API de Create.
-- Grandes correções em FormControls unidos ( e então organizados separadamente. ), Calendar, Selects e NumericFormat a fim corrigir quebras de foco do RadixUI/Shadcn/UI, mas ainda é necessário nova revisão para resolução de outros pequenos bugs.
-## Limpeza de comentários na rota
-> app/api/categories/update/route.ts
-## Reestruturação de APIs:
-> Moved:    app/api/expenses/create/route.ts to app/api/transactions/create/route.ts
-> Moved:    app/api/getTransactions/route.ts to app/api/transactions/getTransactions/route.ts
-A fim de organização das rotas de API.
-## Anotação
+## Middleware 
+> modified:   middleware.ts
+- Inserido o caminho da página '/cards' a fim de que também seja protegido pelo NextAuth e não permita que a página seja acessada sem que o usuário esteja logado em uma conta.
+## Configurações do Next
+> modified:   next.config.mjs
+- Incluido código que permite que imagens do 'github.com' sejam autorizadas e acessadas pela aplicação.
+## Alteração da Rota de API
+> deleted:    app/api/getUserCards/route.tsx
+- Movido para o caminho abaixo:
+> moved:	app/api/cards/route.ts
+- Este único arquivo é capaz de realizar POST, GET, PUT e DELETE.
+## Página de Cartões
 > modified:   app/cards/page.tsx
-- Inserção de lembrete do conteúdo a ser criado.
-## Remoção de Código Desnecessário
-> app/categories/_components/dialogEditCategory.tsx
-- Foi retirado as constantes responsáveis pelo abrir ou fechar da janela, tendo em vista que a página é atualizada assim que o usuário conclui a edição.
-## Mudanças da variableExpensesColumns
-> app/dashboard/_components/variableExpensesColumns.tsx
-- Inserção dos últimos valores necessários no type Transaction.
-- Forma de pagamento alterada para informar diretamente o nome da forma utilizada ao invés de valores definidos, que seguiam dado o ID informado.
-- Grande implementação da ActionsCell, que é a coluna com ações de informação/descrição , edição e remoção de uma transação.
-## Limpeza da Página Inicial
-> app/dashboard/page.tsx
-- Remoção de atualização de importações.
-- Difenciação dos ID da invoices (Dados falsos para tabelas).
-- Completa remoção da primeira tabela de indealização de despesas variáveis.
+- Incluído importações de sessão e NextAuth.
+- Componente modificado para exportar e torna-se assíncrono.
+- Alterações em textos e estilização.
+- Adicionado o componente CardsList.
+## Novos Componentes para a Paǵinas de Cartões
+> app/cards/_components/
+> app/cards/_components/dialogAddNewCard.tsx
+> app/cards/_components/dialogEditDeleteCard.tsx
+- Componentes de CRUD para cartões.
+## Pequenas Correções
+> modified: app/(home)/page.tsx
+- Alterado o tamanho da altura do componente que abriga Login, SignIn e SignUp da paǵina, de forma a se encaixar conforme a demanda de espaço dos seus componentes internos.
+> modified:   app/_components/allMenuPages.tsx
+- Os botões também foram corrigidos e agora preenchem todo o espaço.
+> modified:   app/_components/dialogDespesaVariavel.tsx
+- Correção da URL utilizada no fetch GET de cartões. 
+- Remoção de comentários de orientação.
+> modified:   app/_components/signInForm.tsx
+- Remoção de Console.log() de verificação.
+> modified:   app/dashboard/_components/dialogEditDespesaVariavel.tsx
+- Correção da rota de API, adicionando GET. 
+- Remoção de comentários
+### Prisma ORM
+> modified:   prisma/schema.prisma
+> added: prisma/migrations/20250526225020_fix_cartao_model/
+- Correção em Cartões, aonde str_transaction_id deixou de ser obrigatório, que causava problemas na adição de um novo Cartão sem transações.
 ## Arquivos de configuração e versionamento
 > modified:   package-lock.json
 > modified:   package.json
-## Implementações de Novas APIs
-> app/api/transactions/
-> app/api/transactions/delete
-> app/api/transactions/getTransactions
-> app/api/transactions/update
-- Acima são as APIs que completam o CRUD da página de Transações.
-## ActionsForColumns ou ActionsCell 
-> app/dashboard/_components/actionsForColumns.tsx
-- É a coluna com ações de informação/descrição , edição e remoção de uma transação.
-## Edição de Transações
-> app/dashboard/_components/dialogEditDespesaVariavel.tsx
-- Componente responsável por mostrar um dialog ao usário editar uma transação.
-## Importações novas e imagem definitiva do Usuário Test.
-> components/ui/tooltip.tsx
-> public/uploads/cmavoww810002d7gb6l2lmqhd.jpg
+
+
+	
+	
+	
+
+
+	
+
+
+
+	
 

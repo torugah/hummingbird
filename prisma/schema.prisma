@@ -137,7 +137,7 @@ model Categoria {
 model Cartao {
   card_id             Int       @id @default(autoincrement())
 
-  str_transaction_id  Int
+  str_transaction_id  Int?
   transactions        Transacao[]
 
   str_bank_id         Int

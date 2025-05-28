@@ -47,7 +47,7 @@ export default function Home() {
         <p className='font-candara text-[#01C14C] text-4xl font-bold'>Hummingbird</p>  
       </div>
 
-      <div className="flex flex-row border-[2px] bg-[url('/fullSignInOnImage.jpg')] bg-cover border-gray-40 my-16 max-lg:w-[95%] max-lg:h-fit w-3/5 h-[80vh] ">
+      <div className="flex flex-row border-[2px] bg-[url('/fullSignInOnImage.jpg')] bg-cover border-gray-40 my-16 max-lg:w-[95%] max-lg:h-fit w-3/5 h-fit ">
 
         <div className={`max-lg:w-full w-1/2 h-full bg-gray-100 p-10 transition-transform duration-500 ${isMoved ? 'transform translate-x-full' : ''}`}>
           <div className={`transition-opacity duration-500 ${fadeOut ? 'opacity-0' : 'opacity-100'}`}>

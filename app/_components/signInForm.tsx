@@ -45,8 +45,6 @@ const SignInForm = () => {
       redirect: false,
     });
 
-    console.log('LOGIN >>>>>>>>>>> ',signInData)
-
     if(signInData?.error){
       toast({
         title: "Error",
