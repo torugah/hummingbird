@@ -82,9 +82,10 @@ interface Categoria {
 // Define o tipo das props que o componente vai receber
 interface ChildComponentProps {
     userId: string | null | undefined;
+    transactionType: string;
 }
 
-const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
+const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType }) => {
 
     const router = useRouter(); 
 
@@ -178,8 +179,8 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
             categoryId: data.category,
             itemName: data.itemName,
             itemValue: data.itemValue,
-            transactionalType: 'Variable', 
-            movimentType: 'Input', 
+            transactionalType: transactionType, 
+            movimentType: 'Output', 
             itemDescription: data.itemDescription,
             boolInstallment: data.boolInstallment,
             intInstallment: data.intInstallment,
@@ -245,7 +246,11 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId }) => {
                     <DialogHeader>
                         <DialogTitle>Nova Despesa</DialogTitle>
                         <DialogDescription>
-                            Inclua aqui suas despesas fixas, aluguel por exemplo 🏠 Clique em salvar quando preencher tudo 😉.
+                            { transactionType === "Fixed" ?
+                            "Inclua aqui suas despesas fixas, aluguel por exemplo 🏠 Clique em salvar quando preencher tudo 😉." 
+                            :
+                            "Inclua aqui suas despesas variáveis, um jantar fora por exemplo 🥘 Abaixo salve as alterações 😉." 
+                            }
                         </DialogDescription>
                     </DialogHeader>
 

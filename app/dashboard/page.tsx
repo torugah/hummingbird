@@ -111,7 +111,7 @@ const InitialPage = async () => {
     const userId = data?.user.id;
 
     // Function to fetch data from the new API endpoint
-    async function getTransactions(userId: string | undefined): Promise<Transaction[]> {
+    async function getVariableTransactions(userId: string | undefined): Promise<Transaction[]> {
         // If no userId, don't attempt to fetch
         if (!userId) {
             console.log("No user ID found, skipping transaction fetch.");
@@ -119,7 +119,7 @@ const InitialPage = async () => {
         } 
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/transactions/getTransactions?userId=${userId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/transactions/getTransactions?userId=${userId}&transactionType=Variable`, {
             //const response = await fetch(`/api/getTransactions`, {
                 cache: 'no-store', 
             });
@@ -133,7 +133,30 @@ const InitialPage = async () => {
         }
     }
 
-    const transactionsData = await getTransactions(userId);
+    async function getFixedTransactions(userId: string | undefined): Promise<Transaction[]> {
+        // If no userId, don't attempt to fetch
+        if (!userId) {
+            console.log("No user ID found, skipping transaction fetch.");
+            return [];
+        } 
+
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/transactions/getTransactions?userId=${userId}&transactionType=Fixed`, {
+            //const response = await fetch(`/api/getTransactions`, {
+                cache: 'no-store', 
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to fetch transactions: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Error in getTransactions:", error);
+            return []; // Return empty array on error
+        }
+    }
+
+    const variableTransactionsData = await getVariableTransactions(userId);
+    const fixedTransactionsData = await getFixedTransactions(userId);
 
     return (
         <div className="flex flex-col items-center justify-between">
@@ -161,13 +184,13 @@ const InitialPage = async () => {
                             <h3 className="text-xl font-semibold text-[#01C14C]">Despesas Variáveis</h3>
                             <p>Inclua aqui suas variáveis, até aquele açaí do final de semana 👀</p>
                         </div>
-                        <DialogDPV userId={data?.user.id} />
+                        <DialogDPV userId={data?.user.id} transactionType="Variable"/>
                     </div>
 
 
 
                     <div className="my-6 bg-white rounded-md">
-                        <DataTableVariableExpenses columns={columns} data={transactionsData} />
+                        <DataTableVariableExpenses columns={columns} data={variableTransactionsData} />
                     </div>
 
 
@@ -181,46 +204,13 @@ const InitialPage = async () => {
                             <h3 className="text-xl font-semibold text-[#01C14C]">Despesas Fixas</h3>
                             <p>Inclua aqui suas despesas fixas, aluguel por exemplo 🏠</p>
                         </div>
-                        <DialogDPV userId={data?.user.id} />
+                        <DialogDPV userId={data?.user.id} transactionType="Fixed"/>
                     </div>
 
 
 
-                    <div className="my-6 bg-white rounded-md">
-                        <Table>
-
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="w-[100px]">Identificador</TableHead>
-                                    <TableHead>Valor</TableHead>
-                                    <TableHead>Nº da Parcela</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead>Data</TableHead>
-                                    <TableHead>Tipo</TableHead>
-                                    <TableHead></TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {invoices.map((invoice) => (
-                                    <TableRow key={invoice.invoice}>
-                                        <TableCell>{invoice.invoice}</TableCell>
-                                        <TableCell>{invoice.paymentStatus}</TableCell>
-                                        <TableCell>{invoice.paymentMethod}</TableCell>
-                                        <TableCell>{invoice.totalAmount}</TableCell>
-                                        <TableCell>{invoice.date}</TableCell>
-                                        <TableCell>{invoice.type}</TableCell>
-                                        <TableCell><FaPen className="text-[#FF9D0D]" /></TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                            <TableFooter>
-                                <TableRow>
-                                    <TableCell colSpan={1}>Total</TableCell>
-                                    <TableCell>$2,500.00</TableCell>
-                                    <TableCell colSpan={5}></TableCell>
-                                </TableRow>
-                            </TableFooter>
-                        </Table>
+                    <div className="my-6 bg-white rounded-md">                        
+                        <DataTableVariableExpenses columns={columns} data={fixedTransactionsData} />
                     </div>
 
 

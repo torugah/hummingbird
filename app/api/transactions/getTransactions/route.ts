@@ -8,6 +8,7 @@ export async function GET(request: NextRequest) {
     // 1. Get userId from query parameters
     const searchParams = request.nextUrl.searchParams;
     const userId = searchParams.get('userId');  
+    const transactionType = searchParams.get('transactionType'); 
 
     // 2. Check if userId was provided
     if (!userId) {
@@ -15,13 +16,23 @@ export async function GET(request: NextRequest) {
     }    
 
     // Fetch all records from the 'Trasacao' table
+    const whereClause: any = {
+      user_id: userId,
+      bool_active: true,
+    };
+
+    // 3. Filter transactions by the logged-in user's ID and optionally by transaction type
+    if (transactionType) {
+      whereClause.str_transactionType = transactionType;
+    }
+
     const transactions = await prisma.transacao.findMany({
       // 3. Filter transactions by the logged-in user's ID
-      where: { user_id: userId , bool_active: true , str_transactionType: "Variable"}, 
+      where: whereClause,
       /*orderBy: {
         dtm_data: 'desc',
       },*/
-      include: { category: true , tipoPagamento: true}
+      include: { category: true , tipoPagamento: true }
       //include: { paymentMethod: true, card: { include: { bank: true } }, category: true }
     });
 

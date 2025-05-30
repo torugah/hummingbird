@@ -18,6 +18,7 @@ import { useState } from "react";
 import { Loader2 } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/hooks/use-toast";
+import Link from "next/link";
   
 const FormSchema = z.object({
   email: z.string().min(1, 'Insira um e-mail').email('E-mail inválido'),
@@ -98,8 +99,16 @@ const SignInForm = () => {
           </div>
         </div>
         <div className="float-right">
-          <p className="text-xs font-semibold text-[#01C14C] underline cursor-pointer hover:underline-offset-2" >Forgot your password?</p>
+          {/* <p className="text-xs font-semibold text-[#01C14C] underline cursor-pointer hover:underline-offset-2" >Forgot your password?</p> */}
           {/* TODO: Fazer tela de Reset Password */}
+
+          <Button variant={"ghost"} className="w-full justify-start h-fit py-0 gap-1.5 leading-none" asChild>
+              <Link href="/passwordRecovery" className="text-xs font-semibold text-[#01C14C] underline cursor-pointer hover:underline-offset-2">
+                  Forgot your password? 
+              </Link>
+          </Button>
+
+
         </div>          
       </div>        
       <Button className="w-full disabled:cursor-progress" type="submit" variant="default" disabled={isLoading}>

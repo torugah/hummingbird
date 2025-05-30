@@ -87,7 +87,7 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ transaction, user_id }) => {
                             <IoInformationCircleOutline className="h-4 w-4 text-blue-500" />
                         </Button>
                     </TooltipTrigger>
-                    <TooltipContent className="bg-black text-white p-2 rounded-md">
+                    <TooltipContent className="bg-white text-black p-2 rounded-md">
                         <p>{transaction.str_description  || "Sem descrição."}</p>
                     </TooltipContent>
                 </Tooltip>
