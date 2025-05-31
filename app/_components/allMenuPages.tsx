@@ -127,6 +127,13 @@ const DropdownMenuPages = () => {
                             </Link>
                         </Button>
                     </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <Button variant={"ghost"} className="w-full justify-start" asChild>
+                            <Link href="/desiresAndDecisions" className="text-black">
+                                Desejos e Decisões 
+                            </Link>
+                        </Button>
+                    </DropdownMenuItem>
                     
                 </DropdownMenuContent>
             </DropdownMenu>

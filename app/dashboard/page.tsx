@@ -1,23 +1,13 @@
-import { Button } from "@/components/ui/button";
 import Footer from "../_components/footer";
 import Header from "../_components/header";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
-import { FaPen } from "react-icons/fa6";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../_lib/auth";
 import DialogDPV from "../_components/dialogDespesaVariavel";
 import { DataTableVariableExpenses } from "./_components/dataTableVariableExpenses";
-import { Transaction, columns } from "./_components/variableExpensesColumns";
+import { Transaction, outputColumns } from "./_components/variableExpensesColumns";
+import { incomeColumns } from "./_components/incomeRecipiesColumns";
 
 const InitialPage = async () => {
 
@@ -46,67 +36,7 @@ const InitialPage = async () => {
     // Capitalizando a primeira letra do dia da semana
     const diaDaSemana = diaDaSemanaNone.charAt(0).toUpperCase() + diaDaSemanaNone.slice(1);
 
-    const data = await getServerSession(authOptions);
-    // console.log(data)
-
-    const invoices = [
-        {
-            invoice: "Algum Item 1",
-            paymentStatus: "R$99,90",
-            totalAmount: "1 de 3",
-            paymentMethod: "Paid",
-            date: "30/07/2024",
-            type: "PIX - Banco Inter"
-        },
-        {
-            invoice: "Algum Item 2",
-            paymentStatus: "R$99,90",
-            totalAmount: "1 de 3",
-            paymentMethod: "Paid",
-            date: "30/07/2024",
-            type: "PIX - Banco Inter"
-        },
-        {
-            invoice: "Algum Item 3",
-            paymentStatus: "R$99,90",
-            totalAmount: "1 de 3",
-            paymentMethod: "Paid",
-            date: "30/07/2024",
-            type: "PIX - Banco Inter"
-        },
-        {
-            invoice: "Algum Item 4",
-            paymentStatus: "R$99,90",
-            totalAmount: "1 de 3",
-            paymentMethod: "Paid",
-            date: "30/07/2024",
-            type: "PIX - Banco Inter"
-        },
-        {
-            invoice: "Algum Item 5",
-            paymentStatus: "R$99,90",
-            totalAmount: "1 de 3",
-            paymentMethod: "Paid",
-            date: "30/07/2024",
-            type: "PIX - Banco Inter"
-        },
-        {
-            invoice: "Algum Item 6",
-            paymentStatus: "R$99,90",
-            totalAmount: "1 de 3",
-            paymentMethod: "Paid",
-            date: "30/07/2024",
-            type: "PIX - Banco Inter"
-        },
-        {
-            invoice: "Algum Item 7",
-            paymentStatus: "R$99,90",
-            totalAmount: "1 de 3",
-            paymentMethod: "Paid",
-            date: "30/07/2024",
-            type: "PIX - Banco Inter"
-        },
-    ]
+    const data = await getServerSession(authOptions);  
 
     const userId = data?.user.id;
 
@@ -155,8 +85,31 @@ const InitialPage = async () => {
         }
     }
 
+    async function getIncomeTransactions(userId: string | undefined): Promise<Transaction[]> {
+        // If no userId, don't attempt to fetch
+        if (!userId) {
+            console.log("No user ID found, skipping transaction fetch.");
+            return [];
+        } 
+
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/transactions/getTransactions?userId=${userId}&transactionType=Income`, {
+            //const response = await fetch(`/api/getTransactions`, {
+                cache: 'no-store', 
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to fetch transactions: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Error in getTransactions:", error);
+            return []; // Return empty array on error
+        }
+    }
+
     const variableTransactionsData = await getVariableTransactions(userId);
     const fixedTransactionsData = await getFixedTransactions(userId);
+    const incomeTransactionsData = await getIncomeTransactions(userId);
 
     return (
         <div className="flex flex-col items-center justify-between">
@@ -190,7 +143,7 @@ const InitialPage = async () => {
 
 
                     <div className="my-6 bg-white rounded-md">
-                        <DataTableVariableExpenses columns={columns} data={variableTransactionsData} />
+                        <DataTableVariableExpenses columns={outputColumns} data={variableTransactionsData} />
                     </div>
 
 
@@ -210,7 +163,7 @@ const InitialPage = async () => {
 
 
                     <div className="my-6 bg-white rounded-md">                        
-                        <DataTableVariableExpenses columns={columns} data={fixedTransactionsData} />
+                        <DataTableVariableExpenses columns={outputColumns} data={fixedTransactionsData} />
                     </div>
 
 
@@ -223,46 +176,12 @@ const InitialPage = async () => {
                             <h3 className="text-xl font-semibold text-[#01C14C]">Ganhos</h3>
                             <p>Cada um dos seus esforços em forma financeira! 💵</p>
                         </div>
-                        <Button>
-                            Adicionar
-                        </Button>
+                        <DialogDPV userId={data?.user.id} transactionType="Income"/>
                     </div>
 
-
-
-                    <div className="my-6 bg-white rounded-md">
-                        <Table>
-
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="w-[100px]">Invoice</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead>Method</TableHead>
-                                    <TableHead className="text-right">Amount</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {invoices.map((invoice) => (
-                                    <TableRow key={invoice.invoice}>
-                                        <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                                        <TableCell>{invoice.paymentStatus}</TableCell>
-                                        <TableCell>{invoice.paymentMethod}</TableCell>
-                                        <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                            <TableFooter>
-                                <TableRow>
-                                    <TableCell colSpan={1}>Total</TableCell>
-                                    <TableCell>$2,500.00</TableCell>
-                                    <TableCell colSpan={5}></TableCell>
-                                </TableRow>
-                            </TableFooter>
-                        </Table>
+                    <div className="my-6 bg-white rounded-md">                        
+                        <DataTableVariableExpenses columns={incomeColumns} data={incomeTransactionsData} />
                     </div>
-
-
-
 
                 </div>
             </div>

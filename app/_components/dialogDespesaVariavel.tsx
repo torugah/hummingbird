@@ -47,7 +47,7 @@ const FormSchema = z
         itemValue: z.number().min(0.01, "Item não pode ser menor que R$0,01"),
         itemDescription: z.string(),
         category: z.number().nullable(),
-        boolInstallment: z.boolean(),
+        boolInstallment: z.boolean().optional(),
         intInstallment: z.number().min(1, "This cannot be divided into zero or less"),
         cardID: z.number().nonnegative("Obrigatório"), 
         Installmentdate: z.date().optional(),
@@ -92,7 +92,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
 
-    const [categories, setCategories] = useState<Categoria[]>([]);
+    const [categories, setCategories] = useState<Categoria[]>([]); //TODO: Alternar entre INPUT e OUTPUT
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -174,13 +174,15 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
 
         setIsLoading(true);
 
+        const movimentType = transactionType === "Fixed" || "Variable" ? "Output" : "Input"; 
+
         const requestBody = {
             userId : userId,
             categoryId: data.category,
             itemName: data.itemName,
             itemValue: data.itemValue,
             transactionalType: transactionType, 
-            movimentType: 'Output', 
+            movimentType: movimentType, 
             itemDescription: data.itemDescription,
             boolInstallment: data.boolInstallment,
             intInstallment: data.intInstallment,
@@ -244,12 +246,17 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
-                        <DialogTitle>Nova Despesa</DialogTitle>
+                        <DialogTitle>
+                            {transactionType !== "Income" ? "Nova Despesa" : "Nova Receita"}                            
+                        </DialogTitle>
                         <DialogDescription>
                             { transactionType === "Fixed" ?
                             "Inclua aqui suas despesas fixas, aluguel por exemplo 🏠 Clique em salvar quando preencher tudo 😉." 
                             :
+                            transactionType === "Variable" ?
                             "Inclua aqui suas despesas variáveis, um jantar fora por exemplo 🥘 Abaixo salve as alterações 😉." 
+                            :
+                            "Adicione cada um dos seus esforços em forma financeira! 💵 No fim salve as alterações 😉."
                             }
                         </DialogDescription>
                     </DialogHeader>
@@ -358,55 +365,58 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                             </div>
 
         {/* Fourth Layer */}
-                            <div className={`flex items-center`}>
-                                <FormField
-                                control={form.control}
-                                name="boolInstallment"
-                                render={({ field }) => (
-                                    <FormItem className={`flex items-center w-1/2`}> 
-                                        <FormControl>
-                                            <div className="flex items-center gap-2 content-center w-full">
-                                                <Switch
-                                                    id="parcelado"
-                                                    checked={field.value}
-                                                    onCheckedChange={field.onChange}
-                                                />
-                                                <Label htmlFor="parcelado">
-                                                    Está parcelado?
-                                                </Label>
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                    )}
-                                />
+                            {transactionType !== 'Income' && (
+                                <div className={`flex items-center`}>
+                                    <FormField
+                                    control={form.control}
+                                    name="boolInstallment"
+                                    render={({ field }) => (
+                                        <FormItem className={`flex items-center w-1/2`}> 
+                                            <FormControl>
+                                                <div className="flex items-center gap-2 content-center w-full">
+                                                    <Switch
+                                                        id="parcelado"
+                                                        checked={field.value}
+                                                        onCheckedChange={field.onChange}
+                                                    />
+                                                    <Label htmlFor="parcelado">
+                                                        Está parcelado?
+                                                    </Label>
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                        )}
+                                    />
 
-                                <FormField
-                                control={form.control}
-                                name="intInstallment"
-                                render={({ field }) => (
-                                    <FormItem className={`flex items-center w-1/2`}>
-                                        <FormControl>
-                                            <div className={`flex items-center gap-2 w-full`}>
-                                                <Input
-                                                    id="num-parcelas"
-                                                    placeholder="Quantas Parcelas?"
-                                                    type="number"
-                                                    {...field}
-                                                    onChange={(e) =>
-                                                        field.onChange(
-                                                        e.target.value === "" ? undefined : parseFloat(e.target.value)
-                                                        )
-                                                    }
-                                                />
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                    )}
-                                />
-                            </div>
+                                    <FormField
+                                    control={form.control}
+                                    name="intInstallment"
+                                    render={({ field }) => (
+                                        <FormItem className={`flex items-center w-1/2`}>
+                                            <FormControl>
+                                                <div className={`flex items-center gap-2 w-full`}>
+                                                    <Input
+                                                        id="num-parcelas"
+                                                        placeholder="Quantas Parcelas?"
+                                                        type="number"
+                                                        {...field}
+                                                        onChange={(e) =>
+                                                            field.onChange(
+                                                            e.target.value === "" ? undefined : parseFloat(e.target.value)
+                                                            )
+                                                        }
+                                                    />
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                        )}
+                                    />
+                                </div>
+                            )}
         {/* Fifth Layer */}
+        
                             <div className="flex flex-row space-x-2">                                     
                                 <div className="w-1/2">
                                     <FormField

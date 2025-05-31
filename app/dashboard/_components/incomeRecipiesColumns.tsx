@@ -26,7 +26,7 @@ export type Transaction = {
     user_id: string;
 }
 
-export const outputColumns: ColumnDef<Transaction>[] = [
+export const incomeColumns: ColumnDef<Transaction>[] = [
 
     {
         accessorKey: "str_name",
@@ -47,31 +47,31 @@ export const outputColumns: ColumnDef<Transaction>[] = [
         }
 
     },
-    {
-        accessorKey: "int_installmentCount",
-        header: "Condição",
-        cell: ({ row }) => {
-            const installmentCount = row.getValue("int_installmentCount") as number;
+    // {
+    //     accessorKey: "int_installmentCount",
+    //     header: "Condição",
+    //     cell: ({ row }) => {
+    //         const installmentCount = row.getValue("int_installmentCount") as number;
 
-            if (installmentCount === 1) {
-                return <span>À Vista</span>; // Or "case 1" as in your example
-            } else if (installmentCount > 1) {
-                return <span>{`1 de ${installmentCount}`}</span>; // Or "case 2", or format as needed
-            }
-            return <span>-</span>; // Handle other cases if necessary (e.g., 0 or null)
-        }
-    },
-    {
-        accessorKey: "tipoPagamento.str_nomeTipoPgto",
-        header: "Forma",
-        cell: ({ row }) => {
-            const paymentFormNameFromType = row.original.tipoPagamento?.str_nomeTipoPgto;
-            if (paymentFormNameFromType) {
-                return <span>{paymentFormNameFromType}</span>;
-            }
-            return <span>"[Desconhecido]"</span>
-        }
-    },
+    //         if (installmentCount === 1) {
+    //             return <span>À Vista</span>; // Or "case 1" as in your example
+    //         } else if (installmentCount > 1) {
+    //             return <span>{`1 de ${installmentCount}`}</span>; // Or "case 2", or format as needed
+    //         }
+    //         return <span>-</span>; // Handle other cases if necessary (e.g., 0 or null)
+    //     }
+    // },
+    // {
+    //     accessorKey: "tipoPagamento.str_nomeTipoPgto",
+    //     header: "Forma",
+    //     cell: ({ row }) => {
+    //         const paymentFormNameFromType = row.original.tipoPagamento?.str_nomeTipoPgto;
+    //         if (paymentFormNameFromType) {
+    //             return <span>{paymentFormNameFromType}</span>;
+    //         }
+    //         return <span>"[Desconhecido]"</span>
+    //     }
+    // },
     {
         accessorKey: "str_status",
         header: "Status",

@@ -15,6 +15,11 @@ export default async function Categories() {
     const data = await getServerSession(authOptions);
     const userId = data?.user.id;
 
+    // TODO: Alerta de gasto nas categorias.
+    // TODO: Desabilitar categorias e lista de categorias desabilitadas.
+    // TODO: Habilitar forma de pagamento dependendo se for dinheiro oou cartão.
+    // TODO: Reajustar o layout do dialog.
+
     return (
         <div className="flex flex-col items-center justify-between">
             <Header />

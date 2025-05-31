@@ -14,7 +14,7 @@ const Header = () => {
             </div>
             <div className="flex flex-row justify-between items-center">
                 <Button variant={"ghost"} asChild>
-                    <Link href="/timeVision" className="text-black">
+                    <Link href="/calendar" className="text-black">
                         Calendário 
                     </Link>
                 </Button>

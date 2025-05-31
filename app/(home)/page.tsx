@@ -42,7 +42,7 @@ export default function Home() {
   return (
     
     <div className="flex min-h-screen flex-col items-center justify-between">
-      {/*<Header />*/}
+      
       <div className="flex flex-row justify-around items-center w-full bg-secondary py-3 px-5 border-gray-100 border-2 background bg-white">
         <p className='font-candara text-[#01C14C] text-4xl font-bold'>Hummingbird</p>  
       </div>
@@ -74,7 +74,7 @@ export default function Home() {
                   <span className="px-4 text-gray-500 text-xs">Or continue with</span>
                   <div className="flex-grow border-t-2 border-gray-300"></div>
                 </div>
-                <SignInForm />
+                <SignInForm /> 
               </div>
             ) : (
               <div className="flex flex-col space-y-1">

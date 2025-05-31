@@ -369,54 +369,56 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
                         </div>
 
                         {/* Fourth Layer - Parcelamento */}
-                        <div className={`flex items-center`}>
-                            <FormField
-                                control={form.control}
-                                name="boolInstallment"
-                                render={({ field }) => (
-                                    <FormItem className={`flex items-center w-1/2`}>
-                                        <FormControl>
-                                            <div className="flex items-center gap-2 content-center w-full">
-                                                <Switch
-                                                    id="parceladoEdit" // ID diferente
-                                                    checked={field.value}
-                                                    onCheckedChange={field.onChange}
-                                                />
-                                                <Label htmlFor="parceladoEdit">
-                                                    Está parcelado?
-                                                </Label>
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="intInstallment"
-                                render={({ field }) => (
-                                    <FormItem className={`flex items-center w-1/2`}>
-                                        <FormControl>
-                                            <div className={`flex items-center gap-2 w-full`}>
-                                                <Input
-                                                    id="num-parcelasEdit" // ID diferente
-                                                    placeholder="Quantas Parcelas?"
-                                                    type="number"
-                                                    {...field}
-                                                    onChange={(e) =>
-                                                        field.onChange(
-                                                            e.target.value === "" ? 1 : parseFloat(e.target.value) // Default to 1 if empty
-                                                        )
-                                                    }
-                                                    disabled={!form.watch("boolInstallment")} // Desabilita se não estiver parcelado
-                                                />
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
+                        {transactionToEdit?.str_transactionType !== 'Income' && (
+                            <div className={`flex items-center`}>
+                                <FormField
+                                    control={form.control}
+                                    name="boolInstallment"
+                                    render={({ field }) => (
+                                        <FormItem className={`flex items-center w-1/2`}>
+                                            <FormControl>
+                                                <div className="flex items-center gap-2 content-center w-full">
+                                                    <Switch
+                                                        id="parceladoEdit" // ID diferente
+                                                        checked={field.value}
+                                                        onCheckedChange={field.onChange}
+                                                    />
+                                                    <Label htmlFor="parceladoEdit">
+                                                        Está parcelado?
+                                                    </Label>
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="intInstallment"
+                                    render={({ field }) => (
+                                        <FormItem className={`flex items-center w-1/2`}>
+                                            <FormControl>
+                                                <div className={`flex items-center gap-2 w-full`}>
+                                                    <Input
+                                                        id="num-parcelasEdit" // ID diferente
+                                                        placeholder="Quantas Parcelas?"
+                                                        type="number"
+                                                        {...field}
+                                                        onChange={(e) =>
+                                                            field.onChange(
+                                                                e.target.value === "" ? 1 : parseFloat(e.target.value) // Default to 1 if empty
+                                                            )
+                                                        }
+                                                        disabled={!form.watch("boolInstallment")} // Desabilita se não estiver parcelado
+                                                    />
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        )}
 
                         {/* Fifth Layer - Cartão e Forma de Pagamento */}
                         <div className="flex flex-row space-x-2">
