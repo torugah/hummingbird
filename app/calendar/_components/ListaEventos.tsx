@@ -1,10 +1,11 @@
 import React from "react";
 
 const eventosMockados = [
-  { date: "2025-03-25", title: "Dividendos - HCTR11", description: "Entrada de dividendos mensais da HCTR11." },
-  { date: "2025-03-28", title: "Serviço Externo", description: "Rendimento através de serviços de desmontagem." },
-  { date: "2025-03-31", title: "Depósito Bancário", description: "Realizei um depósito bancário para minha mãe." },
-  { date: "2025-03-31", title: "Depósito Bancário", description: "Realizei um depósito bancário para meu pai." }
+  { date: "2025-04-05", title: "Recebimento de Salário", description: "" },
+  { date: "2025-04-17", title: "Recebimento de Dividendos", description: "" },
+  { date: "2025-04-19", title: "Vencimento da Fatura do Cartão Inter", description: "" },
+  { date: "2025-04-22", title: "Reservar dinheiro futuro", description: "" },
+  { date: "2025-04-08", title: "Compra de novas lâmpadas", description: "Cancelado" }
 ];
 
 interface ListaEventosProps {
@@ -13,26 +14,25 @@ interface ListaEventosProps {
 
 const ListaEventos: React.FC<ListaEventosProps> = ({ selectedDate }) => {
   const dataFormatada = selectedDate.toISOString().split("T")[0];
-
   const eventosDoDia = eventosMockados.filter(evento => evento.date === dataFormatada);
 
   return (
-    <div className="relative w-full max-w-lg h-[70%] p-4 border border-gray-400 rounded-md">
-      {/* Título sobrepondo a borda */}
-      <div className="absolute -top-4 left-4 bg-white px-2 text-lg font-bold">Eventos</div>
-
-      {/* Verifica se há eventos no dia */}
+    <div className="space-y-4">
+      <h2 className="text-xl font-bold">Eventos</h2>
+      
       {eventosDoDia.length > 0 ? (
-        <ul className="mt-2 space-y-2">
+        <ul className="space-y-3">
           {eventosDoDia.map((evento, index) => (
-            <li key={index} className="p-2 border-b">
-              <p className="font-bold">{evento.title}</p>
-              <p className="text-sm text-gray-600">{evento.description}</p>
+            <li key={index} className="pb-2 border-b border-gray-200 last:border-0">
+              <p className="font-medium">
+                {evento.date.split('-')[2]} - {evento.title}
+                {evento.description && <span className="text-gray-500 ml-2">({evento.description})</span>}
+              </p>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="mt-2 text-gray-500">Não há eventos nessa data.</p>
+        <p className="text-gray-500">Não há eventos nessa data.</p>
       )}
     </div>
   );

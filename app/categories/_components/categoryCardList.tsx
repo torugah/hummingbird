@@ -1,8 +1,7 @@
 'use server'
 
 import React from 'react';
-import { FaPen, FaRegMoneyBill1, FaTrashCan } from "react-icons/fa6";
-import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
+import { FaRegMoneyBill1 } from "react-icons/fa6";
 import DialogAddNewCategory from './dialogAddNewCategory';
 import { formatCurrency } from '@/lib/utils';
 import DialogEditCategory from './dialogEditCategory';
@@ -65,7 +64,7 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId }) => 
                 <div key={category.category_id} className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg'>
                     {/* Use category.str_image if available, otherwise a default */}
                     <div
-                        className={`h-5/6 rounded-sm bg-cover bg-center ${(category.str_image && category.str_image !== 'none') ? `bg-[url('${process.env.NEXT_PUBLIC_API_URL || ''}${category.str_image}')]` : `bg-[url('/noCategoryAvaliableSmall.png')]`}`}
+                        className={`h-4/6 rounded-sm bg-cover bg-center ${(category.str_image && category.str_image !== 'none') ? `bg-[url('${process.env.NEXT_PUBLIC_API_URL || ''}${category.str_image}')]` : `bg-[url('/noCategoryAvaliableSmall.png')]`}`}
                     >
                          {/* Agora sempre haverá uma imagem de fundo, então o texto de placeholder não é mais necessário aqui */}
                     </div>

@@ -197,12 +197,14 @@ model DesicaoDeCompra {
   str_user_id           String 
   user                  User @relation(fields: [str_user_id], references: [id])
 
-  int_category_id       Int 
-  category              Categoria @relation(fields: [int_category_id], references: [category_id])
+  int_category_id       Int? 
+  category              Categoria? @relation(fields: [int_category_id], references: [category_id])
 
   int_wishList_id       Int?
   wishList              ListaDeDesejos? @relation(fields: [int_wishList_id],references: [id])
 
+  str_name              String
+  dbl_valor             Float @db.DoublePrecision
   str_brand             String?
   str_descriptionOrLink String? @db.Text
   bool_doIHaveMoney     Boolean

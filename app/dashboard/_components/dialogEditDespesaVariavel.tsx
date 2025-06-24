@@ -103,9 +103,9 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
         category: 0,
         boolInstallment: false,
         intInstallment: 1,
-        cardID: undefined as number | undefined, // Explicitly type for clarity
+        cardID: undefined as number | undefined, 
         Installmentdate: new Date(),
-        paymentMethod: undefined as number | undefined, // Explicitly type for clarity
+        paymentMethod: undefined as number | undefined, 
         date: new Date(),
         boolStatus: ""
     };

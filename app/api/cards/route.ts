@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient, Prisma } from "@prisma/client";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/_lib/auth";
 import { z } from "zod";
 import { db } from "@/app/_lib/prisma";
 
@@ -46,8 +44,6 @@ const cardSchema = z.object({
     dtm_dueDate: z.string().transform(str => new Date(str)), // Converte string para Date
     str_lastNumbers: z.string().min(4).max(4)
 })
-
-
 
 // API Create para Cartões
 export async function POST(request: Request) {

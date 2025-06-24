@@ -5,10 +5,9 @@ import Footer from '../_components/footer'
 import Header from '../_components/header'
 import { FaGear, FaPen } from "react-icons/fa6";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Upload } from 'lucide-react';
 import { DialogTitle } from '@radix-ui/react-dialog';
@@ -45,7 +44,7 @@ export default function Configurations() {
         formData.append("file", selectedFile);
         formData.append("userId", session?.user?.id || "");
 
-        const response = await fetch("/api/uploadImage", {
+        const response = await fetch("/api/uploadAvatarImage", {
             method: "POST",
             body: formData,
         });
@@ -118,7 +117,6 @@ export default function Configurations() {
                         <p className="pl-4 pr-2 text-xl font-semibold">{session?.user?.username ?? session?.user?.name ?? "Sem Nome"}</p>
                         <FaPen className="cursor-pointer" onClick={openModalNickname}/>
 
-                        {/* Dialog do Shadcn */}
                         <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                             <DialogTitle />
                             <DialogContent className='w-fit'>

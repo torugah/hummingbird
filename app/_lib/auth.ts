@@ -43,18 +43,22 @@ export const authOptions: NextAuthOptions = {
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
-                    return null;
+                    throw new Error("Por favor, preencha todos os campos");
                 }
 
                 const existingUser = await db.user.findUnique({
                     where: { email: credentials.email }
                 });
 
-                if (!existingUser) return null;
+                if (!existingUser) {
+                    throw new Error("E-mail não encontrado");
+                }
 
                 if (existingUser.password) {
                     const passwordMatch = await compare(credentials.password, existingUser.password);
-                    if (!passwordMatch) return null;
+                    if (!passwordMatch) {
+                        throw new Error("Senha incorreta");
+                    }
                 }
 
                 return {

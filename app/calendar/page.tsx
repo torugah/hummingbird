@@ -8,30 +8,40 @@ import CalendarioCustomizado from './_components/CalendarioCustomizado';
 import ListaEventos from './_components/ListaEventos';
 
 function TimeVisionPage() {
-
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     
     return (
-        <div className="flex flex-col items-center justify-between">
+        <div className="flex flex-col min-h-screen bg-gray-50">
             <Header />
-            <div className="flex max-lg:w-[95%] flex-row justify-between mt-16 w-[74%]">
-                <div className='max-lg:w-[95%] w-[75%]'>
-                    <div className='flex flex-row items-center'>
-                        <FaRegCalendar /> 
-                        <p className='font-bold text-2xl pl-1'>Calendário</p>   
+            <main className="flex-grow container mx-auto px-4 py-8 max-lg-w-full w-[74%]">
+                <div className="flex flex-col lg:flex-row gap-8">
+                    {/* Seção do Calendário */}
+                    <div className="lg:w-3/5">
+                        <div className="flex items-center gap-2 mb-4">
+                            <FaRegCalendar className="text-xl" />
+                            <h1 className="text-2xl font-bold">Calendário</h1>
+                        </div>
+                        <div className="bg-white p-6 rounded-lg shadow flex flex-col items-center justify-between">
+                            <CalendarioCustomizado onDateChange={setSelectedDate}/>
+                        </div>
                     </div>
-                    <p>Visualize seus eventos ao longo do tempo.</p>
+                    
+                    {/* Seção de Eventos e Descrição */}
+                    <div className="lg:w-2/5 space-y-6">
+                        <div className="bg-white p-6 rounded-lg shadow">
+                            <ListaEventos selectedDate={selectedDate}/>
+                        </div>
+                        <div className="bg-white p-6 rounded-lg shadow">
+                            <h2 className="text-xl font-bold mb-4">Descrição</h2>
+                            <div className="space-y-2">
+                                <p>MXRF11 - 698 Cotass - R$67,45</p>
+                                <p>VPLG11 - 51 Cotas - R$52,63</p>
+                                <p>AGRX11 - 296 Cotas - R$26,37</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-                                    
-            <div className='flex flex-row justify-between max-lg:w-[95%] w-[75%] background bg-white py-6'>
-                <div className="w-[50%] h-auto">
-                    <CalendarioCustomizado onDateChange={setSelectedDate}/>
-                </div>
-                <div className='flex flex-row items-center justify-center w-[50%]'>
-                    <ListaEventos selectedDate={selectedDate }/>
-                </div>
-            </div>
+            </main>
             <Footer />
         </div>
     )

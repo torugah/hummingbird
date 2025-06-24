@@ -1,59 +1,60 @@
 # Mudanças
-## Menu de Páginas
-> modified:   app/_components/allMenuPages.tsx
-- Adicionado o botão de caminho para a página de Desejos e Decisões.
-## Dialog de Despesas
-> modified:   app/_components/dialogDespesaVariavel.tsx
-- Boolean de parcelamento se torna opcional para atender ao dialog de receita.
-- Adicionado a constante que armagena qual o tipo de transação
-- Corpo da requisição agora implementa a constante do tipo de transação ao invés de valor fixo.
-- Títulos alteram dinâmicamente de acordo com o tipo de transação.
-- Quarta linha, de parcelas, é vísivel apenas para transações do tipo output.
-- Remoção de comentário TODO.
-## Cabeçalho
-> modified:   app/_components/header.tsx
-- Correção de link do calendário.
-## Formulário de SignIn
+## Nova Página: Desejos e Decições 
+> modified: app/desiresAndDecisions/page.tsx
+- Adicionado a última grande paǵina planejada deste projeto. Aqui lhe é apresentado uma página que te ajuda a anotar desejos e planeja-los corretamente a fim de que você sempre tenha seus desejos de forma controlada e sem atralhapar seu vida financeira.
+## Componentes da página de Desejos e Decições
+> app/desiresAndDecisions/_components/...[TUDO]
+- São os componentes: Ação das Colunas, Tabela das Decisões, Colunas de Decição, Lista de Desejos (Servidor), Adição de Nova Decisão, Adição de Novo Desejo, Diálogo de Edição e Remoção de Desejos, Diáogo da Edição de Imagem, Lista de Desejos
+## Carregamento de Decisões:
+> added: lib/desiresService.ts
+- Serviço que faz a busca das decições do usuário. 
+## CSS Global
+> modified:   app/globals.css
+- Inserido estilizações para scrollbars.
+## Melhor indicativo em SignIn
 > modified:   app/_components/signInForm.tsx
-- Implementação do botão e função 'Lembre de mim' dentro do formulário.
-- Importação do toast.
-- Correção de textos.
-## Lembre-se de mim
+- O toast do SignIn agora especifica melhor o que o usuário está errado: Email ou Senha.
+## Autorização Detalhada
 > modified:   app/_lib/auth.ts
-- Implementado sistema de guardar cookies de login do usuário
-- O cookie de login é armazenado pelo padrão de 30 dias.
-- E caso o usuário prefira não selecionar essa opção, seu cookie dura apenas naquela sessão.
-## Visibilidade de Linha
+- O console interno da aplicação também informa um log de verificação do SignIn.
+## Novas APIs com CRUD
+> app/api/decisions/ , app/api/desires/
+- APIs com Create, Read, Update e Delete dos desejos e decisões.
+## Mudança de Pastas: Especificação de Rota
+> added: app/api/uploadAvatarImage/
+> deleted: app/api/uploadImage/route.tsx
+- Apenas indicando textualmente com o que a rota trabalha.
+## Novo Design do Calendar!
+> modified:   app/calendar/page.tsx
+> modified:   app/calendar/_components/CalendarioCustomizado.tsx
+> modified:   app/calendar/_components/ListaEventos.tsx
+> modified:   app/calendar/_components/customCalendar.module.css
+- A página de calendário foi reformulada e deve seguinte com novas atualização na sua funcionalidade em breve. Seus componentes também sofreram grandes transformações a fim de entregar novos visuais e funcionalidades.
+## Mudanças no Prisma e seu Esquema
+> modified:   prisma/schema.prisma
+> added: prisma/migrations/20250610220954_desejos_e_decisoes_alterados/
+- Correção importante em DecisaoDeCompra.
+## Versionamento de Pacotes
+> modified:   package-lock.json, package.json
+## Limpeza de Código ou Pequenas Alterações
+> modified:   app/api/cards/route.ts
+- Remoção de importações e espaços vazios.
+> modified:   app/categories/_components/categoryCardList.tsx
+> modified:   app/configurations/page.tsx
 > modified:   app/dashboard/_components/dialogEditDespesaVariavel.tsx
-- A quarta linha deste dialog só é visível se for um tipo de Output.
-## Tipo de Transação
-> modified:   app/dashboard/_components/variableExpensesColumns.tsx
-- Agora este componente adiciona o tipo de transação no type Transaction.
-- Alteração no nome para que se diferencie de componente similar (incomeRecipiesColumns.tsx).
-## Página Inicial
-> modified:   app/dashboard/page.tsx
-- Correção das importações.
-- Remoção completa das invoices, dados mockados que serviam apenas para testes, e da última tabela falsa, esta simulava a tabela de receitas (inputs).
-- A chamada de DialogDVP agora adicionavam o tipo de transação as suas props.
-- Criação da chamada da API para transações do tipo Income (Input).
-## Realocação do Calenário
-> deleted/moved:    app/timeVision/_components/CalendarioCustomizado.tsx
-> deleted/moved:    app/timeVision/_components/ListaEventos.tsx
-> deleted/moved:    app/timeVision/_components/customCalendar.module.css
-> deleted/moved:    app/timeVision/page.tsx
-> adedd:            app/calendar/
-## Nova página
-> app/desiresAndDecisions/
-> app/dashboard/_components/incomeRecipiesColumns.tsx
-## Comentários
-> modified:   app/categories/page.tsx
-> modified:   app/(home)
-## Modificações de Configuração
-> modified:   middleware.ts
-- Adcionado a paǵina de desiresAndDecisions na supervisão do Next.Auth.
-> modified:   next.config.mjs
-- Permite que imagens do Github sejam acessadas.
+> added: components/ui/slider.tsx
+- Adicionado o componente de slider ao projeto.
 
         
         
-        
+	
+	
+	
+
+
+	
+
+
+
+	
+

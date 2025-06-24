@@ -49,10 +49,19 @@ const SignInForm = () => {
     });
 
     if (signInData?.error) {
+      let errorMessage = "Oops! Something went wrong!";
+            
+      // Verifica o tipo de erro
+      if (signInData.error.includes("E-mail não encontrado")) {
+          errorMessage = "E-mail não encontrado. Verifique o endereço digitado.";
+      } else if (signInData.error.includes("Senha incorreta")) {
+          errorMessage = "Senha incorreta. Tente novamente.";
+      }
+
       toast({
-        title: "Error",
-        description: "Oops! Something went wrong!",
-        variant: "destructive"
+          title: "Erro",
+          description: errorMessage,
+          variant: "destructive"
       });
     } else {
       router.push('/dashboard');

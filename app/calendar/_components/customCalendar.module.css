@@ -1,5 +1,15 @@
-.rdp {
-  font-size: 3rem; /* Mantém o tamanho maior */
-  line-height: 1.6rem; /* Aumenta o espaçamento vertical */
+.dayPickerWrapper {
+  width: 100%;
 }
 
+.rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: #01C14C;
+  --rdp-background-color: #e7f8ed;
+  margin: 0;
+  width: 100%;
+}
+
+.rdp-day_selected:not(.rdp-day_disabled):not(.rdp-day_outside) {
+  color: white;
+}

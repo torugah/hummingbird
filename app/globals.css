@@ -59,3 +59,48 @@
       @apply bg-background text-foreground;
     }
   }
+
+/* Adicione no seu arquivo global.css */
+.cropper {
+    border-radius: 0.5rem;
+    background-color: transparent;
+}
+
+.cropper .react-advanced-cropper-background {
+    background: transparent;
+}
+
+.cropper .react-advanced-cropper-stencil {
+    border-radius: 0.5rem;
+}
+
+/* Scrollbar do Dialog */
+.dialog-scroll-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.dialog-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+  margin-block: 8px; /* Recuo vertical */
+}
+
+.dialog-scroll-container::-webkit-scrollbar-thumb {
+  background: #d1d5db; /* Cinza */
+  border-radius: 9999px;
+  border: 2px solid transparent; /* Borda transparente para recuo */
+  background-clip: padding-box; /* Impede vazamento da cor */
+}
+
+.dialog-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #4ade80; /* Verde no hover */
+}
+
+/* Fallback para Firefox */
+.dialog-scroll-container {
+  /* scrollbar-width: thin; */
+  scrollbar-color: #d1d5db transparent;
+}
+
+.dialog-scroll-container:hover {
+  scrollbar-color: #4ade80 transparent;
+}
