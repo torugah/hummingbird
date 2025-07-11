@@ -218,6 +218,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
         
         setIsLoading(false);
         handleCancel();
+        setIsOpen(false);
         router.refresh(); //TODO: Comando não está sendo obdecido.
     };
 

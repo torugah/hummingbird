@@ -27,7 +27,7 @@ const DesiresListClient: React.FC<DesireListClientProps> = ({ desires, userId })
 
           <div className='flex flex-row h-fit justify-between p-2'>
             <div className='flex flex-col justify-around'>
-                <p className="font-semibold">{desire.str_wishName}</p>
+                <p className="font-semibold text-ellipsis">{desire.str_wishName}</p>
                 {desire.dbl_wishValue !== null && desire.dbl_wishValue > 0 && (
                     <div className='flex flex-row items-center'>
                         <FaRegMoneyBill1 className='pr-2 h-4 w-6'/>
@@ -45,7 +45,7 @@ const DesiresListClient: React.FC<DesireListClientProps> = ({ desires, userId })
         </div>
       ))}
       
-      <div className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg items-center justify-center'>
+      <div className='flex flex-col p-[0.1rem] w-[32%] h-auto bg-gray-100 border-gray-300 border-2 rounded-lg items-center justify-center'>
         <DialogAddNewWish userId={userId}/>
       </div>
     </>

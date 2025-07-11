@@ -1,49 +1,60 @@
 # Mudanças
-## Nova Página: Desejos e Decições 
-> modified: app/desiresAndDecisions/page.tsx
-- Adicionado a última grande paǵina planejada deste projeto. Aqui lhe é apresentado uma página que te ajuda a anotar desejos e planeja-los corretamente a fim de que você sempre tenha seus desejos de forma controlada e sem atralhapar seu vida financeira.
-## Componentes da página de Desejos e Decições
-> app/desiresAndDecisions/_components/...[TUDO]
-- São os componentes: Ação das Colunas, Tabela das Decisões, Colunas de Decição, Lista de Desejos (Servidor), Adição de Nova Decisão, Adição de Novo Desejo, Diálogo de Edição e Remoção de Desejos, Diáogo da Edição de Imagem, Lista de Desejos
-## Carregamento de Decisões:
-> added: lib/desiresService.ts
-- Serviço que faz a busca das decições do usuário. 
-## CSS Global
+
+## Grande mudança na página inicial
+> modified:   app/dashboard/page.tsx 
+- Adição de gráficos para uma mais rápida e melhor visualização.
+- Adição da barra de resumo de gastos e valor restante.
+- Adicionado a lógica necessária para obter data e calcular gastos
+- Otimização literária das contantes e requisições de APIs.
+- Adicionada interface pra o recebimento/modificação das datas.      
+- Importações necessárias adicionadas.
+
+## Componente de Mês/Ano
+> app/_components/monthYearSelector.tsx
+- Este componente foi criado para facilitar a seleção de um determinado mês em um determinado ano distante de forma mais simples.
+- Além de fornecer uma estilização e funções básicas que determinação qual data o usuário está observante/modificando.
+
+## Componentes de Carrosel
+> app/dashboard/_components/CarouselComponent.tsx
+> app/dashboard/_components/EmblaCarousel.tsx
+> app/dashboard/_components/EmblaCarouselArrowButtons.tsx
+> app/dashboard/_components/EmblaCarouselDotButton.tsx
+- Aqui foi adicionado o carousel oferecido no site "https://www.embla-carousel.com/examples/predefined/#opacity", com modificações necessárias para a adpatação do projeto.
+
+## Componente dos Gráficos
+> app/dashboard/_components/resumeAllChart.tsx
+- Componente que monta os gráficos em pizza, buscando e calculando dados a partir das despesas e receitas do usuário.
+
+## Resumo de Valores
+> app/dashboard/_components/valuesInfoBar.tsx
+- Uma simples barra que mostra ao usuários informações como valor que será gasto, que já foi gasto, o valor restante após os gastos e também o VRC (Valor Real Calculado) que é o valor restante com o porém de que as despesas que ainda não foram pagas, ou seja, aquelas que são futura, são desconsideradas, com o fim de mostrar tanto o valor no final daquele mês como também o valor REAL no momento em que o usuário está observando.
+
+## Cores em Gráficos
 > modified:   app/globals.css
-- Inserido estilizações para scrollbars.
-## Melhor indicativo em SignIn
-> modified:   app/_components/signInForm.tsx
-- O toast do SignIn agora especifica melhor o que o usuário está errado: Email ou Senha.
-## Autorização Detalhada
-> modified:   app/_lib/auth.ts
-- O console interno da aplicação também informa um log de verificação do SignIn.
-## Novas APIs com CRUD
-> app/api/decisions/ , app/api/desires/
-- APIs com Create, Read, Update e Delete dos desejos e decisões.
-## Mudança de Pastas: Especificação de Rota
-> added: app/api/uploadAvatarImage/
-> deleted: app/api/uploadImage/route.tsx
-- Apenas indicando textualmente com o que a rota trabalha.
-## Novo Design do Calendar!
-> modified:   app/calendar/page.tsx
-> modified:   app/calendar/_components/CalendarioCustomizado.tsx
-> modified:   app/calendar/_components/ListaEventos.tsx
-> modified:   app/calendar/_components/customCalendar.module.css
-- A página de calendário foi reformulada e deve seguinte com novas atualização na sua funcionalidade em breve. Seus componentes também sofreram grandes transformações a fim de entregar novos visuais e funcionalidades.
-## Mudanças no Prisma e seu Esquema
-> modified:   prisma/schema.prisma
-> added: prisma/migrations/20250610220954_desejos_e_decisoes_alterados/
-- Correção importante em DecisaoDeCompra.
+- Neste arquivos foi adicionado as predefinições das cores utilizadas nos gráficos
+
+## Correção no Dialog da Despesa Variável
+> modified:   app/_components/dialogDespesaVariavel.tsx
+- Inserido "setIsOpen(false);" que determinava o fechamento do dialog após um submit.
+
+## Alteração na API das transações
+> modified:   app/api/transactions/getTransactions/route.ts
+- Agora a API recebe a data, necessária para filtrar as transações.
+
+## Ajuste BETA na estilização dos componentes
+> modified:   app/categories/_components/categoryCardList.tsx
+> modified:   app/categories/page.tsx
+> modified:   app/desiresAndDecisions/_components/wishList.tsx
+- CategoryCardList: Aqui foi feita uma estilização pra ajustar o tamanho dos cards de informação, mas ainda é experimental e precisa de mais alterações e validações.
+- Categories/Page: Ajuste nos espaçamentos, também precisa ser validado em outras atualizações.
+- WishList: Pequenas alterações visuais.
+
 ## Versionamento de Pacotes
 > modified:   package-lock.json, package.json
 ## Limpeza de Código ou Pequenas Alterações
-> modified:   app/api/cards/route.ts
-- Remoção de importações e espaços vazios.
-> modified:   app/categories/_components/categoryCardList.tsx
-> modified:   app/configurations/page.tsx
-> modified:   app/dashboard/_components/dialogEditDespesaVariavel.tsx
-> added: components/ui/slider.tsx
-- Adicionado o componente de slider ao projeto.
+> app/dashboard/css/
+> components/ui/carousel.tsx
+> components/ui/chart.tsx
 
         
         

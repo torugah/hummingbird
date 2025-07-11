@@ -58,16 +58,37 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId }) => 
     const categories = await getCategories(userId);
 
     return (
-        <>
+        <div className="flex flex-wrap gap-4 justify-center">
             {categories.map((category) => (
                 // Use a unique key for each card, like category.id
-                <div key={category.category_id} className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg'>
+                <div 
+                    key={category.category_id} 
+                    className='
+                        w-full        // Padrão para mobile (1 card por linha - 100%)
+                        sm:w-[48%]    // Tablets (2 cards por linha - ~48% com gap)
+                        lg:w-[32%]    // Desktop (3 cards por linha - ~32% com gap)
+                        h-fit 
+                        bg-gray-100 
+                        border-gray-300 
+                        border-2 
+                        rounded-lg
+                    '
+                >
+
                     {/* Use category.str_image if available, otherwise a default */}
-                    <div
-                        className={`h-4/6 rounded-sm bg-cover bg-center ${(category.str_image && category.str_image !== 'none') ? `bg-[url('${process.env.NEXT_PUBLIC_API_URL || ''}${category.str_image}')]` : `bg-[url('/noCategoryAvaliableSmall.png')]`}`}
-                    >
+                    <div className={`flex flex-row items-center p-2 rounded-sm w-full h-fit aspect-video bg-cover 
+                                    bg-center ${(category.str_image && category.str_image !== 'none') 
+                                    ? `bg-[url('${process.env.NEXT_PUBLIC_API_URL || ''}${category.str_image}')]` 
+                                    : `bg-[url('/noCategoryAvaliableSmall.png')]`}`}>
                          {/* Agora sempre haverá uma imagem de fundo, então o texto de placeholder não é mais necessário aqui */}
                     </div>
+
+                    {/* Use category.str_image if available, otherwise a default */}
+                    {/* <div
+                        className={`h-4/6 rounded-sm bg-cover bg-center ${(category.str_image && category.str_image !== 'none') ? `bg-[url('${process.env.NEXT_PUBLIC_API_URL || ''}${category.str_image}')]` : `bg-[url('/noCategoryAvaliableSmall.png')]`}`}
+                    > */}
+                         {/* Agora sempre haverá uma imagem de fundo, então o texto de placeholder não é mais necessário aqui */}
+                    {/* </div> */}
                     <div className='flex flex-row h-2/6 justify-between p-1'>
                         <div className='flex flex-col justify-around'>
                             {/* Display category name */}
@@ -93,10 +114,25 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId }) => 
             ))}
 
             {/* The "Add New Category" card, always present */}
-            <div className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg items-center justify-center'>
+            <div 
+                className='
+                    w-full        // Padrão para mobile (1 card por linha)
+                    md:w-[48%]    // Tablets (2 cards por linha)
+                    lg:w-[32%]    // Desktop (3 cards por linha)
+                    h-60 
+                    bg-gray-100 
+                    border-gray-300 
+                    border-2 
+                    rounded-lg 
+                    flex 
+                    flex-col 
+                    items-center 
+                    justify-center
+                '
+            >
                 <DialogAddNewCategory userId={userId}/>
             </div>
-        </>
+        </div>
     );
 }
 
