@@ -116,7 +116,7 @@ export const outputColumns: ColumnDef<Transaction>[] = [
             if (paymentFormNameFromType) {
                 return <span>{paymentFormNameFromType}</span>;
             }
-            return <span>"[Desconhecido]"</span>
+            return <span>{`"[Desconhecido]"`}</span>
         }
     },
     {

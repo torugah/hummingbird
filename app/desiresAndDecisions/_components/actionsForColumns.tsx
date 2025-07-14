@@ -107,7 +107,7 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ purchaseDecision, user_id }) 
                     <AlertDialogHeader>
                         <AlertDialogTitle>Confirmar Remoção</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Tem certeza que deseja remover a transação "{purchaseDecision.str_name}"? Esta ação não pode ser desfeita.
+                            {`Tem certeza que deseja remover a transação "${purchaseDecision.str_name}"? Esta ação não pode ser desfeita.`}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

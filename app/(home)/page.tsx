@@ -57,7 +57,7 @@ export default function Home() {
                 <h1 className="text-xl font-black">Sign in to your account</h1>
                 <div className="flex flex-row">
                   <p className="text-sm pb-5 pr-1">Or </p>
-                  <p className="text-sm pb-5 text-[#01C14C] font-semibold underline cursor-pointer hover:underline-offset-2" onClick={handleClickMoveWindow}>don't have an account?</p>
+                  <p className="text-sm pb-5 text-[#01C14C] font-semibold underline cursor-pointer hover:underline-offset-2" onClick={handleClickMoveWindow}>{`don't have an account?`}</p>
                 </div>            
                 <GoogleSignInButton>
                   <FcGoogle style={{  

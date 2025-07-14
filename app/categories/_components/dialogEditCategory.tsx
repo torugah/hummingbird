@@ -297,7 +297,7 @@ const DialogEditCategory: React.FC<DialogEditCategoryProps> = ({
                     <AlertDialogHeader>
                         <AlertDialogTitle>Confirmar Remoção</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Tem certeza que deseja remover a categoria "{category.str_categoryName}"? Esta ação não pode ser desfeita e removerá uma categoria que pode estar vinculada a transações existentes.
+                            {`Tem certeza que deseja remover a categoria "${category.str_categoryName}"? Esta ação não pode ser desfeita e removerá uma categoria que pode estar vinculada a transações existentes.`}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

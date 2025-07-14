@@ -1,5 +1,9 @@
 # Mudanças
-        
+
+## AJUSTES DO VERCEL 1.0
+- Necessário a correção de textos que utilzam aspas.     
+- Adicionado índices a alguns elementos em page.tsx (home).
+
 ## Correção no Excesso de Conexões Prisma
 > modified:   app/api/cards/route.ts
 > modified:   app/api/categories/delete/route.ts

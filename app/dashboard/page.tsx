@@ -60,9 +60,18 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
     ]);
 
     const chartComponents = [
-        <PieChartByCategory transactions={variableTransactionsData} />,
-        <PieChartByCategory transactions={fixedTransactionsData} />,
-        <PieChartByCategory transactions={incomeTransactionsData} />
+        <PieChartByCategory 
+            key="variable-transactions" 
+            transactions={variableTransactionsData} 
+        />,
+        <PieChartByCategory 
+            key="fixed-transactions" 
+            transactions={fixedTransactionsData} 
+        />,
+        <PieChartByCategory 
+            key="income-transactions" 
+            transactions={incomeTransactionsData} 
+        />
     ];
 
     const OPTIONS: EmblaOptionsType = { loop: true };
