@@ -1,7 +1,9 @@
 # Mudanças
 
-## AJUSTES DO VERCEL 1.4
-- Adicionado arquivos que não foram salvos e selecionados...
+## AJUSTES DO VERCEL 1.5
+> middleware.ts
+> app/_lib/auth.ts
+- Atualização nos arquivos de NextAuth.
 
 ## Correção no Excesso de Conexões Prisma
 > modified:   app/api/cards/route.ts
