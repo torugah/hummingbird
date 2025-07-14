@@ -3,8 +3,6 @@ import { PrismaClient, Prisma } from "@prisma/client";
 import { z } from "zod";
 import { db } from "@/app/_lib/prisma";
 
-const prisma = new PrismaClient(); 
-
 // API Read para Cartões
 export async function GET(request: NextRequest) {
     try {
@@ -16,7 +14,7 @@ export async function GET(request: NextRequest) {
         }
         //console.log("ID do usuário:", userId); // Print no console do servidor
 
-        const userCards = await prisma.cartao.findMany({
+        const userCards = await db.cartao.findMany({
             where: {
                 str_user_id: userId,
                 bool_active: true // Retornará apenas cartões ativos!
@@ -143,7 +141,7 @@ export async function DELETE(request: NextRequest) {
         }
 
         // 1. Verificar se a cards pertence ao usuário logado
-        const cardToDelete = await prisma.cartao.findUnique({
+        const cardToDelete = await db.cartao.findUnique({
             where: { card_id: cardId },
         });
 
@@ -160,7 +158,7 @@ export async function DELETE(request: NextRequest) {
         // Se existirem, você pode impedir a exclusão ou ter outra lógica de negócios
         // (ex: desassociar transações, permitir exclusão e deixar transações sem cartão, etc.)
         // Para este exemplo, vamos impedir a exclusão se houver transações.
-        const relatedTransactionsCount = await prisma.transacao.count({ // Assumindo que seu modelo de transação é 'transaction'
+        const relatedTransactionsCount = await db.transacao.count({ // Assumindo que seu modelo de transação é 'transaction'
             where: {
                 str_card_id: cardId, // E que ele tem um campo 'cardId'
             },
@@ -174,7 +172,7 @@ export async function DELETE(request: NextRequest) {
         }
 
         // 3. Deletar o cartão
-        await prisma.cartao.delete({
+        await db.cartao.delete({
             where: {
                 card_id: cardId,
                 str_user_id: userId, // Segurança adicional: garantir que só delete se pertencer ao usuário
@@ -189,7 +187,5 @@ export async function DELETE(request: NextRequest) {
             return NextResponse.json({ message: 'Categoria não encontrada para remoção.' }, { status: 404 });
         }
         return NextResponse.json({ message: 'Erro interno do servidor ao tentar remover o cartão.' }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
-    }
+    } 
 }

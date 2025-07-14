@@ -1,11 +1,9 @@
 // Importar o Prisma Client
-import { PrismaClient } from '@prisma/client';
+import { db } from "@/app/_lib/prisma";
 import { NextResponse } from 'next/server';
-
-const prisma = new PrismaClient();
 
 // Função para buscar os bancos
 export async function GET() {
-  const paymentMethod = await prisma.tipoPagamento.findMany(); 
+  const paymentMethod = await db.tipoPagamento.findMany(); 
   return NextResponse.json(paymentMethod);
 }

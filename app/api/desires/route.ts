@@ -3,8 +3,6 @@ import { PrismaClient , Prisma } from '@prisma/client';
 import { z } from "zod";
 import { db } from "@/app/_lib/prisma";
 
-const prisma = new PrismaClient();
-
 export async function GET(req: NextRequest) {
     try {
         const searchParams = req.nextUrl.searchParams;
@@ -15,7 +13,7 @@ export async function GET(req: NextRequest) {
         }
 
         // Busque as categorias do usuário no banco de dados usando o Prisma
-        const desires = await prisma.listaDeDesejos.findMany({
+        const desires = await db.listaDeDesejos.findMany({
             where: {
                 str_user_id: userId
             }
@@ -30,8 +28,6 @@ export async function GET(req: NextRequest) {
     } catch (error) {
         console.error('Erro ao buscar categorias:', error);
         return NextResponse.json({ error: 'Erro ao buscar categorias' }, { status: 500 });
-    } finally {
-        await prisma.$disconnect(); // Desconecte o Prisma Client após a consulta
     }
 }
 
@@ -144,7 +140,7 @@ export async function DELETE(request: NextRequest) {
         }
 
         // 1. Verificar se a cards pertence ao usuário logado
-        const desireToDelete = await prisma.listaDeDesejos.findUnique({
+        const desireToDelete = await db.listaDeDesejos.findUnique({
             where: { id: desireId },
         });
 
@@ -155,7 +151,7 @@ export async function DELETE(request: NextRequest) {
         if (desireToDelete.str_user_id !== userId) {
             return NextResponse.json({ message: 'Não autorizado a remover este cartão.' }, { status: 403 });
         }
-        const relatedItensCount = await prisma.desicaoDeCompra.count({ 
+        const relatedItensCount = await db.desicaoDeCompra.count({ 
             where: {
                 int_wishList_id: desireId, 
             },
@@ -169,7 +165,7 @@ export async function DELETE(request: NextRequest) {
         }
 
         // 3. Deletar o cartão
-        await prisma.listaDeDesejos.delete({
+        await db.listaDeDesejos.delete({
             where: {
                 id: desireId,
                 str_user_id: userId, 
@@ -184,7 +180,5 @@ export async function DELETE(request: NextRequest) {
             return NextResponse.json({ message: 'Categoria não encontrada para remoção.' }, { status: 404 });
         }
         return NextResponse.json({ message: 'Erro interno do servidor ao tentar remover o cartão.' }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
-    }
+    } 
 }

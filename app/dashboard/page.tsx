@@ -120,23 +120,25 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
                 <div className='mb-8 pl-2 text-2xl justify-start flex flex-row items-center'>
                     <MonthYearSelector initialDate={currentViewDate} />
 
-                    <a 
-                        href={getDateUrl(new Date(currentYear, currentMonth - 1, 1))}
-                        className="mr-2 p-1 hover:bg-gray-100 rounded"
-                    >
-                        <FaChevronLeft className="text-[#01C14C]" />
-                    </a>
+                    
 
                     <p className="text-3xl font-bold text-[#01C14C]">
                         Visualizando {format(currentViewDate, 'MMMM, yyyy', { locale: ptBR })}.
                     </p>
 
                     <a 
-                        href={getDateUrl(new Date(currentYear, currentMonth + 1, 1))}
-                        className="ml-2 p-1 hover:bg-gray-100 rounded"
+                        href={getDateUrl(new Date(currentYear, currentMonth - 1, 1))}
+                        className="ml-1 p-1 hover:bg-gray-100 rounded"
                     >
-                        <FaChevronRight className="text-[#01C14C]" />
+                        <FaChevronLeft className="text-[#01C14C] border-[#01C14C] border-2 rounded-full py-1 pl-[0.125rem] pr-1" />                        
                     </a>
+                    <a 
+                        href={getDateUrl(new Date(currentYear, currentMonth + 1, 1))}
+                        className="ml-0 p-1 hover:bg-gray-100 rounded"
+                    >   
+                        <FaChevronRight className="text-[#01C14C] border-[#01C14C] border-2 rounded-full py-1 pr-[0.125rem] pl-1" />  
+                    </a>                            
+                    
                 </div>
                 
                 <div className='mb-8 p-4 bg-gray-100 rounded-md justify-around flex flex-row'>

@@ -1,7 +1,9 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import ActionsCell from "./actionsForColumns"; // Renomear a importação e o componente
+import { ArrowUpDown } from "lucide-react"
+import ActionsCell from "./actionsForColumns"; 
+import { Button } from "@/components/ui/button";
 
 // This type is used to define the shape of data.
 export type Transaction = {
@@ -30,11 +32,34 @@ export const outputColumns: ColumnDef<Transaction>[] = [
 
     {
         accessorKey: "str_name",
-        header: "Item",
+        //header: "Item",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="p-1 rounded-full"
+                >
+                    Item
+                    <ArrowUpDown className="h-4 w-4" />
+                </Button>
+            )
+        },
     },
     {
         accessorKey: "dbl_valor",
-        header: "Valor",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="p-1 rounded-full"
+                >
+                    Valor
+                    <ArrowUpDown className="h-4 w-4" />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const amount = parseFloat(row.getValue("dbl_valor"))
 
@@ -49,7 +74,18 @@ export const outputColumns: ColumnDef<Transaction>[] = [
     },
     {
         accessorKey: "int_installmentCount",
-        header: "Condição",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="p-1 rounded-full"
+                >
+                    Condição
+                    <ArrowUpDown className="h-4 w-4" />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const installmentCount = row.getValue("int_installmentCount") as number;
 
@@ -63,7 +99,18 @@ export const outputColumns: ColumnDef<Transaction>[] = [
     },
     {
         accessorKey: "tipoPagamento.str_nomeTipoPgto",
-        header: "Forma",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="p-1 rounded-full"
+                >
+                    Forma
+                    <ArrowUpDown className="h-4 w-4" />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const paymentFormNameFromType = row.original.tipoPagamento?.str_nomeTipoPgto;
             if (paymentFormNameFromType) {
@@ -74,7 +121,18 @@ export const outputColumns: ColumnDef<Transaction>[] = [
     },
     {
         accessorKey: "str_status",
-        header: "Status",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="p-1 rounded-full"
+                >
+                    Status
+                    <ArrowUpDown className="h-4 w-4" />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const status = row.getValue("str_status") as string;
             // Simple uppercase
@@ -85,7 +143,18 @@ export const outputColumns: ColumnDef<Transaction>[] = [
     },
     {
         accessorKey: "dtm_data",
-        header: "Data",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="p-1 rounded-full"
+                >
+                    Data
+                    <ArrowUpDown className="h-4 w-4" />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const date = row.getValue("dtm_data") as Date;
 
@@ -94,7 +163,18 @@ export const outputColumns: ColumnDef<Transaction>[] = [
     },
     {
         accessorKey: "category.str_categoryName",
-        header: "Categoria",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="p-1 rounded-full"
+                >
+                    Categoria
+                    <ArrowUpDown className="h-4 w-4" />
+                </Button>
+            )
+        },
     },
     {
         id: "actions",

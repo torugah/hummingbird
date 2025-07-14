@@ -1,60 +1,54 @@
 # Mudanças
+        
+## Correção no Excesso de Conexões Prisma
+> modified:   app/api/cards/route.ts
+> modified:   app/api/categories/delete/route.ts
+> modified:   app/api/categories/getByUserId/route.ts
+> modified:   app/api/decisions/route.ts
+> modified:   app/api/desires/route.ts
+> modified:   app/api/getBanks/route.tsx
+> modified:   app/api/getPaymentMethod/route.tsx
+> modified:   app/api/transactions/delete/route.ts
+> modified:   app/api/transactions/getTransactions/route.ts        
+- As APIs listadas estavam utilizando uma conexão incorreta com o Prisma, chegando a um limite de requisições abertas, o que acaba travando travando a requisição de nº 100 e adiante ( Limite padrão do Prisma e Banco de Dados).        
 
-## Grande mudança na página inicial
-> modified:   app/dashboard/page.tsx 
-- Adição de gráficos para uma mais rápida e melhor visualização.
-- Adição da barra de resumo de gastos e valor restante.
-- Adicionado a lógica necessária para obter data e calcular gastos
-- Otimização literária das contantes e requisições de APIs.
-- Adicionada interface pra o recebimento/modificação das datas.      
-- Importações necessárias adicionadas.
+## Alterações das Tabelas de Saída
+> modified:   app/dashboard/_components/dataTableVariableExpenses.tsx       
+- Adicionado paginação, inicialmente limitado de 10 em 10.
+- Botões ao fim da tabela, para avançar ou retroceder páginas.
+- Adicionado a ordenação das colunas.
+- Ajuste no texto para quando não há registros.
 
-## Componente de Mês/Ano
-> app/_components/monthYearSelector.tsx
-- Este componente foi criado para facilitar a seleção de um determinado mês em um determinado ano distante de forma mais simples.
-- Além de fornecer uma estilização e funções básicas que determinação qual data o usuário está observante/modificando.
+## Alterações no Criador de Gráficos
+> modified:   app/dashboard/_components/resumeAllChart.tsx
+- Criado um gráfico padrão para quando não se há registros.
+- Lógica para o Tooltip não ser utilizado sem dados.
+- Modificações no tamanho do conteiner responsivel, afim de resolver o problema com tooltips sendo cobertos por limite de tamanaho.
+- Cores cinzas aos gráficos que não possuem dados.
 
-## Componentes de Carrosel
-> app/dashboard/_components/CarouselComponent.tsx
-> app/dashboard/_components/EmblaCarousel.tsx
-> app/dashboard/_components/EmblaCarouselArrowButtons.tsx
-> app/dashboard/_components/EmblaCarouselDotButton.tsx
-- Aqui foi adicionado o carousel oferecido no site "https://www.embla-carousel.com/examples/predefined/#opacity", com modificações necessárias para a adpatação do projeto.
+## Seleção de Data
+> modified:   app/dashboard/page.tsx
+- Adicionado o texto-título que permite se mover dentre os meses e anos.
+- Botões para movimento mês á mês.
+- Adicionado botão com ícone de calendário.
+- Adicionado calendário com seleção de mês e ano específico.
 
-## Componente dos Gráficos
-> app/dashboard/_components/resumeAllChart.tsx
-- Componente que monta os gráficos em pizza, buscando e calculando dados a partir das despesas e receitas do usuário.
+## Ordenação em Coluna
+> modified:   app/dashboard/_components/variableExpensesColumns.tsx
+- Adicionado importações de ícones e botões.
+- Cabeçalho de cada coluna foi modificada pra receber a função e visual de ordenação.
 
-## Resumo de Valores
-> app/dashboard/_components/valuesInfoBar.tsx
-- Uma simples barra que mostra ao usuários informações como valor que será gasto, que já foi gasto, o valor restante após os gastos e também o VRC (Valor Real Calculado) que é o valor restante com o porém de que as despesas que ainda não foram pagas, ou seja, aquelas que são futura, são desconsideradas, com o fim de mostrar tanto o valor no final daquele mês como também o valor REAL no momento em que o usuário está observando.
+## Correção em Dialog
+> modified:   app/categories/_components/dialogEditCategory.tsx
+- Implementação da lógica de fechamento do dialog.
+- Remoção de comentários em código.
 
-## Cores em Gráficos
-> modified:   app/globals.css
-- Neste arquivos foi adicionado as predefinições das cores utilizadas nos gráficos
+## Removido
+> deleted:    app/dashboard/css/base.css
+> deleted:    app/dashboard/css/sandbox.css
+- Arquivos de CSS trazidos do Embla que não serão utilizados.
 
-## Correção no Dialog da Despesa Variável
-> modified:   app/_components/dialogDespesaVariavel.tsx
-- Inserido "setIsOpen(false);" que determinava o fechamento do dialog após um submit.
 
-## Alteração na API das transações
-> modified:   app/api/transactions/getTransactions/route.ts
-- Agora a API recebe a data, necessária para filtrar as transações.
-
-## Ajuste BETA na estilização dos componentes
-> modified:   app/categories/_components/categoryCardList.tsx
-> modified:   app/categories/page.tsx
-> modified:   app/desiresAndDecisions/_components/wishList.tsx
-- CategoryCardList: Aqui foi feita uma estilização pra ajustar o tamanho dos cards de informação, mas ainda é experimental e precisa de mais alterações e validações.
-- Categories/Page: Ajuste nos espaçamentos, também precisa ser validado em outras atualizações.
-- WishList: Pequenas alterações visuais.
-
-## Versionamento de Pacotes
-> modified:   package-lock.json, package.json
-## Limpeza de Código ou Pequenas Alterações
-> app/dashboard/css/
-> components/ui/carousel.tsx
-> components/ui/chart.tsx
 
         
         

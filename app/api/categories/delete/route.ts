@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient, Prisma } from '@prisma/client'; // Import Prisma e tipos
+import { Prisma } from '@prisma/client'; // Import Prisma e tipos
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/_lib/auth'; // Ajuste o caminho se necessário
-
-const prisma = new PrismaClient();
+import { db } from "@/app/_lib/prisma";
 
 export async function DELETE(req: NextRequest) {
     try {
@@ -21,7 +20,7 @@ export async function DELETE(req: NextRequest) {
         }
 
         // 1. Verificar se a categoria pertence ao usuário logado
-        const categoryToDelete = await prisma.categoria.findUnique({
+        const categoryToDelete = await db.categoria.findUnique({
             where: { category_id: categoryId },
         });
 
@@ -38,7 +37,7 @@ export async function DELETE(req: NextRequest) {
         // Se existirem, você pode impedir a exclusão ou ter outra lógica de negócios
         // (ex: desassociar transações, permitir exclusão e deixar transações sem categoria, etc.)
         // Para este exemplo, vamos impedir a exclusão se houver transações.
-        const relatedTransactionsCount = await prisma.transacao.count({ // Assumindo que seu modelo de transação é 'transaction'
+        const relatedTransactionsCount = await db.transacao.count({ // Assumindo que seu modelo de transação é 'transaction'
             where: {
                 str_category_id: categoryId, // E que ele tem um campo 'categoryId'
             },
@@ -52,7 +51,7 @@ export async function DELETE(req: NextRequest) {
         }
 
         // 3. Deletar a categoria
-        await prisma.categoria.delete({
+        await db.categoria.delete({
             where: {
                 category_id: categoryId,
                 user_id: userId, // Segurança adicional: garantir que só delete se pertencer ao usuário
@@ -67,7 +66,5 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json({ message: 'Categoria não encontrada para remoção.' }, { status: 404 });
         }
         return NextResponse.json({ message: 'Erro interno do servidor ao tentar remover a categoria.' }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
-    }
+    } 
 }

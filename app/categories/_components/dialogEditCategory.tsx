@@ -132,8 +132,6 @@ const DialogEditCategory: React.FC<DialogEditCategoryProps> = ({
 
             if (response.ok) {
                 toast({ title: "Sucesso!", description: "Categoria atualizada!" });
-                // onCategoryUpdated();
-                // onOpenChange(false);
             } else {
                 const errorData = await response.json().catch(() => ({ message: "Erro ao processar a resposta do servidor." }));
                 toast({ title: "Erro", description: errorData.message || "Oops! Algo deu errado.", variant: "destructive" });
@@ -180,10 +178,21 @@ const DialogEditCategory: React.FC<DialogEditCategoryProps> = ({
         }
     };
 
-    return (
-        // <Dialog open={isOpen} onOpenChange={onOpenChange}> 
+    const handleCancel = () => {
+        reset(); // Reseta os valores do formulário para os valores padrão
+    };
+
+    const handleOpenChange = (open: boolean) => {
+        if (!open) {
+            // Se o diálogo estiver fechando (por qualquer motivo: X, clique fora, Esc, botão Cancelar)
+            handleCancel();
+        }
+        setIsOpen(open);
+    };
+
+    return ( 
         <>
-            <Dialog>
+            <Dialog open={isOpen} onOpenChange={handleOpenChange}>
                 <DialogTrigger asChild>
                     <Button type="button" variant={"secondary"} aria-label="Abrir ações da categoria" className="p-1 rounded-md">
                         <PiDotsThreeOutlineVerticalFill className="text-gray-700 hover:text-[#01C14C] h-5 w-5" /> {/* Ajuste o tamanho e cor conforme necessário */}

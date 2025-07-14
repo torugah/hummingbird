@@ -1,8 +1,6 @@
 // c:\Users\Fillipi\Desktop\Humming\hummingbird\app\api\categories\getByUserId\route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { db } from '@/app/_lib/prisma';
 
 export async function GET(req: NextRequest) {
     try {
@@ -14,7 +12,7 @@ export async function GET(req: NextRequest) {
         }
 
         // Busque as categorias do usuário no banco de dados usando o Prisma
-        const categories = await prisma.categoria.findMany({
+        const categories = await db.categoria.findMany({
             where: {
                 user_id: userId,
                 bool_active: true,
@@ -39,7 +37,5 @@ export async function GET(req: NextRequest) {
     } catch (error) {
         console.error('Erro ao buscar categorias:', error);
         return NextResponse.json({ error: 'Erro ao buscar categorias' }, { status: 500 });
-    } finally {
-        await prisma.$disconnect(); // Desconecte o Prisma Client após a consulta
-    }
+    } 
 }

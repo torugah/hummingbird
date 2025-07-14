@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient, Prisma } from '@prisma/client'; // Import Prisma e tipos
+import { Prisma } from '@prisma/client'; // Import Prisma e tipos
+import { db } from "@/app/_lib/prisma";
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/_lib/auth'; // Ajuste o caminho se necessário
-
-const prisma = new PrismaClient();
 
 export async function DELETE(req: NextRequest) {
     try {
@@ -21,7 +20,7 @@ export async function DELETE(req: NextRequest) {
         }
 
         // 1. Verificar se a Transação pertence ao usuário logado
-        const categoryToDelete = await prisma.transacao.findUnique({
+        const categoryToDelete = await db.transacao.findUnique({
             where: { id: id },
         });
 
@@ -35,7 +34,7 @@ export async function DELETE(req: NextRequest) {
         }
 
         // 3. Deletar a transação
-        await prisma.transacao.delete({
+        await db.transacao.delete({
             where: {
                 id: id,
                 user_id: userId, // Segurança adicional: garantir que só delete se pertencer ao usuário
@@ -50,7 +49,5 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json({ message: 'Transação não encontrada para remoção.' }, { status: 404 });
         }
         return NextResponse.json({ message: 'Erro interno do servidor ao tentar remover a transação.' }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
-    }
+    } 
 }

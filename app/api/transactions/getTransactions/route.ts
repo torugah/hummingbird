@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { db } from "@/app/_lib/prisma";
 import { NextResponse , NextRequest } from 'next/server';
-
-const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
   try {
@@ -45,7 +43,7 @@ export async function GET(request: NextRequest) {
       };
     }
 
-    const transactions = await prisma.transacao.findMany({
+    const transactions = await db.transacao.findMany({
       // 3. Filter transactions by the logged-in user's ID
       where: whereClause,
       /*orderBy: {
