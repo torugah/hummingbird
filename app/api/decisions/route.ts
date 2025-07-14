@@ -3,6 +3,8 @@ import { PrismaClient , Prisma } from '@prisma/client';
 import { z } from "zod";
 import { db } from "@/app/_lib/prisma";
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: NextRequest) {
     try {
         const searchParams = req.nextUrl.searchParams;
