@@ -5,15 +5,17 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'github.com',
-        // pathname: '/username/**', // Opcional
       },
     ],
   },
-  // Adicione esta parte nova para o Prisma:
   webpack: (config) => {
     config.externals = [...(config.externals || []), { '@prisma/client': 'PrismaClient' }];
     return config;
-  }
+  },
+  experimental: {
+    serverActions: true,
+  },
+  output: 'standalone' 
 };
 
 export default nextConfig;

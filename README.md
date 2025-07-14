@@ -1,7 +1,9 @@
 # Mudanças
 
-## AJUSTES DO VERCEL 1.3
-- Ajustes do Prisma Client
+## AJUSTES DO VERCEL 1.4
+- Ajustes do Supabase
+- Forçar que APIs sejam dinâmicas
+- Modificações em next.config.mjs
 
 ## Correção no Excesso de Conexões Prisma
 > modified:   app/api/cards/route.ts

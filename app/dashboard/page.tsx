@@ -21,6 +21,8 @@ interface InitialPageProps {
   };
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function InitialPage({ searchParams }: InitialPageProps) {
     const horaAtual = new Date();
     const hora = horaAtual.getHours();
