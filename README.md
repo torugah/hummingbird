@@ -1,10 +1,7 @@
 # Mudanças
 
-## AJUSTES DO VERCEL 1.1
-- Modificado o componente CarouselComponent.tsx: 
-- Correção na importação do EmblaCarousel.
-- Adicionado explicítamente o "components"
-- Simplificando o return.
+## AJUSTES DO VERCEL 1.2
+- Reinstalação do componente Chart.tsx do Shadcn/UI
 
 ## Correção no Excesso de Conexões Prisma
 > modified:   app/api/cards/route.ts
