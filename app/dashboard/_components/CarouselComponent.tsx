@@ -1,7 +1,8 @@
 "use client";
 
+import EmblaCarousel from './EmblaCarousel';
+import { PieChartByCategory } from './resumeAllChart';
 import { Transaction } from './variableExpensesColumns';
-import { EmblaCarousel } from './EmblaCarousel';
 
 interface CarouselProps {
   variableTransactionsData: Transaction[];
@@ -14,13 +15,15 @@ export function CarouselComponent({
   fixedTransactionsData, 
   incomeTransactionsData 
 }: CarouselProps) {
+  const components = [
+    <PieChartByCategory key="variable" transactions={variableTransactionsData} />,
+    <PieChartByCategory key="fixed" transactions={fixedTransactionsData} />,
+    <PieChartByCategory key="income" transactions={incomeTransactionsData} />
+  ]
+
   return (
     <div className="w-full">
-      <EmblaCarousel 
-        variableTransactionsData={variableTransactionsData}
-        fixedTransactionsData={fixedTransactionsData}
-        incomeTransactionsData={incomeTransactionsData}
-      />
+      <EmblaCarousel components={components} />
     </div>
-  );
+  )
 }

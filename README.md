@@ -1,8 +1,10 @@
 # Mudanças
 
-## AJUSTES DO VERCEL 1.0
-- Necessário a correção de textos que utilzam aspas.     
-- Adicionado índices a alguns elementos em page.tsx (home).
+## AJUSTES DO VERCEL 1.1
+- Modificado o componente CarouselComponent.tsx: 
+- Correção na importação do EmblaCarousel.
+- Adicionado explicítamente o "components"
+- Simplificando o return.
 
 ## Correção no Excesso de Conexões Prisma
 > modified:   app/api/cards/route.ts
