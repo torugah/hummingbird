@@ -1,7 +1,7 @@
 # Mudanças
 
-## AJUSTES DO VERCEL 1.2
-- Reinstalação do componente Chart.tsx do Shadcn/UI
+## AJUSTES DO VERCEL 1.3
+- Ajustes do Prisma Client
 
 ## Correção no Excesso de Conexões Prisma
 > modified:   app/api/cards/route.ts
