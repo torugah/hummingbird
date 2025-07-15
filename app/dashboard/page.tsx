@@ -44,7 +44,7 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
         if (!userId) return [];
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/transactions/getTransactions?userId=${userId}&transactionType=${type}&date=${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`, 
+                `/api/transactions/getTransactions?userId=${userId}&transactionType=${type}&date=${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`, 
                 { cache: 'no-store' }
             );
             if (!response.ok) throw new Error(`Failed to fetch ${type} transactions`);
