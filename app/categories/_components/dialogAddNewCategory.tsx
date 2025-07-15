@@ -82,7 +82,9 @@ const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
 
         console.log(requestBody)
 
-        const response = await fetch('/api/categories/create', {
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+
+        const response = await fetch(`${baseUrl}/api/categories/create`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

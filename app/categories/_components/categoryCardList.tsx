@@ -29,7 +29,7 @@ async function getCategories(userId: string | null | undefined): Promise<Categor
     } 
 
     try {
-        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL 
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
         const response = await fetch(`${baseUrl}/api/categories/getByUserId?userId=${userId}`, {
             cache: 'no-store', // Or 'no-cache' depending on requirements
         });

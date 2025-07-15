@@ -98,7 +98,8 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
         const fetchCategories = async () => {
             if (!userId) return;
             try {
-                const response = await fetch(`/api/categories/getByUserId?userId=${userId}`);
+                const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+                const response = await fetch(`${baseUrl}/api/categories/getByUserId?userId=${userId}`);
                 if (!response.ok) {
                     console.error(`Failed to fetch categories`);
                     return;

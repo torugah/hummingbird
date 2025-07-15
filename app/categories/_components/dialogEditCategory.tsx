@@ -124,7 +124,8 @@ const DialogEditCategory: React.FC<DialogEditCategoryProps> = ({
         };
 
         try {
-            const response = await fetch('/api/categories/update', { // Endpoint para atualização
+            const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+            const response = await fetch(`${baseUrl}/api/categories/update`, { // Endpoint para atualização
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestBody)
@@ -148,7 +149,8 @@ const DialogEditCategory: React.FC<DialogEditCategoryProps> = ({
     const handleDeleteCategory = async () => {
         setIsDeleting(true);
         try {
-            const response = await fetch('/api/categories/delete', {
+            const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+            const response = await fetch(`${baseUrl}/api/categories/delete`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
