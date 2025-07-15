@@ -1,9 +1,9 @@
 # Mudanças
 
-## URLs das APIs - Teste 5
+## URLs das APIs - Teste 6
 
 > app/dashboard/page.tsx
-- Removendo o Toast 
+- Testando outra forma além das relative paths
 
 
 

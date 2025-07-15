@@ -48,7 +48,7 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
         };
         try {
             const response = await fetch(
-                `/api/transactions/getTransactions?userId=${userId}&transactionType=${type}&date=${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`, 
+                `${window.location.origin}/api/transactions/getTransactions?userId=${userId}&transactionType=${type}&date=${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`, 
                 { cache: 'no-store' }
             );
             if (!response.ok) throw new Error(`Failed to fetch ${type} transactions. Status: ${response.status}`);
