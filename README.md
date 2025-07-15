@@ -1,9 +1,9 @@
 # Mudanças
 
-## URLs das APIs - Teste 6
+## URLs das APIs - Teste 7
 
 > app/dashboard/page.tsx
-- Testando outra forma além das relative paths
+- Testando NEXT_PUBLIC_SITE_URL ou URL manual
 
 
 

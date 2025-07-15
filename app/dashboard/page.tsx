@@ -47,8 +47,9 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
             return [];
         };
         try {
+            const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
             const response = await fetch(
-                `${window.location.origin}/api/transactions/getTransactions?userId=${userId}&transactionType=${type}&date=${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`, 
+                `${baseUrl}/api/transactions/getTransactions?userId=${userId}&transactionType=${type}&date=${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`, 
                 { cache: 'no-store' }
             );
             if (!response.ok) throw new Error(`Failed to fetch ${type} transactions. Status: ${response.status}`);
