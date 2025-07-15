@@ -44,10 +44,10 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
     // Funções para buscar transações
     async function getTransactions(type: 'Variable' | 'Fixed' | 'Income') {
         if (!userId) {
-            toast({
-                title: "Sem Usuário!",
-                description: `Não foi possível encontrar um usuário... Data: ${data}`,
-            })
+            showToast( 
+                "Sem Usuário!",
+                `Não foi possível encontrar um usuário... Data: ${data}`
+            )
             return [];
         };
         try {
@@ -61,6 +61,13 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
             console.error(`Error in get${type}Transactions:`, error);
             return [];
         }
+    }
+
+    function showToast (title: string, description: string) {
+        toast({
+            title: title,
+            description: description,
+        })
     }
 
     const [variableTransactionsData, fixedTransactionsData, incomeTransactionsData] = await Promise.all([
