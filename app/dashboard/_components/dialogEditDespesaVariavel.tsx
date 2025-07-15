@@ -159,7 +159,7 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
         const fetchUserCards = async () => {
             if (!isOpen) return; 
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/cards?userId=${userId}`, {
+                const response = await fetch(`/api/cards?userId=${userId}`, {
                                                 cache: 'no-store',
                                                 method: 'GET',
                                                 headers: {

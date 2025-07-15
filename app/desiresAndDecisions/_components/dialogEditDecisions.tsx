@@ -99,7 +99,7 @@ const DialogEditDecisions: React.FC<DialogEditDecisionProps> = ({ isOpen, onOpen
             } 
 
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/desires?userId=${userId}`, { 
+                const response = await fetch(`/api/desires?userId=${userId}`, { 
                     signal: abortController.signal, // Vincula o AbortController
                     cache: 'no-store',
                     method: 'GET',

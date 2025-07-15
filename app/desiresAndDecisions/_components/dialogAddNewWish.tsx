@@ -130,7 +130,7 @@ const DialogAddNewWish: React.FC<ChildComponentProps> = ({ userId }) => {
     try {
       console.log("Request body before send:", JSON.stringify(requestBody, null, 2));
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/desires?userId=${userId}`, {
+      const response = await fetch(`/api/desires?userId=${userId}`, {
         cache: 'no-store',
         method: 'POST',
         headers: {

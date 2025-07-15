@@ -7,7 +7,7 @@ export async function getDesires(userId: string | null | undefined): Promise<Lis
   }
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/desires?userId=${userId}`, {
+    const response = await fetch(`/api/desires?userId=${userId}`, {
       cache: 'no-store',
       method: 'GET',
       headers: {

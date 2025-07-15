@@ -49,7 +49,7 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ purchaseDecision, user_id }) 
     const handleDelete = async () => { 
         setIsDeleting(true);
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/decisions?userId=${user_id}`, {
+            const response = await fetch(`/api/decisions?userId=${user_id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

@@ -24,7 +24,7 @@ export default async function page() {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/decisions?userId=${userId}`, {
+      const response = await fetch(`/api/decisions?userId=${userId}`, {
         cache: 'no-store',
       });
       if (!response.ok) {
