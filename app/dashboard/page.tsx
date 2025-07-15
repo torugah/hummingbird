@@ -13,6 +13,7 @@ import EmblaCarousel from "./_components/EmblaCarousel";
 import { EmblaOptionsType } from "embla-carousel";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { MonthYearSelector } from "../_components/monthYearSelector";
+import { useToast } from "@/components/hooks/use-toast";
 
 interface InitialPageProps {
   searchParams: {
@@ -28,6 +29,7 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
     const hora = horaAtual.getHours();
     const data = await getServerSession(authOptions);
     const userId = data?.user.id;
+    const { toast } = useToast();
 
     // Determina o mês/ano a ser visualizado
     const currentMonth = searchParams.month ? parseInt(searchParams.month) - 1 : horaAtual.getMonth();
@@ -41,13 +43,19 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
 
     // Funções para buscar transações
     async function getTransactions(type: 'Variable' | 'Fixed' | 'Income') {
-        if (!userId) return [];
+        if (!userId) {
+            toast({
+                title: "Sem Usuário!",
+                description: `Não foi possível encontrar um usuário... Data: ${data}`,
+            })
+            return [];
+        };
         try {
             const response = await fetch(
                 `/api/transactions/getTransactions?userId=${userId}&transactionType=${type}&date=${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`, 
                 { cache: 'no-store' }
             );
-            if (!response.ok) throw new Error(`Failed to fetch ${type} transactions`);
+            if (!response.ok) throw new Error(`Failed to fetch ${type} transactions. Status: ${response.status}`);
             return await response.json() as Transaction[];
         } catch (error) {
             console.error(`Error in get${type}Transactions:`, error);

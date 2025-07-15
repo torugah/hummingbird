@@ -3,7 +3,8 @@ import { PrismaClient, Prisma } from "@prisma/client";
 import { z } from "zod";
 import { db } from "@/app/_lib/prisma";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic' // Desativa Static Site Generation
+export const revalidate = 0 // Desativa cache
 
 // API Read para Cartões
 export async function GET(request: NextRequest) {
