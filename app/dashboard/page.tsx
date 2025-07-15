@@ -29,7 +29,6 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
     const hora = horaAtual.getHours();
     const data = await getServerSession(authOptions);
     const userId = data?.user.id;
-    const { toast } = useToast();
 
     // Determina o mês/ano a ser visualizado
     const currentMonth = searchParams.month ? parseInt(searchParams.month) - 1 : horaAtual.getMonth();
@@ -44,10 +43,7 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
     // Funções para buscar transações
     async function getTransactions(type: 'Variable' | 'Fixed' | 'Income') {
         if (!userId) {
-            showToast( 
-                "Sem Usuário!",
-                `Não foi possível encontrar um usuário... Data: ${data}`
-            )
+            console.log("Sem Usuário!");
             return [];
         };
         try {
@@ -56,18 +52,12 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
                 { cache: 'no-store' }
             );
             if (!response.ok) throw new Error(`Failed to fetch ${type} transactions. Status: ${response.status}`);
+            console.error(`Erro ao usar a API ${type}, status: ${response.status}`)
             return await response.json() as Transaction[];
         } catch (error) {
             console.error(`Error in get${type}Transactions:`, error);
             return [];
         }
-    }
-
-    function showToast (title: string, description: string) {
-        toast({
-            title: title,
-            description: description,
-        })
     }
 
     const [variableTransactionsData, fixedTransactionsData, incomeTransactionsData] = await Promise.all([
