@@ -33,7 +33,8 @@ async function getCards(userId: string | null | undefined): Promise<Cards[]> {
   }
 
   try {
-    const response = await fetch(`/api/cards?userId=${userId}`, {
+    const baseUrl = 'http://localhost:3000'
+    const response = await fetch(`${baseUrl}/api/cards?userId=${userId}`, {
       cache: 'no-store',
       method: 'GET',
       headers: {

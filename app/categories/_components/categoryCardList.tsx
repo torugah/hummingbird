@@ -29,8 +29,8 @@ async function getCategories(userId: string | null | undefined): Promise<Categor
     } 
 
     try {
-        // Adjust the API endpoint as needed
-        const response = await fetch(`/api/categories/getByUserId?userId=${userId}`, {
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL 
+        const response = await fetch(`${baseUrl}/api/categories/getByUserId?userId=${userId}`, {
             cache: 'no-store', // Or 'no-cache' depending on requirements
         });
 
@@ -58,7 +58,15 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId }) => 
     const categories = await getCategories(userId);
 
     return (
-        <div className="flex flex-wrap gap-4 justify-center">
+        <div className="
+                        flex 
+                        flex-wrap 
+                        gap-4 
+                        justify-center
+                        w-full        // Padrão para mobile (1 card por linha - 100%)
+                        sm:w-[48%]    // Tablets (2 cards por linha - ~48% com gap)
+                        lg:w-[32%]    // Desktop (3 cards por linha - ~32% com gap)                        
+        ">
             {categories.map((category) => (
                 // Use a unique key for each card, like category.id
                 <div 
