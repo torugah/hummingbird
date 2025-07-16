@@ -3,6 +3,9 @@ import { TipoMovimento } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0 
+
 const categorySchema = z.object({	
     user_id: z.string(),
     str_categoryName: z.string(),	

@@ -122,22 +122,7 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId }) => 
             ))}
 
             {/* The "Add New Category" card, always present */}
-            <div 
-                className='
-                    w-full        // Padrão para mobile (1 card por linha)
-                    md:w-[48%]    // Tablets (2 cards por linha)
-                    lg:w-[32%]    // Desktop (3 cards por linha)
-                    h-60 
-                    bg-gray-100 
-                    border-gray-300 
-                    border-2 
-                    rounded-lg 
-                    flex 
-                    flex-col 
-                    items-center 
-                    justify-center
-                '
-            >
+            <div className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg items-center justify-center'>  
                 <DialogAddNewCategory userId={userId}/>
             </div>
         </div>
