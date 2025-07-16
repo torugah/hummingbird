@@ -22,7 +22,7 @@ interface CategoryCardListProps {
     userId: string | null | undefined;
 }
 
-export const dynamic = 'force-dynamic'
+//export const dynamic = 'force-dynamic'
 
 async function getCategories(userId: string | null | undefined): Promise<Category[]> {
     if (!userId) {
