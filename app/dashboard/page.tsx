@@ -52,8 +52,10 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
                 `${baseUrl}/api/transactions/getTransactions?userId=${userId}&transactionType=${type}&date=${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`, 
                 { cache: 'no-store' }
             );
-            if (!response.ok) throw new Error(`Failed to fetch ${type} transactions. Status: ${response.status}`);
-            console.error(`Erro ao usar a API ${type}, status: ${response.status}`)
+            if (!response.ok) {
+                console.error(`Erro ao usar a API ${type}, status: ${response.status}`)
+                throw new Error(`Failed to fetch ${type} transactions. Status: ${response.status}`);                
+            } 
             return await response.json() as Transaction[];
         } catch (error) {
             console.error(`Error in get${type}Transactions:`, error);

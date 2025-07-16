@@ -22,6 +22,8 @@ interface CategoryCardListProps {
     userId: string | null | undefined;
 }
 
+export const dynamic = 'force-dynamic'
+
 async function getCategories(userId: string | null | undefined): Promise<Category[]> {
     if (!userId) {
         console.log("No user ID found, skipping category fetch.");
@@ -29,7 +31,7 @@ async function getCategories(userId: string | null | undefined): Promise<Categor
     } 
 
     try {
-        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
         const response = await fetch(`${baseUrl}/api/categories/getByUserId?userId=${userId}`, {
             cache: 'no-store', // Or 'no-cache' depending on requirements
         });

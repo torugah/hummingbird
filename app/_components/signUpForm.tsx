@@ -91,9 +91,9 @@ export function SignUpForm() {
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-400">First Name</FormLabel>
+                  <FormLabel className="text-gray-400">Nome</FormLabel>
                   <FormControl>
-                    <Input placeholder="John" {...field} />
+                    <Input placeholder="Marco" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -106,9 +106,9 @@ export function SignUpForm() {
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-400">Last Name</FormLabel>
+                  <FormLabel className="text-gray-400">Sobrenome</FormLabel>
                   <FormControl>
-                    <Input placeholder="Doe" {...field} />
+                    <Input placeholder="Barros" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -121,9 +121,9 @@ export function SignUpForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-400">E-mail Address</FormLabel>
+              <FormLabel className="text-gray-400">E-mail</FormLabel>
               <FormControl>
-                <Input placeholder="me@myEmail.com" {...field} />
+                <Input placeholder="eu@meuEmail.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -136,9 +136,9 @@ export function SignUpForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-400">Password</FormLabel>
+                  <FormLabel className="text-gray-400">Senha</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="yourPassword" {...field} />
+                    <Input type="password" placeholder="suaS3nh4" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -151,9 +151,9 @@ export function SignUpForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-400">Confirm Password</FormLabel>
+                  <FormLabel className="text-gray-400">Confirme sua senha</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="confirmYourPassword" {...field} />
+                    <Input type="password" placeholder="confime sua senha" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -165,10 +165,10 @@ export function SignUpForm() {
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Creating...
+              Criando...
             </>
           ) : (
-            "Sign Up"
+            "Criar"
           )}
         </Button>
       </form>

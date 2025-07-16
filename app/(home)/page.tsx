@@ -54,10 +54,10 @@ export default function Home() {
             {!showNewContent ? (
               <div className="flex flex-col space-y-1">
                 <Image src="/hummingBirdLogo.png" alt="Hummingbird Logo" height={50} width={50} />
-                <h1 className="text-xl font-black">Sign in to your account</h1>
+                <h1 className="text-xl font-black">Entre em sua conta</h1>
                 <div className="flex flex-row">
-                  <p className="text-sm pb-5 pr-1">Or </p>
-                  <p className="text-sm pb-5 text-[#01C14C] font-semibold underline cursor-pointer hover:underline-offset-2" onClick={handleClickMoveWindow}>{`don't have an account?`}</p>
+                  <p className="text-sm pb-5 pr-1">Ou </p>
+                  <p className="text-sm pb-5 text-[#01C14C] font-semibold underline cursor-pointer hover:underline-offset-2" onClick={handleClickMoveWindow}>{`Não possui uma conta?`}</p>
                 </div>            
                 <GoogleSignInButton>
                   <FcGoogle style={{  
@@ -67,11 +67,11 @@ export default function Home() {
                     borderRadius: '100%' ,
                     width: '25px',
                     height: '25px'
-                  }} /> Sign Up with Google
+                  }} /> Entrar com Google
                 </GoogleSignInButton>
                 <div className="flex items-center py-2">
                   <div className="flex-grow border-t-2 border-gray-300"></div>
-                  <span className="px-4 text-gray-500 text-xs">Or continue with</span>
+                  <span className="px-4 text-gray-500 text-xs">Ou continue com</span>
                   <div className="flex-grow border-t-2 border-gray-300"></div>
                 </div>
                 <SignInForm /> 
@@ -79,15 +79,15 @@ export default function Home() {
             ) : (
               <div className="flex flex-col space-y-1">
                 <Image src="/hummingBirdLogo.png" alt="Hummingbird Logo" height={50} width={50} />
-                <h1 className="text-xl font-black">Create your account</h1>
+                <h1 className="text-xl font-black">Crie sua conta</h1>
                 <div className="flex flex-row">
-                  <p className="text-sm pb-5 pr-1">Or </p>
-                  <p className="text-sm pb-5 text-[#01C14C] font-semibold underline cursor-pointer hover:underline-offset-2" onClick={handleClickMoveWindow}>you already have an account?</p>
+                  <p className="text-sm pb-5 pr-1">Ou </p>
+                  <p className="text-sm pb-5 text-[#01C14C] font-semibold underline cursor-pointer hover:underline-offset-2" onClick={handleClickMoveWindow}>Você já possui uma conta?</p>
                 </div>                            
                 <SignUpForm />                
                 <div className="flex items-center py-2">
                   <div className="flex-grow border-t-2 border-gray-300"></div>
-                  <span className="px-4 text-gray-500 text-xs">Or continue with</span>
+                  <span className="px-4 text-gray-500 text-xs">Ou continue com</span>
                   <div className="flex-grow border-t-2 border-gray-300"></div>
                 </div>
                 <GoogleSignInButton>
@@ -98,7 +98,7 @@ export default function Home() {
                     borderRadius: '100%' ,
                     width: '25px',
                     height: '25px'
-                  }} /> Sign Up with Google
+                  }} /> Inscreva-se com Google
                 </GoogleSignInButton>
               </div>
             )}

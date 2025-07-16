@@ -77,9 +77,9 @@ const SignInForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-400">E-mail Address</FormLabel>
+              <FormLabel className="text-gray-400">E-mail</FormLabel>
               <FormControl>
-                <Input placeholder="mail@example.com" type="email" {...field} />
+                <Input placeholder="email@exemplo.com" type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -90,9 +90,9 @@ const SignInForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-400">Password</FormLabel>
+              <FormLabel className="text-gray-400">Senha</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Enter your password" {...field} />
+                <Input type="password" placeholder="Entre com sua senha" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -111,14 +111,14 @@ const SignInForm = () => {
                   />
                 </FormControl>
                 <FormLabel className="text-sm font-light text-gray-500 !mt-0">
-                  Remember me
+                  Lembre de mim
                 </FormLabel>
               </FormItem>
             )}
           />
           <Button variant="ghost" className="h-fit py-0" asChild>
             <Link href="/passwordRecovery" className="text-xs font-semibold text-[#01C14C] underline hover:underline-offset-2">
-              Forgot your password?
+              Esqueceu sua senha?
             </Link>
           </Button>
         </div>
@@ -126,10 +126,10 @@ const SignInForm = () => {
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Signing In...
+              Autenticando...
             </>
           ) : (
-            "Sign In"
+            "Entrar"
           )}
         </Button>
       </form>
