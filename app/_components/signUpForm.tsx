@@ -153,7 +153,7 @@ export function SignUpForm() {
                 <FormItem>
                   <FormLabel className="text-gray-400">Confirme sua senha</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="confime sua senha" {...field} />
+                    <Input type="password" placeholder="c0nfim3Su4Senha" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

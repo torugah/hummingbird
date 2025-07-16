@@ -22,8 +22,6 @@ interface CategoryCardListProps {
     userId: string | null | undefined;
 }
 
-//export const dynamic = 'force-dynamic'
-
 async function getCategories(userId: string | null | undefined): Promise<Category[]> {
     if (!userId) {
         console.log("No user ID found, skipping category fetch.");
@@ -60,30 +58,12 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId }) => 
     const categories = await getCategories(userId);
 
     return (
-        <div className="
-                        flex 
-                        flex-wrap 
-                        gap-4 
-                        justify-center
-                        w-full        // Padrão para mobile (1 card por linha - 100%)
-                        sm:w-[48%]    // Tablets (2 cards por linha - ~48% com gap)
-                        lg:w-[32%]    // Desktop (3 cards por linha - ~32% com gap)                        
-        ">
+        <>
             {categories.map((category) => (
                 // Use a unique key for each card, like category.id
                 <div 
                     key={category.category_id} 
-                    className='
-                        w-full        // Padrão para mobile (1 card por linha - 100%)
-                        sm:w-[48%]    // Tablets (2 cards por linha - ~48% com gap)
-                        lg:w-[32%]    // Desktop (3 cards por linha - ~32% com gap)
-                        h-fit 
-                        bg-gray-100 
-                        border-gray-300 
-                        border-2 
-                        rounded-lg
-                    '
-                >
+                    className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg'>
 
                     {/* Use category.str_image if available, otherwise a default */}
                     <div className={`flex flex-row items-center p-2 rounded-sm w-full h-fit aspect-video bg-cover 
@@ -127,7 +107,7 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId }) => 
             <div className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg items-center justify-center'>  
                 <DialogAddNewCategory userId={userId}/>
             </div>
-        </div>
+        </>
     );
 }
 
