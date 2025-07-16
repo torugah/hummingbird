@@ -63,7 +63,7 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId }) => 
                 // Use a unique key for each card, like category.id
                 <div 
                     key={category.category_id} 
-                    className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg'>
+                    className='flex flex-col p-[0.1rem] w-[32%] h-fit bg-gray-100 border-gray-300 border-2 rounded-lg'>
 
                     {/* Use category.str_image if available, otherwise a default */}
                     <div className={`flex flex-row items-center p-2 rounded-sm w-full h-fit aspect-video bg-cover 
@@ -79,7 +79,7 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId }) => 
                     > */}
                          {/* Agora sempre haverá uma imagem de fundo, então o texto de placeholder não é mais necessário aqui */}
                     {/* </div> */}
-                    <div className='flex flex-row h-2/6 justify-between p-1'>
+                    <div className='flex flex-row h-fit justify-between p-1'>
                         <div className='flex flex-col justify-around'>
                             {/* Display category name */}
                             <p className="font-semibold">{category.str_categoryName}</p>
