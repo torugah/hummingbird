@@ -28,12 +28,12 @@ interface CardListProps {
 
 async function getCards(userId: string | null | undefined): Promise<Cards[]> {
   if (!userId) {
-    console.log("No user ID found, skipping category fetch.");
+    console.error("No user ID found, skipping category fetch.");
     return [];
   }
 
   try {
-    const baseUrl = 'http://localhost:3000'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
     const response = await fetch(`${baseUrl}/api/cards?userId=${userId}`, {
       cache: 'no-store',
       method: 'GET',
@@ -44,9 +44,10 @@ async function getCards(userId: string | null | undefined): Promise<Cards[]> {
 
     if (!response.ok) {
       if (response.status === 404) {
-        console.log("No cards found for this user.");
+        console.error("No cards found for this user.");
         return [];
       }
+      console.error(`Error in getCards:`, response.statusText);
       throw new Error(`Failed to fetch categories: ${response.statusText}`);
     }
 

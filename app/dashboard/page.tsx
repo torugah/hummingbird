@@ -43,7 +43,7 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
     // Funções para buscar transações
     async function getTransactions(type: 'Variable' | 'Fixed' | 'Income') {
         if (!userId) {
-            console.log("Sem Usuário!");
+            console.error("Sem Usuário!");
             return [];
         };
         try {
