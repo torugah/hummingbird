@@ -3,7 +3,7 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { LogOutIcon, UserIcon, LogInIcon, HomeIcon, CalendarIcon } from "lucide-react";
+import { UserIcon, LogInIcon } from "lucide-react";
 import { FaGear , FaDoorClosed , FaDoorOpen } from "react-icons/fa6";
 import { useSession, signOut, signIn } from "next-auth/react";
 import Link from "next/link";
