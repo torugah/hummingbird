@@ -94,11 +94,13 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
 
     const [categories, setCategories] = useState<Categoria[]>([]); //TODO: Alternar entre INPUT e OUTPUT
 
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+
     useEffect(() => {
         const fetchCategories = async () => {
             if (!userId) return;
             try {
-                const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+                
                 const response = await fetch(`${baseUrl}/api/categories/getByUserId?userId=${userId}`);
                 if (!response.ok) {
                     console.error(`Failed to fetch categories`);
@@ -118,7 +120,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
     useEffect(() => {
         const fetchUserCards = async () => {
             try {
-                const response = await fetch(`/api/cards?userId=${userId}`, {
+                const response = await fetch(`${baseUrl}/api/cards?userId=${userId}`, {
                                                 cache: 'no-store',
                                                 method: 'GET',
                                                 headers: {

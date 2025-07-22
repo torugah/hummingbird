@@ -140,7 +140,7 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
         const fetchCategories = async () => {
             if (!userId || !isOpen) return; // Só busca se o diálogo estiver aberto e tiver userId
             try {
-                const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+                const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
                 const response = await fetch(`${baseUrl}/api/categories/getByUserId?userId=${userId}`);
                 if (!response.ok) {
                     console.error(`Failed to fetch categories`);

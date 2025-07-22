@@ -82,7 +82,7 @@ const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
 
         console.log(requestBody)
 
-        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
 
         const response = await fetch(`${baseUrl}/api/categories/create`, {
             method: 'POST',
