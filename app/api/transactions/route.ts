@@ -10,7 +10,7 @@ export const revalidate = 0 // Desativa cache
 //Define a schema for input validation
 const transactionSchema = z
   .object({
-    id: z.number(),
+    id: z.number().nullish(),
     userId: z.string(),
     categoryId: z.number(),
     itemName: z.string(),
