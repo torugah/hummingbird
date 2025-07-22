@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/tooltip";
 import { toast } from "@/components/hooks/use-toast";
 import { useRouter } from 'next/navigation';
-import { use, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -31,11 +32,14 @@ interface ActionsCellProps {
     user_id?: string | null | undefined; // Adicionado para passar ao diálogo de edição
 }
 
+
+
 const ActionsCell: React.FC<ActionsCellProps> = ({ transaction, user_id }) => {
     const router = useRouter(); // Mover useRouter para o nível superior do componente
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+    const { data: session } = useSession();
 
     const handleEdit = () => {
         if (!transaction.user_id) {
@@ -58,7 +62,7 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ transaction, user_id }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: transaction.id , userId: user_id})
+                body: JSON.stringify({ id: transaction.id , userId: session?.user.id})
             });
 
             if (!response.ok) {

@@ -1,8 +1,10 @@
 # Mudanças
 
-## Corrigindo o Schema das Transações
-> modified:   app/api/transactions
-- Tornando o ID da Transação z.nullish para que não seja requerida na criação da transação. 
+## Corrigindo a Autenticação em Ações de Coluna
+> modified:   app/dashboard/_components/actionsForColumns.tsx
+- O ID do usuário passa a ser o da sessão e utilizado na API.
+- Removendo a passagem de ID do usuário por edição da transação
+
         
         
 	
