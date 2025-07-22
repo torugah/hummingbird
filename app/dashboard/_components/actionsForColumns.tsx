@@ -42,6 +42,10 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ transaction, user_id }) => {
             console.log("ID do usuário não encontrado para edição.", transaction.user_id)
             toast({ title: "Erro", description: "ID do usuário não encontrado para edição.", variant: "destructive" });
         }
+        toast({
+            title: "Teste!",
+            description: `Usuário ID: "${user_id}" selecionado.`,
+        });
         setIsEditDialogOpen(true);
     };
 
