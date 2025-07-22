@@ -221,7 +221,8 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
             boolActive: true // Assumindo que este campo é relevante para update
         };
 
-        const response = await fetch('/api/transactions/update', { 
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+        const response = await fetch(`${baseUrl}/api/transactions`, { 
             method: 'PUT', // ou PATCH
             headers: {
                 'Content-Type': 'application/json'

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/tooltip";
 import { toast } from "@/components/hooks/use-toast";
 import { useRouter } from 'next/navigation';
-import { useState } from "react";
+import { use, useState } from "react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -48,12 +48,13 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ transaction, user_id }) => {
     const handleDelete = async () => { 
         setIsDeleting(true);
         try {
-            const response = await fetch('/api/transactions/delete', {
+            const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+            const response = await fetch(`${baseUrl}/api/transactions`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: transaction.id })
+                body: JSON.stringify({ id: transaction.id , userId: user_id})
             });
 
             if (!response.ok) {

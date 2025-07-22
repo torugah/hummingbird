@@ -195,7 +195,8 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
             boolActive: true
         }
 
-        const response = await fetch('/api/transactions/create', {
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+        const response = await fetch(`${baseUrl}/api/transactions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
