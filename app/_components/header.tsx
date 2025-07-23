@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +12,6 @@ import MobileSheets from "./ui/mobileSheets";
 const Header = () => {
 
     const isMobile = useMediaQuery({ maxWidth: 768 });
-
 
     if (isMobile) {
         return (
