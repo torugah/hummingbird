@@ -42,10 +42,6 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ transaction, user_id }) => {
     const { data: session } = useSession();
 
     const handleEdit = () => {
-        toast({
-            title: "Teste!",
-            description: `Usuário ID: "${user_id}" selecionado.`,
-        });
         setIsEditDialogOpen(true);
     };
 

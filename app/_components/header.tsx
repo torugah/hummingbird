@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import SheetContents from "./sheets";
 import DropdownMenuPages from "./allMenuPages";
-import { FaBars } from "react-icons/fa6";
 import { useMediaQuery } from 'react-responsive';
 import MobileSheets from "./ui/mobileSheets";
 
@@ -17,7 +16,7 @@ const Header = () => {
         return (
             <div className="flex flex-row justify-between items-center w-full bg-secondary py-2 px-2 border-gray-100 border-2 background bg-white">
                 <Link href="/dashboard">
-                    <p className='font-candara text-[#01C14C] text-2xl font-bold'>Hummingbird</p>
+                    <p className='font-candara text-[#01C14C] pl-2 text-2xl font-bold'>Hummingbird</p>
                 </Link>
                 
                 <div>

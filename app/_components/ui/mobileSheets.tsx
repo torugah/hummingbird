@@ -33,7 +33,7 @@ function MobileSheets() {
                     </Button>
                 </SheetTrigger>
                 <SheetContent className="p-0">
-                    <SheetHeader className="text-left border-b border-solid border-secondary p-5">
+                    <SheetHeader className="text-left text-lg font-boldborder-b border-solid border-secondary p-5">
                         <SheetTitle>Minha conta</SheetTitle>
                     </SheetHeader>
 
@@ -83,9 +83,9 @@ function MobileSheets() {
                         </Button>
                     </div>
 
-                    <p className='text-2xl'>Páginas</p>
-                    
-                    <div className="flex flex-row justify-between items-center">
+                    <p className='text-md font-bold p-4'>Páginas</p>
+                    <div className="flex-grow border-t-2 border-gray-300 p-2" />
+                    <div className="flex flex-col justify-between items-center">
                         <Button variant={"ghost"} asChild className='w-full justify-start'>
                             <Link href="/calendar" className="text-black">Calendário</Link>
                         </Button>

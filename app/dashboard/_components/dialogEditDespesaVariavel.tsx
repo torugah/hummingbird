@@ -141,7 +141,11 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
             if (!userId || !isOpen) return; // Só busca se o diálogo estiver aberto e tiver userId
             try {
                 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
-                const response = await fetch(`${baseUrl}/api/categories/getByUserId?userId=${userId}`);
+                const response = await fetch(`${baseUrl}/api/categories?userId=${userId}`, {
+                    cache: 'no-store',
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
                 if (!response.ok) {
                     console.error(`Failed to fetch categories`);
                     return;
@@ -220,6 +224,8 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
             date: data.date,
             boolActive: true // Assumindo que este campo é relevante para update
         };
+
+        console.log("Request Body:", requestBody);
 
         const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
         const response = await fetch(`${baseUrl}/api/transactions`, { 

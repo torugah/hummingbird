@@ -125,7 +125,7 @@ const DialogEditCategory: React.FC<DialogEditCategoryProps> = ({
 
         try {
             const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
-            const response = await fetch(`${baseUrl}/api/categories/update`, { // Endpoint para atualização
+            const response = await fetch(`${baseUrl}/api/categories`, { // Endpoint para atualização
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestBody)
@@ -150,7 +150,7 @@ const DialogEditCategory: React.FC<DialogEditCategoryProps> = ({
         setIsDeleting(true);
         try {
             const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
-            const response = await fetch(`${baseUrl}/api/categories/delete`, {
+            const response = await fetch(`${baseUrl}/api/categories`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

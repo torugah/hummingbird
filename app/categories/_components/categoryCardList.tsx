@@ -30,7 +30,11 @@ async function getCategories(userId: string | null | undefined): Promise<Categor
 
     try {
         const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
-        const response = await fetch(`${baseUrl}/api/categories/getByUserId?userId=${userId}`, {
+        const response = await fetch(`${baseUrl}/api/categories?userId=${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
             cache: 'no-store', // Or 'no-cache' depending on requirements
         });
 

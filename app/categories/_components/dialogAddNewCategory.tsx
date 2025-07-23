@@ -84,7 +84,7 @@ const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
 
         const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
 
-        const response = await fetch(`${baseUrl}/api/categories/create`, {
+        const response = await fetch(`${baseUrl}/api/categories`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
