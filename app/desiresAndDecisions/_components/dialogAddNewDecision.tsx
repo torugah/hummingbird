@@ -61,6 +61,16 @@ const DialogAddNewDecision: React.FC<ChildComponentProps> = ({ userId }) => {
 
     const [wishes, setWishes] = useState<ListaDeDesejos[]>([]);
 
+    const [isOpen, setIsOpen] = useState(false); 
+    // Função para lidar com a mudança de estado do diálogo (abrir/fechar)
+    const handleOpenChange = (open: boolean) => {
+        if (!open) {
+            // Se o diálogo estiver fechando (por qualquer motivo: X, clique fora, Esc, botão Cancelar)
+            handleCancel();
+        }
+        setIsOpen(open);
+    };
+
     useEffect(() => {
         const fetchWishes = async () => {
             if (!userId) return;
@@ -147,13 +157,16 @@ const DialogAddNewDecision: React.FC<ChildComponentProps> = ({ userId }) => {
                 variant: "destructive"
             })
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
+            handleCancel();
+            setIsOpen(false);
+            router.refresh();
         }
     }
 
     return (
         <>
-            <Dialog>
+            <Dialog open={isOpen} onOpenChange={handleOpenChange}>
                 <DialogTrigger asChild>
                     <Button>Adicionar</Button>
                 </DialogTrigger>
@@ -220,7 +233,7 @@ const DialogAddNewDecision: React.FC<ChildComponentProps> = ({ userId }) => {
                                             <FormControl>
                                                 <Select onValueChange={handleChange} value={field.value?.toString()}>
                                                     <SelectTrigger className="w-full">
-                                                        <SelectValue placeholder="Escolha a categoria" />
+                                                        <SelectValue placeholder="Escolha o desejo" />
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <SelectGroup>

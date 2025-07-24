@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect , useState } from 'react'
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -23,7 +23,7 @@ import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/components/hooks/use-toast"
 import { cn } from "@/lib/utils"
 import { NumericFormat } from 'react-number-format';
-import { useRouter } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 const FormSchema = z
     .object({
@@ -42,7 +42,15 @@ interface ChildComponentProps {
 
 const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
 
-    const [isOpen, setIsOpen] = useState(false); // Estado para controlar a abertura do diálogo
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const [isOpen, setIsOpen] = useState(false);
+
+    // Verifica o parâmetro da URL quando o componente monta
+    useEffect(() => {
+        const addNew = searchParams.get('addNew');
+        setIsOpen(addNew === 'true');
+    }, [searchParams]);
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -63,8 +71,6 @@ const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
     };
 
     const [isLoading, setIsLoading] = useState(false);
-
-    const router = useRouter();
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
 
@@ -99,6 +105,7 @@ const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
             });
             handleCancel(); // Reseta os valores do formulário
             setIsOpen(false); // Fecha o diálogo
+            router.replace('/categories'); // Remove o parâmetro da URL
             router.refresh();
         } else {
             toast({
@@ -114,7 +121,7 @@ const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
     const handleOpenChange = (open: boolean) => {
         if (!open) {
             // Se o diálogo estiver fechando (por qualquer motivo: X, clique fora, Esc, botão Cancelar)
-            handleCancel();
+            router.replace('/categories');
         }
         setIsOpen(open);
     };

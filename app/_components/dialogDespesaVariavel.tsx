@@ -40,6 +40,7 @@ import { z } from "zod"
 import { useToast } from "@/components/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import { NumericFormat } from 'react-number-format';
+import Link from "next/link"
 
 const FormSchema = z
     .object({
@@ -360,9 +361,15 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                                                                     </SelectItem>
                                                                 ))
                                                             ) : (
-                                                                <SelectItem disabled value="">
+                                                                <SelectLabel className="text-muted-foreground">
                                                                     Nenhuma categoria disponível
-                                                                </SelectItem>
+                                                                    <Link 
+                                                                        href="/categories?addNew=true" 
+                                                                        className="text-[#01C14C] hover:underline"
+                                                                    >
+                                                                        Adicionar?
+                                                                    </Link>
+                                                                </SelectLabel>
                                                             )}
                                                         </SelectGroup>
                                                     </SelectContent>

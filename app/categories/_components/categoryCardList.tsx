@@ -20,6 +20,7 @@ interface Category {
 
 interface CategoryCardListProps {
     userId: string | null | undefined;
+    showDialog: boolean;
 }
 
 async function getCategories(userId: string | null | undefined): Promise<Category[]> {
@@ -57,7 +58,7 @@ async function getCategories(userId: string | null | undefined): Promise<Categor
     }
 }
 
-const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId }) => {
+const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId , showDialog }) => {
 
     const categories = await getCategories(userId);
 
@@ -109,7 +110,7 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId }) => 
 
             {/* The "Add New Category" card, always present */}
             <div className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg items-center justify-center'>  
-                <DialogAddNewCategory userId={userId}/>
+                <DialogAddNewCategory userId={userId} />
             </div>
         </>
     );
