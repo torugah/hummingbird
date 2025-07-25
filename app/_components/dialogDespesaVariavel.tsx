@@ -78,6 +78,7 @@ interface PaymentMethod {
 interface Categoria {
     category_id: number;
     str_categoryName: string;
+    str_movimentType: string;
 }
 
 // Define o tipo das props que o componente vai receber
@@ -355,20 +356,20 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                                                         <SelectGroup>
                                                             <SelectLabel>Suas Categorias</SelectLabel>
                                                             {categories.length > 0 ? (
-                                                                categories.map((cat) => (
+                                                                categories.filter((cat) => cat.str_movimentType === transactionType).map((cat) => (
                                                                     <SelectItem key={cat.category_id} value={cat.category_id.toString()}>
                                                                         {cat.str_categoryName}
                                                                     </SelectItem>
                                                                 ))
                                                             ) : (
                                                                 <SelectLabel className="text-muted-foreground">
-                                                                    Nenhuma categoria disponível
+                                                                    Nenhuma categoria disponível. 
                                                                     <Link 
                                                                         href="/categories?addNew=true" 
                                                                         className="
                                                                             text-[#01C14C] 
                                                                             hover:underline"
-                                                                            pl-2
+                                                                            px-2
                                                                     >
                                                                         Adicionar?
                                                                     </Link>

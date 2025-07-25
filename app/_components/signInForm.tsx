@@ -63,10 +63,15 @@ const SignInForm = () => {
           description: errorMessage,
           variant: "destructive"
       });
+      setIsLoading(false);
     } else {
+      toast({
+        title: "Sucesso!",
+        description: "Redirecionando para o dashboard...",
+        variant: "default",
+      });
       router.push('/dashboard');
     }
-    setIsLoading(false);
   };
 
   return (
