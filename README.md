@@ -1,20 +1,15 @@
 # Mudanças
 
-## Correção do Select
-> modified:   app/_components/dialogDespesaVariavel.tsx
-- Componente agora mostra corretamente quando não há categorias e ainda pergunta se gostaria de adicionar.
+## Correção Estética
+> app/_components/_dialogDespesaVariavel.tsx
+- Adicionado um espaçamento na pergunta/link para adicionar nova categoria.
 
-## URL com parametrização
-> modified:   app/categories/_components/categoryCardList.tsx
-> modified:   app/categories/_components/dialogAddNewCategory.tsx
-> modified:   app/categories/page.tsx
-> modified:   app/desiresAndDecisions/_components/dialogAddNewDecision.tsx
-- Ajustado para realizar a leitura da URL.
-- Envia showDialog = true quando solicitado pelo usuário.
-- Correção das props.
-- Realiza abertura automática do Dialog quando solicitado.
-- Correção do fechamento e atualização quando inserido novo registro.
-
+## Correção dos Tooltips
+> app/dashboard/_components/actionsForColumns.tsx
+> app/dashboard/_components/resumeAllCharts.tsx
+- Limites de tamanho 
+- Adição das ellipsis para textos muitos largos.
+- Adição de 4 linhas limite ou inserção da scrollbar. 
         
 	
 	

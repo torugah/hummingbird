@@ -88,8 +88,13 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ transaction, user_id }) => {
                             <IoInformationCircleOutline className="h-4 w-4 text-blue-500" />
                         </Button>
                     </TooltipTrigger>
-                    <TooltipContent className="bg-white text-black p-2 rounded-md">
-                        <p>{transaction.str_description  || "Sem descrição."}</p>
+                     <TooltipContent 
+                        className="bg-white text-black p-2 rounded-md max-w-[90vw] sm:max-w-[400px] dialog-scroll-container"
+                        sideOffset={5}
+                    >
+                        <p className="line-clamp-4 overflow-y-auto max-h-[6rem]">
+                            {transaction.str_description || "Sem descrição."}
+                        </p>
                     </TooltipContent>
                 </Tooltip>
             </TooltipProvider>

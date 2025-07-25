@@ -365,7 +365,10 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                                                                     Nenhuma categoria disponível
                                                                     <Link 
                                                                         href="/categories?addNew=true" 
-                                                                        className="text-[#01C14C] hover:underline"
+                                                                        className="
+                                                                            text-[#01C14C] 
+                                                                            hover:underline"
+                                                                            pl-2
                                                                     >
                                                                         Adicionar?
                                                                     </Link>

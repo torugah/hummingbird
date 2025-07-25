@@ -25,11 +25,14 @@ const CustomTooltip = ({ active, payload, coordinate }: any) => {
           position: 'absolute',
           left: coordinate?.x + 10,
           top: coordinate?.y + 10,
+          maxWidth: '200px'
         }}
       >
         <div className="flex flex-col gap-1">
-          <span className="text-sm font-medium text-muted-foreground">
-            {data.name}
+          <span className="text-sm font-medium text-muted-foreground overflow-hidden">
+            <div className="truncate hover:translate-x-2 hover:transition-transform hover:duration-300 hover:ease-in-out">
+              {data.name}
+            </div>
           </span>
           <span className="text-lg font-bold">
             {new Intl.NumberFormat('pt-BR', {
