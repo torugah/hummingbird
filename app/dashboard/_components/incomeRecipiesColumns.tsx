@@ -2,6 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import ActionsCell from "./actionsForColumns"; // Renomear a importação e o componente
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown } from "lucide-react";
 
 // This type is used to define the shape of data.
 export type Transaction = {
@@ -30,11 +32,33 @@ export const incomeColumns: ColumnDef<Transaction>[] = [
 
     {
         accessorKey: "str_name",
-        header: "Item",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="p-1 rounded-full"
+                >
+                    Item
+                    <ArrowUpDown className="h-4 w-4" />
+                </Button>
+            )
+        },
     },
     {
         accessorKey: "dbl_valor",
-        header: "Valor",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="p-1 rounded-full"
+                >
+                    Valor
+                    <ArrowUpDown className="h-4 w-4" />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const amount = parseFloat(row.getValue("dbl_valor"))
 
@@ -47,34 +71,20 @@ export const incomeColumns: ColumnDef<Transaction>[] = [
         }
 
     },
-    // {
-    //     accessorKey: "int_installmentCount",
-    //     header: "Condição",
-    //     cell: ({ row }) => {
-    //         const installmentCount = row.getValue("int_installmentCount") as number;
-
-    //         if (installmentCount === 1) {
-    //             return <span>À Vista</span>; // Or "case 1" as in your example
-    //         } else if (installmentCount > 1) {
-    //             return <span>{`1 de ${installmentCount}`}</span>; // Or "case 2", or format as needed
-    //         }
-    //         return <span>-</span>; // Handle other cases if necessary (e.g., 0 or null)
-    //     }
-    // },
-    // {
-    //     accessorKey: "tipoPagamento.str_nomeTipoPgto",
-    //     header: "Forma",
-    //     cell: ({ row }) => {
-    //         const paymentFormNameFromType = row.original.tipoPagamento?.str_nomeTipoPgto;
-    //         if (paymentFormNameFromType) {
-    //             return <span>{paymentFormNameFromType}</span>;
-    //         }
-    //         return <span>"[Desconhecido]"</span>
-    //     }
-    // },
     {
         accessorKey: "str_status",
-        header: "Status",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="p-1 rounded-full"
+                >
+                    Status
+                    <ArrowUpDown className="h-4 w-4" />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const status = row.getValue("str_status") as string;
             // Simple uppercase
@@ -85,7 +95,18 @@ export const incomeColumns: ColumnDef<Transaction>[] = [
     },
     {
         accessorKey: "dtm_data",
-        header: "Data",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="p-1 rounded-full"
+                >
+                    Data
+                    <ArrowUpDown className="h-4 w-4" />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const date = row.getValue("dtm_data") as Date;
 
@@ -94,7 +115,18 @@ export const incomeColumns: ColumnDef<Transaction>[] = [
     },
     {
         accessorKey: "category.str_categoryName",
-        header: "Categoria",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="p-1 rounded-full"
+                >
+                    Categoria
+                    <ArrowUpDown className="h-4 w-4" />
+                </Button>
+            )
+        },
     },
     {
         id: "actions",
