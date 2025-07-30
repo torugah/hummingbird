@@ -49,7 +49,7 @@ export default async function Categories({
 
             </div>
             {/* Container para os cards de categoria */}
-            <div className="flex flex-row flex-wrap max-lg:w-[95%] justify-start my-16 w-[74%] p-1 gap-4">
+            <div className="flex flex-row flex-wrap max-lg:w-[95%] justify-center my-16 w-[74%] gap-1">
                 <CategoryCardList userId={userId} showDialog={showDialog} />
             </div>
             <Footer />

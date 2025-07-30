@@ -68,7 +68,7 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId , show
                 // Use a unique key for each card, like category.id
                 <div 
                     key={category.category_id} 
-                    className='flex flex-col p-[0.1rem] w-[32%] h-fit bg-gray-100 border-gray-300 border-2 rounded-lg'>
+                    className='flex flex-col p-[0.1rem] w-[32%] max-lg:w-[49%] max-md:w-[99%] h-fit bg-gray-100 border-gray-300 border-2 rounded-lg'>
 
                     {/* Use category.str_image if available, otherwise a default */}
                     <div className={`flex flex-row items-center p-2 rounded-sm w-full h-fit aspect-video bg-cover 
@@ -109,7 +109,7 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId , show
             ))}
 
             {/* The "Add New Category" card, always present */}
-            <div className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg items-center justify-center'>  
+            <div className='flex flex-col p-[0.1rem] w-[32%] max-lg:w-[49%] max-md:w-[99%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg items-center justify-center'>  
                 <DialogAddNewCategory userId={userId} />
             </div>
         </>
