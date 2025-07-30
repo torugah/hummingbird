@@ -214,7 +214,7 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
             itemValue: data.itemValue,
             transactionalType: 'Variable', 
             movimentType: 'Output', 
-            str_description: data.itemDescription,
+            itemDescription: data.itemDescription,
             boolInstallment: data.boolInstallment,
             intInstallment: data.intInstallment,
             Installmentdate: data.Installmentdate,

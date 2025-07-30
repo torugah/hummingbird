@@ -19,6 +19,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -345,63 +352,71 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                                     render={({ field }) => {
                                         const handleChange = (val: string) => field.onChange(Number(val));
 
+                                        // Filtra as categorias conforme o tipo de transação
+                                        const filteredCategories = categories.filter((cat) => {
+                                        const movimentType =
+                                            transactionType === "Fixed" || transactionType === "Variable"
+                                            ? "Output"
+                                            : "Input";
                                         return (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Select onValueChange={handleChange} value={field.value?.toString()}>
-                                                        <SelectTrigger className="w-full">
-                                                            <SelectValue placeholder="Escolha a categoria" />
-                                                        </SelectTrigger>
-                                                        <SelectContent>
-                                                            <SelectGroup>
-                                                                <SelectLabel>Suas Categorias</SelectLabel>
+                                            cat.str_movimentType === transactionType ||
+                                            cat.str_movimentType === movimentType
+                                        );
+                                        });
 
-                                                                {/*
-                                                            const movimentType = transactionType === "Fixed" || "Variable" ? "Output" : "Input"; 
-                                                            */}
+                                        return (
+                                        <FormItem>
+                                            <FormControl>
+                                            <Select onValueChange={handleChange} value={field.value?.toString()}>
+                                                <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Selecione uma categoria" />
+                                                </SelectTrigger>
+                                                <SelectContent className="max-h-[300px] overflow-y-auto">
+                                                <Command>
+                                                    {/* Campo de busca */}
+                                                    <CommandInput 
+                                                    placeholder="Buscar categoria..." 
+                                                    className="border-0 focus:ring-0"
+                                                    />
+                                                    <CommandEmpty>Nenhuma categoria encontrada.</CommandEmpty>
 
-                                                                {categories.length > 0 ? (
-                                                                    categories
-                                                                        .filter((cat) => {
-                                                                            const movimentType =
-                                                                                transactionType === "Fixed" || transactionType === "Variable"
-                                                                                    ? "Output"
-                                                                                    : "Input";
-
-                                                                            // Compara com transactionType OU movimentType, conforme necessário
-                                                                            return (
-                                                                                cat.str_movimentType === transactionType ||
-                                                                                cat.str_movimentType === movimentType
-                                                                            );
-                                                                        })
-                                                                        .map((cat) => (
-                                                                            <SelectItem key={cat.category_id} value={cat.category_id.toString()}>
-                                                                                {cat.str_categoryName}
-                                                                            </SelectItem>
-                                                                        ))
-                                                                ) : (
-                                                                    <SelectLabel className="text-muted-foreground">
-                                                                        Nenhuma categoria disponível.
-                                                                        <Link
-                                                                            href="/categories?addNew=true"
-                                                                            className="
-                                                                            text-[#01C14C] 
-                                                                            hover:underline"
-                                                                            px-2
-                                                                        >
-                                                                            Adicionar?
-                                                                        </Link>
-                                                                    </SelectLabel>
-                                                                )}
-                                                            </SelectGroup>
-                                                        </SelectContent>
-                                                    </Select>
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )
+                                                    {/* Lista de categorias */}
+                                                    <CommandGroup>
+                                                    {filteredCategories.length > 0 ? (
+                                                        filteredCategories.map((cat) => (
+                                                        <CommandItem
+                                                            key={cat.category_id}
+                                                            value={cat.category_id.toString()}
+                                                            onSelect={() => handleChange(cat.category_id.toString())}
+                                                            className="cursor-pointer"
+                                                        >
+                                                            {cat.str_categoryName}
+                                                        </CommandItem>
+                                                        ))
+                                                    ) : (
+                                                        <CommandItem 
+                                                        disabled 
+                                                        className="text-muted-foreground"
+                                                        >
+                                                        Nenhuma categoria disponível.{" "}
+                                                        <Link
+                                                            href="/categories?addNew=true"
+                                                            className="text-[#01C14C] hover:underline px-1"
+                                                        >
+                                                            Adicionar?
+                                                        </Link>
+                                                        </CommandItem>
+                                                    )}
+                                                    </CommandGroup>
+                                                </Command>
+                                                </SelectContent>
+                                            </Select>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                        );
                                     }}
-                                />
+                                    />
 
                             </div>
 
