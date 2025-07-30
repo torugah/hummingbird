@@ -32,7 +32,7 @@ import {
 import { Calendar as CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
-import React, { useEffect , useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -50,16 +50,16 @@ const FormSchema = z
         category: z.number().nullable(),
         boolInstallment: z.boolean().optional(),
         intInstallment: z.number().min(1, "This cannot be divided into zero or less"),
-        cardID: z.number().nonnegative("Obrigatório"), 
+        cardID: z.number().nonnegative("Obrigatório"),
         Installmentdate: z.date().optional(),
-        paymentMethod: z.number().nonnegative("Obrigatório"), 
+        paymentMethod: z.number().nonnegative("Obrigatório"),
         date: z.date(),
         boolStatus: z.string()
     });
 
 interface Bank {
     bank_id: number;
-    str_bankName: string;    
+    str_bankName: string;
 }
 
 interface Cartao {
@@ -87,9 +87,9 @@ interface ChildComponentProps {
     transactionType: string;
 }
 
-const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType }) => {
+const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) => {
 
-    const router = useRouter(); 
+    const router = useRouter();
 
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
@@ -102,13 +102,13 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
         const fetchCategories = async () => {
             if (!userId) return;
             try {
-                
+
                 const response = await fetch(`${baseUrl}/api/categories?userId=${userId}`, {
                     cache: 'no-store',
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' }
                 }
-                    
+
                 );
                 if (!response.ok) {
                     console.error(`Failed to fetch categories`);
@@ -121,7 +121,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
             }
         };
         fetchCategories();
-    }, [userId]); 
+    }, [userId]);
 
     const [cards, setCards] = useState<Cartao[]>([]);
 
@@ -129,12 +129,12 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
         const fetchUserCards = async () => {
             try {
                 const response = await fetch(`${baseUrl}/api/cards?userId=${userId}`, {
-                                                cache: 'no-store',
-                                                method: 'GET',
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                }
-                                            });
+                    cache: 'no-store',
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
                 const data = await response.json();
                 setCards(data);
             } catch (error) {
@@ -148,7 +148,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
     const [paymentMethod, setPaymentMethod] = useState<PaymentMethod[]>([]);  // State for storing paymentMethod data
 
     useEffect(() => {
-        
+
         const fetchPaymentMehtod = async () => {
             const response = await fetch("/api/getPaymentMethod");
             const paymentMethodData = await response.json();
@@ -165,7 +165,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
         if (name === "debito") return "Débito";
         if (name === "credito") return "Crédito";
         return name; // Padrão
-    };   
+    };
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -185,20 +185,20 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
 
         setIsLoading(true);
 
-        const movimentType = transactionType === "Fixed" || "Variable" ? "Output" : "Input"; 
+        const movimentType = transactionType === "Fixed" || "Variable" ? "Output" : "Input";
 
         const requestBody = {
-            userId : userId,
+            userId: userId,
             categoryId: data.category,
             itemName: data.itemName,
             itemValue: data.itemValue,
-            transactionalType: transactionType, 
-            movimentType: movimentType, 
+            transactionalType: transactionType,
+            movimentType: movimentType,
             itemDescription: data.itemDescription,
             boolInstallment: data.boolInstallment,
             intInstallment: data.intInstallment,
-            Installmentdate: data.Installmentdate,                            
-            cardID: data.cardID,   
+            Installmentdate: data.Installmentdate,
+            cardID: data.cardID,
             paymentMethod: data.paymentMethod,  //TODO: Rever itens e IDs em banco.       
             boolStatus: data.boolStatus,
             date: data.date,
@@ -225,9 +225,9 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                 description: `Oops! Something when wrong! Status: ${response.status}`,
                 variant: "destructive"
             })
-        
+
         }
-        
+
         setIsLoading(false);
         handleCancel();
         setIsOpen(false);
@@ -241,7 +241,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
         reset(); // Reseta os valores do formulário para os valores padrão
     };
 
-    const [isOpen, setIsOpen] = useState(false); 
+    const [isOpen, setIsOpen] = useState(false);
     // Função para lidar com a mudança de estado do diálogo (abrir/fechar)
     const handleOpenChange = (open: boolean) => {
         if (!open) {
@@ -260,16 +260,16 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
                         <DialogTitle>
-                            {transactionType !== "Income" ? "Nova Despesa" : "Nova Receita"}                            
+                            {transactionType !== "Income" ? "Nova Despesa" : "Nova Receita"}
                         </DialogTitle>
                         <DialogDescription>
-                            { transactionType === "Fixed" ?
-                            "Inclua aqui suas despesas fixas, aluguel por exemplo 🏠 Clique em salvar quando preencher tudo 😉." 
-                            :
-                            transactionType === "Variable" ?
-                            "Inclua aqui suas despesas variáveis, um jantar fora por exemplo 🥘 Abaixo salve as alterações 😉." 
-                            :
-                            "Adicione cada um dos seus esforços em forma financeira! 💵 No fim salve as alterações 😉."
+                            {transactionType === "Fixed" ?
+                                "Inclua aqui suas despesas fixas, aluguel por exemplo 🏠 Clique em salvar quando preencher tudo 😉."
+                                :
+                                transactionType === "Variable" ?
+                                    "Inclua aqui suas despesas variáveis, um jantar fora por exemplo 🥘 Abaixo salve as alterações 😉."
+                                    :
+                                    "Adicione cada um dos seus esforços em forma financeira! 💵 No fim salve as alterações 😉."
                             }
                         </DialogDescription>
                     </DialogHeader>
@@ -277,7 +277,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                     <Form {...form}>
                         <form id="dialogForm" className="w-full space-y-4 py-4" onSubmit={form.handleSubmit(onSubmit)}>
 
-        {/* First Layer */}
+                            {/* First Layer */}
                             <div className="flex flex-row space-x-2">
                                 <div className="w-1/2">
                                     <FormField
@@ -322,7 +322,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                                 </div>
                             </div>
 
-        {/* Second Layer */}
+                            {/* Second Layer */}
                             <div>
                                 <FormField
                                     control={form.control}
@@ -337,7 +337,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                                     )}
                                 />
                             </div>
-        {/* Third Layer */}
+                            {/* Third Layer */}
                             <div>
                                 <FormField
                                     control={form.control}
@@ -346,106 +346,125 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                                         const handleChange = (val: string) => field.onChange(Number(val));
 
                                         return (
-                                        <FormItem>
-                                            <FormControl>
-                                            <Select onValueChange={handleChange} value={field.value?.toString()}>
-                                                <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Escolha a categoria" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectGroup>
-                                                            <SelectLabel>Suas Categorias</SelectLabel>
-                                                            {categories.length > 0 ? (
-                                                                categories.filter((cat) => cat.str_movimentType === transactionType).map((cat) => (
-                                                                    <SelectItem key={cat.category_id} value={cat.category_id.toString()}>
-                                                                        {cat.str_categoryName}
-                                                                    </SelectItem>
-                                                                ))
-                                                            ) : (
-                                                                <SelectLabel className="text-muted-foreground">
-                                                                    Nenhuma categoria disponível. 
-                                                                    <Link 
-                                                                        href="/categories?addNew=true" 
-                                                                        className="
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Select onValueChange={handleChange} value={field.value?.toString()}>
+                                                        <SelectTrigger className="w-full">
+                                                            <SelectValue placeholder="Escolha a categoria" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectGroup>
+                                                                <SelectLabel>Suas Categorias</SelectLabel>
+
+                                                                {/*
+                                                            const movimentType = transactionType === "Fixed" || "Variable" ? "Output" : "Input"; 
+                                                            */}
+
+                                                                {categories.length > 0 ? (
+                                                                    categories
+                                                                        .filter((cat) => {
+                                                                            const movimentType =
+                                                                                transactionType === "Fixed" || transactionType === "Variable"
+                                                                                    ? "Output"
+                                                                                    : "Input";
+
+                                                                            // Compara com transactionType OU movimentType, conforme necessário
+                                                                            return (
+                                                                                cat.str_movimentType === transactionType ||
+                                                                                cat.str_movimentType === movimentType
+                                                                            );
+                                                                        })
+                                                                        .map((cat) => (
+                                                                            <SelectItem key={cat.category_id} value={cat.category_id.toString()}>
+                                                                                {cat.str_categoryName}
+                                                                            </SelectItem>
+                                                                        ))
+                                                                ) : (
+                                                                    <SelectLabel className="text-muted-foreground">
+                                                                        Nenhuma categoria disponível.
+                                                                        <Link
+                                                                            href="/categories?addNew=true"
+                                                                            className="
                                                                             text-[#01C14C] 
                                                                             hover:underline"
                                                                             px-2
-                                                                    >
-                                                                        Adicionar?
-                                                                    </Link>
-                                                                </SelectLabel>
-                                                            )}
-                                                        </SelectGroup>
-                                                    </SelectContent>
-                                                </Select>
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}}
+                                                                        >
+                                                                            Adicionar?
+                                                                        </Link>
+                                                                    </SelectLabel>
+                                                                )}
+                                                            </SelectGroup>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )
+                                    }}
                                 />
 
                             </div>
 
-        {/* Fourth Layer */}
+                            {/* Fourth Layer */}
                             {transactionType !== 'Income' && (
                                 <div className={`flex items-center`}>
                                     <FormField
-                                    control={form.control}
-                                    name="boolInstallment"
-                                    render={({ field }) => (
-                                        <FormItem className={`flex items-center w-1/2`}> 
-                                            <FormControl>
-                                                <div className="flex items-center gap-2 content-center w-full">
-                                                    <Switch
-                                                        id="parcelado"
-                                                        checked={field.value}
-                                                        onCheckedChange={field.onChange}
-                                                    />
-                                                    <Label htmlFor="parcelado">
-                                                        Está parcelado?
-                                                    </Label>
-                                                </div>
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
+                                        control={form.control}
+                                        name="boolInstallment"
+                                        render={({ field }) => (
+                                            <FormItem className={`flex items-center w-1/2`}>
+                                                <FormControl>
+                                                    <div className="flex items-center gap-2 content-center w-full">
+                                                        <Switch
+                                                            id="parcelado"
+                                                            checked={field.value}
+                                                            onCheckedChange={field.onChange}
+                                                        />
+                                                        <Label htmlFor="parcelado">
+                                                            Está parcelado?
+                                                        </Label>
+                                                    </div>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
                                         )}
                                     />
 
                                     <FormField
-                                    control={form.control}
-                                    name="intInstallment"
-                                    render={({ field }) => (
-                                        <FormItem className={`flex items-center w-1/2`}>
-                                            <FormControl>
-                                                <div className={`flex items-center gap-2 w-full`}>
-                                                    <Input
-                                                        id="num-parcelas"
-                                                        placeholder="Quantas Parcelas?"
-                                                        type="number"
-                                                        {...field}
-                                                        onChange={(e) =>
-                                                            field.onChange(
-                                                            e.target.value === "" ? undefined : parseFloat(e.target.value)
-                                                            )
-                                                        }
-                                                    />
-                                                </div>
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
+                                        control={form.control}
+                                        name="intInstallment"
+                                        render={({ field }) => (
+                                            <FormItem className={`flex items-center w-1/2`}>
+                                                <FormControl>
+                                                    <div className={`flex items-center gap-2 w-full`}>
+                                                        <Input
+                                                            id="num-parcelas"
+                                                            placeholder="Quantas Parcelas?"
+                                                            type="number"
+                                                            {...field}
+                                                            onChange={(e) =>
+                                                                field.onChange(
+                                                                    e.target.value === "" ? undefined : parseFloat(e.target.value)
+                                                                )
+                                                            }
+                                                        />
+                                                    </div>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
                                         )}
                                     />
                                 </div>
                             )}
-        {/* Fifth Layer */}
-        
-                            <div className="flex flex-row space-x-2">                                     
+                            {/* Fifth Layer */}
+
+                            <div className="flex flex-row space-x-2">
                                 <div className="w-1/2">
                                     <FormField
                                         control={form.control}
                                         name="cardID"
-                                        render={({ field }) => {                                            
-                                            return (                                                
+                                        render={({ field }) => {
+                                            return (
                                                 <FormItem>
                                                     <FormControl>
                                                         <Select
@@ -457,7 +476,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                                                             </SelectTrigger>
                                                             <SelectContent>
                                                                 <SelectGroup>
-                                                                    <SelectLabel>Seus Cartões</SelectLabel>                                                                    
+                                                                    <SelectLabel>Seus Cartões</SelectLabel>
                                                                     {cards.length > 0 ? (
                                                                         cards.map((cartao, index) => {
                                                                             //console.log(`Cartão na posição ${index}:`, cartao);
@@ -492,14 +511,14 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                                     />
                                 </div>
 
-           
+
                                 {/*Forma de Pagamento*/}
                                 <div className="w-1/2">
                                     <FormField
                                         control={form.control}
                                         name="paymentMethod"
                                         render={({ field }) => {
-                                            return(
+                                            return (
                                                 <FormItem>
                                                     <FormControl>
                                                         <Select
@@ -509,7 +528,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                                                             <SelectTrigger className="w-full">
                                                                 <SelectValue placeholder="Forma paga?" />
                                                             </SelectTrigger>
-                                                            <SelectContent>                                                                
+                                                            <SelectContent>
                                                                 <SelectGroup>
                                                                     <SelectLabel>Opções:</SelectLabel>
                                                                     {paymentMethod.map((payment) => (
@@ -529,7 +548,7 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                                 </div>
                             </div>
 
-        {/* Sixth Layer */}
+                            {/* Sixth Layer */}
                             <div className="flex flex-row items-center justify-between space-x-2">
                                 {/* Calendário com Popover */}
                                 <div className="w-1/2">
@@ -552,8 +571,8 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                                                                 {field.value ? format(field.value, "dd/MM/yyyy") : <span>Qual a data?</span>}
                                                             </Button>
                                                         </PopoverTrigger>
-                                                        <PopoverContent 
-                                                            className="w-auto p-0"  
+                                                        <PopoverContent
+                                                            className="w-auto p-0"
                                                             style={{ pointerEvents: 'auto' }}
                                                         >
                                                             <Calendar
@@ -589,12 +608,12 @@ const DialogDPV : React.FC<ChildComponentProps> = ({ userId , transactionType })
                                                             <SelectTrigger className="w-full">
                                                                 <SelectValue placeholder="Status" />
                                                             </SelectTrigger>
-                                                            <SelectContent>                                                                
-                                                                <SelectGroup>                                                                        
+                                                            <SelectContent>
+                                                                <SelectGroup>
                                                                     <SelectItem value="pago">Pago</SelectItem>
                                                                     <SelectItem value="emAberto">Em aberto</SelectItem>
                                                                     <SelectItem value="futura">Futura</SelectItem>
-                                                                    <SelectItem value="atrasada">Atrasada</SelectItem>                                                                      
+                                                                    <SelectItem value="atrasada">Atrasada</SelectItem>
                                                                 </SelectGroup>
                                                             </SelectContent>
                                                         </Select>
