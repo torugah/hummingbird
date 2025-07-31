@@ -64,7 +64,9 @@ export default function Configurations() {
 
         console.log("Enviando requisição para API...");
 
-        const response = await fetch('/api/user/editNickname', {
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+
+        const response = await fetch(`${baseUrl}/api/user/editNickname`, {
             method: 'POST',
             body: formDataNickname,
             headers: {

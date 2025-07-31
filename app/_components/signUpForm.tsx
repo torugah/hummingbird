@@ -49,7 +49,9 @@ export function SignUpForm() {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setIsLoading(true);
 
-    const response = await fetch('/api/user', {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+
+    const response = await fetch(`${baseUrl}/api/user`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
