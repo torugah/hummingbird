@@ -1,6 +1,7 @@
 import { db } from "@/app/_lib/prisma";
 import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 
 export const dynamic = 'force-dynamic'
@@ -46,6 +47,21 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ user: rest, message: "User created successfully"}, {status: 201});
     } catch (error) {
-        return NextResponse.json({ message: "Something went wrong!"}, {status: 500});
+        if (error instanceof z.ZodError) {
+            return NextResponse.json(
+                { message: "Invalid input data", errors: error.flatten().fieldErrors },
+                { status: 400 }
+            );
+        }
+
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            // Log specific Prisma errors for better debugging on the server
+            console.error("Prisma Error:", { code: error.code, message: error.message, meta: error.meta });
+        } else {
+            // Log any other kind of unexpected error
+            console.error("Error creating user:", error);
+        }
+
+        return NextResponse.json({ message: "Something went wrong!" }, { status: 500 });
     }
 }
