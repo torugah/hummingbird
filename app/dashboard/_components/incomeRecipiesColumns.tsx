@@ -23,7 +23,7 @@ export type Transaction = {
     dtm_data: Date;
     category: {
         category_id: number;
-        str_categoryName?: string
+        str_categoryName: string
     }
     user_id: string;
 }
