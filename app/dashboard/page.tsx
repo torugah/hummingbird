@@ -14,6 +14,7 @@ import { EmblaOptionsType } from "embla-carousel";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { MonthYearSelector } from "../_components/monthYearSelector";
 import { useToast } from "@/components/hooks/use-toast";
+import { StackedAreaChart } from "./_components/StackedAreaChart";
 
 interface InitialPageProps {
   searchParams: {
@@ -81,7 +82,11 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
         <PieChartByCategory 
             key="income-transactions" 
             transactions={incomeTransactionsData} 
-        />
+        />,
+        <StackedAreaChart
+            key="stacked"
+            transactions={[...variableTransactionsData, ...fixedTransactionsData, ...incomeTransactionsData]}
+        />    
     ];
 
     const OPTIONS: EmblaOptionsType = { loop: true };
