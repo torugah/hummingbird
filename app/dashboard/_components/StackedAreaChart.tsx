@@ -1,4 +1,3 @@
-// stackedAreaChart.tsx
 "use client"
 
 import React, { useState } from 'react';
@@ -31,10 +30,15 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
   const filterTransactionsByDate = () => {
     const cutoffDate = new Date(currentDate);
     cutoffDate.setMonth(cutoffDate.getMonth() - parseInt(monthRange));
+    cutoffDate.setDate(1); // Primeiro dia do mês
     
+    const endDate = new Date(currentDate);
+    endDate.setMonth(endDate.getMonth() + 1);
+    endDate.setDate(0); // Último dia do mês atual
+
     return transactions.filter(transaction => {
       const transactionDate = new Date(transaction.dtm_data);
-      return transactionDate >= cutoffDate && transactionDate <= currentDate;
+      return transactionDate >= cutoffDate && transactionDate <= endDate;
     });
   };
 
@@ -76,6 +80,9 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
 
   const chartData = processChartData();
   const categories = [...new Set(transactions.map(t => t.category.str_categoryName))];
+  
+  // Adicione este console.log para debug
+  console.log('Dados do gráfico:', chartData);
   
   // Cores para as categorias
   const COLORS = [
@@ -139,7 +146,7 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
               } 
             />
             <Tooltip content={<CustomTooltip />} />
-            <Legend />
+            <Legend  />
             {categories.map((category, index) => (
               <Area
                 key={category}
