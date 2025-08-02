@@ -22,7 +22,7 @@ export function CarouselComponent({
     <PieChartByCategory key="variable" transactions={variableTransactionsData} />,
     <PieChartByCategory key="fixed" transactions={fixedTransactionsData} />,
     <PieChartByCategory key="income" transactions={incomeTransactionsData} />,
-    <StackedAreaChart key="stacked" transactions={allTransactions} />
+    //<StackedAreaChart key="stacked" transactions={allTransactions} currentDate={}/>
   ]
 
   return (
