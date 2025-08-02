@@ -16,6 +16,7 @@ import type { Transaction } from "./variableExpensesColumns";
 
 interface StackedAreaChartProps {
   transactions: Transaction[];
+  currentDate: Date;
 }
 
 const MONTHS = [
@@ -23,52 +24,47 @@ const MONTHS = [
   'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
 ];
 
-export function StackedAreaChart({ transactions }: StackedAreaChartProps) {
+export function StackedAreaChart({ transactions, currentDate }: StackedAreaChartProps) {
   const [monthRange, setMonthRange] = useState<'3' | '6'>('3');
   
   // Filtra transações dos últimos N meses
   const filterTransactionsByDate = () => {
-    const today = new Date();
-    const cutoffDate = new Date();
-    cutoffDate.setMonth(today.getMonth() - parseInt(monthRange));
+    const cutoffDate = new Date(currentDate);
+    cutoffDate.setMonth(cutoffDate.getMonth() - parseInt(monthRange));
     
     return transactions.filter(transaction => {
       const transactionDate = new Date(transaction.dtm_data);
-      return transactionDate >= cutoffDate;
+      return transactionDate >= cutoffDate && transactionDate <= currentDate;
     });
   };
 
   // Agrupa dados por mês e categoria
   const processChartData = () => {
     const filteredTransactions = filterTransactionsByDate();
-    const today = new Date();
     const monthData: Record<string, Record<string, number>> = {};
+    const allCategories = [...new Set(filteredTransactions.map(t => t.category.str_categoryName))];
     
     // Inicializa os meses com valores zerados para todas categorias
     for (let i = parseInt(monthRange) - 1; i >= 0; i--) {
-      const date = new Date();
-      date.setMonth(today.getMonth() - i);
+      const date = new Date(currentDate);
+      date.setMonth(date.getMonth() - i);
       const monthKey = `${MONTHS[date.getMonth()]}/${date.getFullYear().toString().slice(2)}`;
       
-      monthData[monthKey] = monthData[monthKey]  || {};
-      // Encontra todas categorias únicas
-      const allCategories = [...new Set(filteredTransactions.map(t => t.category.str_categoryName))];
+      monthData[monthKey] = {};
       allCategories.forEach(category => {
         monthData[monthKey][category] = 0;
       });
     }
     
-    // Preenche com os valores reais
+    // Preenche com os valores reais (agrupando por mês e categoria)
     filteredTransactions.forEach(transaction => {
       const date = new Date(transaction.dtm_data);
       const monthKey = `${MONTHS[date.getMonth()]}/${date.getFullYear().toString().slice(2)}`;
-      const category = transaction.category.category_id;
+      const category = transaction.category.str_categoryName;
       
-      if (!monthData[monthKey]) {
-        monthData[monthKey] = {};
+      if (monthData[monthKey] && category) {
+        monthData[monthKey][category] = (monthData[monthKey][category] || 0) + transaction.dbl_valor;
       }
-      
-      monthData[monthKey][category] = (monthData[monthKey][category] || 0) + transaction.dbl_valor;
     });
     
     // Converte para o formato que o Recharts espera

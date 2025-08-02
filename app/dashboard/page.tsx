@@ -85,7 +85,8 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
         />,
         <StackedAreaChart
             key="stacked"
-            transactions={[...variableTransactionsData, ...fixedTransactionsData, ...incomeTransactionsData]}
+            transactions={[...variableTransactionsData, ...fixedTransactionsData, ...incomeTransactionsData]} 
+            currentDate={currentViewDate}
         />    
     ];
 
