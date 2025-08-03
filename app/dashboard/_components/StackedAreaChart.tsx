@@ -40,6 +40,7 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
     const endDate = new Date(currentDate);
     endDate.setMonth(endDate.getMonth() + 1);
     endDate.setDate(0); // Último dia do mês atual
+    endDate.setHours(23, 59, 59, 999); 
 
     return transactions.filter(transaction => {
       const transactionDate = new Date(((transaction.dtm_data as unknown) as string).replace(' ', 'T'));
