@@ -33,12 +33,15 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
     console.log('1...Coleção de Transações:', transactions); 
 
 
+    console.log('1...Data atual:', currentDate); 
+
+
     const cutoffDate = new Date(currentDate);
     cutoffDate.setMonth(cutoffDate.getMonth() - parseInt(monthRange));
     cutoffDate.setDate(1); // Primeiro dia do mês
 
     const endDate = new Date(currentDate);
-    endDate.setMonth(endDate.getMonth() + 1);
+    endDate.setMonth(endDate.getMonth() + 2);
     endDate.setDate(0); // Último dia do mês atual
     endDate.setHours(23, 59, 59, 999); 
     console.log('2...Data de corte:', cutoffDate);
