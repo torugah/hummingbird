@@ -43,7 +43,7 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
     endDate.setHours(23, 59, 59, 999); 
 
     return transactions.filter(transaction => {
-      const transactionDate = new Date(((transaction.dtm_data as unknown) as string).replace(' ', 'T'));
+      const transactionDate = new Date(transaction.dtm_data);
       return transactionDate >= cutoffDate && transactionDate <= endDate;
     });
   };
@@ -57,7 +57,7 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
     const allCategories = [...new Set(filteredTransactions.map(t => t.category.str_categoryName))];
     console.log('Categorias únicas:', allCategories); // Debug 2
 
-    for (let i = parseInt(monthRange) - 1; i >= 0; i--) {
+    for (let i = parseInt(monthRange); i >= 0; i--) {
       const date = new Date(currentDate);
       date.setMonth(currentDate.getMonth() - i);
       const monthKey = `${MONTHS[date.getMonth()]}/${date.getFullYear().toString().slice(2)}`;
