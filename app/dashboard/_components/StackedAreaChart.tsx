@@ -24,10 +24,15 @@ const MONTHS = [
 ];
 
 export function StackedAreaChart({ transactions, currentDate }: StackedAreaChartProps) {
-  const [monthRange, setMonthRange] = useState<'2' | '5'>('2');
+  const [monthRange, setMonthRange] = useState<'3' | '6'>('3');
 
   // Filtra transações dos últimos N meses
   const filterTransactionsByDate = () => {
+
+    
+    console.log('1...Coleção de Transações:', transactions); 
+
+
     const cutoffDate = new Date(currentDate);
     cutoffDate.setMonth(cutoffDate.getMonth() - parseInt(monthRange));
     cutoffDate.setDate(1); // Primeiro dia do mês
@@ -37,7 +42,7 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
     endDate.setDate(0); // Último dia do mês atual
 
     return transactions.filter(transaction => {
-      const transactionDate = new Date(transaction.dtm_data);
+      const transactionDate = new Date(((transaction.dtm_data as unknown) as string).replace(' ', 'T'));
       return transactionDate >= cutoffDate && transactionDate <= endDate;
     });
   };
@@ -123,14 +128,14 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
         <h2 className="text-xl font-semibold">Despesas por Categoria (Últimos {monthRange} meses)</h2>
         <div className="flex gap-2">
           <button
-            onClick={() => setMonthRange('2')}
-            className={`px-3 py-1 rounded ${monthRange === '2' ? 'bg-[#01C14C] text-white' : 'bg-gray-200'}`}
+            onClick={() => setMonthRange('3')}
+            className={`px-3 py-1 rounded ${monthRange === '3' ? 'bg-[#01C14C] text-white' : 'bg-gray-200'}`}
           >
             3 meses
           </button>
           <button
-            onClick={() => setMonthRange('5')}
-            className={`px-3 py-1 rounded ${monthRange === '5' ? 'bg-[#01C14C] text-white' : 'bg-gray-200'}`}
+            onClick={() => setMonthRange('6')}
+            className={`px-3 py-1 rounded ${monthRange === '6' ? 'bg-[#01C14C] text-white' : 'bg-gray-200'}`}
           >
             6 meses
           </button>
