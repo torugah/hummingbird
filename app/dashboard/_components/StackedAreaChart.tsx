@@ -41,9 +41,11 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
     endDate.setMonth(endDate.getMonth() + 1);
     endDate.setDate(0); // Último dia do mês atual
     endDate.setHours(23, 59, 59, 999); 
+    console.log('2...Data de corte:', cutoffDate);
+    console.log('3...Data final:', endDate);
 
     return transactions.filter(transaction => {
-      const transactionDate = new Date(transaction.dtm_data);
+      const transactionDate = new Date(((transaction.dtm_data as unknown) as string).replace(' ', 'T'));
       return transactionDate >= cutoffDate && transactionDate <= endDate;
     });
   };
@@ -59,7 +61,9 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
 
     for (let i = parseInt(monthRange); i >= 0; i--) {
       const date = new Date(currentDate);
+      console.log(`Antes...`, date);
       date.setMonth(currentDate.getMonth() - i);
+      console.log(`Depois...`, date);
       const monthKey = `${MONTHS[date.getMonth()]}/${date.getFullYear().toString().slice(2)}`;
       console.log(`Processando mês ${i}:`, monthKey); // Debug 3
 
