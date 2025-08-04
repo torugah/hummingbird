@@ -36,6 +36,13 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
     const currentYear = searchParams.year ? parseInt(searchParams.year) : horaAtual.getFullYear();
     const currentViewDate = new Date(currentYear, currentMonth, 1);
 
+    const consoleLogTime = () => {
+        console.log(`Hora atual: ${horaAtual}`);
+        console.log(`Mês atual: ${currentMonth + 1}`);
+        console.log(`Ano atual: ${currentYear}`);
+        console.log(`Data atual: ${currentViewDate}`);
+    }
+
     // Função para gerar URL com parâmetros de data
     const getDateUrl = (date: Date) => {
         return `?month=${date.getMonth() + 1}&year=${date.getFullYear()}`;
@@ -126,6 +133,9 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
     const vrc = totalRendimentos - totalJaPaguei;                
 
     return (
+
+        consoleLogTime(),
+
         <div className="flex flex-col items-center justify-between">
             <Header />
 
