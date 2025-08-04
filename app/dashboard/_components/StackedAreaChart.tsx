@@ -28,47 +28,39 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
 
   // Filtra transações dos últimos N meses
   const filterTransactionsByDate = () => {
-
-    
-    console.log('1...Coleção de Transações:', transactions); 
-
-
-    console.log('1...Data atual:', currentDate); 
-
-
     const cutoffDate = new Date(currentDate);
     cutoffDate.setMonth(cutoffDate.getMonth() - parseInt(monthRange));
-    cutoffDate.setDate(1); // Primeiro dia do mês
+    cutoffDate.setDate(1);
+    cutoffDate.setHours(0, 0, 0, 0);
 
     const endDate = new Date(currentDate);
-    endDate.setMonth(endDate.getMonth() + 2);
-    endDate.setDate(0); // Último dia do mês atual
-    endDate.setHours(23, 59, 59, 999); 
-    console.log('2...Data de corte:', cutoffDate);
-    console.log('3...Data final:', endDate);
+    endDate.setMonth(endDate.getMonth() + 1);
+    endDate.setDate(0);
+    endDate.setHours(23, 59, 59, 999);
 
     return transactions.filter(transaction => {
-      const transactionDate = new Date(((transaction.dtm_data as unknown) as string).replace(' ', 'T'));
-      return transactionDate >= cutoffDate && transactionDate <= endDate;
+      try {
+        const transactionDate = new Date(transaction.dtm_data);
+        return transactionDate >= cutoffDate && transactionDate <= endDate;
+      } catch (e) {
+        console.error('Erro ao processar data da transação:', transaction.dtm_data, e);
+        return false;
+      }
     });
   };
 
   // Agrupa dados por mês e categoria
   const processChartData = () => {
     const filteredTransactions = filterTransactionsByDate();
-    console.log('Transações filtradas:', filteredTransactions); // Debug 1
 
     const monthData: Record<string, Record<string, number>> = {};
     const allCategories = [...new Set(filteredTransactions.map(t => t.category.str_categoryName))];
-    console.log('Categorias únicas:', allCategories); // Debug 2
 
-    for (let i = parseInt(monthRange); i >= 0; i--) {
+    // Corrigido: iterar de 0 até monthRange (inclusive)
+    for (let i = 0; i <= parseInt(monthRange); i++) {
       const date = new Date(currentDate);
-      console.log(`Antes...`, date);
       date.setMonth(currentDate.getMonth() - i);
-      console.log(`Depois...`, date);
       const monthKey = `${MONTHS[date.getMonth()]}/${date.getFullYear().toString().slice(2)}`;
-      console.log(`Processando mês ${i}:`, monthKey); // Debug 3
 
       monthData[monthKey] = {};
       allCategories.forEach(category => {
@@ -76,9 +68,7 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
       });
     }
 
-    console.log('Estrutura inicializada:', monthData); // Debug 4
-
-    // Preenche com os valores reais (agrupando por mês e categoria)
+    // Preencher com valores reais
     filteredTransactions.forEach(transaction => {
       const date = new Date(transaction.dtm_data);
       const monthKey = `${MONTHS[date.getMonth()]}/${date.getFullYear().toString().slice(2)}`;
@@ -89,10 +79,18 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
       }
     });
 
-    // Converte para o formato que o Recharts espera
-    return Object.entries(monthData).map(([name, values]) => ({
-      name,
-      ...values
+    // Ordenar os meses corretamente (do mais antigo para o mais recente)
+    const sortedMonths = Object.keys(monthData).sort((a, b) => {
+      const [monthA, yearA] = a.split('/');
+      const [monthB, yearB] = b.split('/');
+      const dateA = new Date(parseInt(`20${yearA}`), MONTHS.indexOf(monthA));
+      const dateB = new Date(parseInt(`20${yearB}`), MONTHS.indexOf(monthB));
+      return dateA.getTime() - dateB.getTime();
+    });
+
+    return sortedMonths.map(month => ({
+      name: month,
+      ...monthData[month]
     }));
   };
 
