@@ -35,6 +35,7 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
     const currentMonth = searchParams.month ? parseInt(searchParams.month) - 1 : horaAtual.getMonth();
     const currentYear = searchParams.year ? parseInt(searchParams.year) : horaAtual.getFullYear();
     const currentViewDate = new Date(currentYear, currentMonth, 1);
+    const stackedChartUseDate = new Date(currentYear, currentMonth, 15);
 
     const consoleLogTime = () => {
         console.log(`Hora atual: ${horaAtual}`);
@@ -93,7 +94,7 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
         <StackedAreaChart
             key="stacked"
             transactions={[...variableTransactionsData, ...fixedTransactionsData, ...incomeTransactionsData]} 
-            currentDate={currentViewDate}
+            currentDate={stackedChartUseDate}
         />    
     ];
 
