@@ -13,7 +13,6 @@ import EmblaCarousel from "./_components/EmblaCarousel";
 import { EmblaOptionsType } from "embla-carousel";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { MonthYearSelector } from "../_components/monthYearSelector";
-import { useToast } from "@/components/hooks/use-toast";
 import { StackedAreaChart } from "./_components/StackedAreaChart";
 
 interface InitialPageProps {
@@ -72,28 +71,80 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
         }
     }
 
-    const [variableTransactionsData, fixedTransactionsData, incomeTransactionsData] = await Promise.all([
+    async function getTransactionsInterval(type: 'Variable' | 'Fixed' | 'Income') {
+        if (!userId) {
+            console.error("Sem Usuário!");
+            return [];
+        };
+        try {
+            const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+
+            //https://meusite.com/api/transactions/userId=${exemplo}&transactionType=${type}&betweenDate=${dataInicial}&andDate=${dataFinal}.
+
+            // OLD:
+            //  &date=${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}
+
+            const response = await fetch(
+                `${baseUrl}/api/transactions?userId=${userId}&transactionType=${type}
+                &betweenDate=${currentYear}~${(currentMonth - 5 ).toString().padStart(2, '0')}
+                &andDate=${currentYear}~${(currentMonth + 1).toString().padStart(2, '0')}`, 
+                { cache: 'no-store' }
+            );
+            if (!response.ok) {
+                console.error(`Erro ao usar a API ${type}, status: ${response.status}`)
+                throw new Error(`Failed to fetch ${type} transactions. Status: ${response.status}`);                
+            } 
+            return await response.json() as Transaction[];
+        } catch (error) {
+            console.error(`Error in get${type}Transactions:`, error);
+            return [];
+        }
+    }
+
+    const [ 
+        variableTransactionsData, fixedTransactionsData, incomeTransactionsData,
+        variableTransactionsDataInterval, fixedTransactionsDataInterval, incomeTransactionsDataInterval
+        ] = await Promise.all([
         getTransactions('Variable'),
         getTransactions('Fixed'),
-        getTransactions('Income')
+        getTransactions('Income'),
+        getTransactionsInterval('Variable'),
+        getTransactionsInterval('Fixed'),
+        getTransactionsInterval('Income')
     ]);
 
     const chartComponents = [
+
+        //Variable
         <PieChartByCategory 
             key="variable-transactions" 
             transactions={variableTransactionsData} 
         />,
+        <StackedAreaChart
+            key="stacked"
+            transactions={[...variableTransactionsDataInterval]} 
+            currentDate={stackedChartUseDate}
+        />,
+        
+        //Fixed
         <PieChartByCategory 
             key="fixed-transactions" 
             transactions={fixedTransactionsData} 
         />,
+        <StackedAreaChart
+            key="stacked"
+            transactions={[...fixedTransactionsDataInterval,]} 
+            currentDate={stackedChartUseDate}
+        />, 
+
+        //Income
         <PieChartByCategory 
             key="income-transactions" 
             transactions={incomeTransactionsData} 
         />,
         <StackedAreaChart
             key="stacked"
-            transactions={[...variableTransactionsData, ...fixedTransactionsData, ...incomeTransactionsData]} 
+            transactions={[...incomeTransactionsDataInterval]} 
             currentDate={stackedChartUseDate}
         />    
     ];

@@ -72,6 +72,10 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get('userId');  
     const transactionType = searchParams.get('transactionType'); 
     const date = searchParams.get('date'); // Formato esperado: YYYY-MM
+    
+    //Específico
+    const betweenDate = searchParams.get('betweenDate'); // Novo parâmetro: data inicial (YYYY-MM)
+    const andDate = searchParams.get('andDate'); // Novo parâmetro: data final (YYYY~MM)
 
     // 2. Check if userId was provided
     if (!userId) {
@@ -87,6 +91,15 @@ export async function GET(request: NextRequest) {
         startDate = new Date(year, month - 1, 1); // Primeiro dia do mês
         endDate = new Date(year, month, 0); // Último dia do mês
     }
+
+    // Intervalo personalizado (dataInicial e dataFinal)
+    if (betweenDate && andDate) {
+        const [startYear, startMonth] = betweenDate.split('~').map(Number);
+        const [endYear, endMonth] = andDate.split('~').map(Number);
+        
+        startDate = new Date(startYear, startMonth - 1, 1); // Primeiro dia do mês inicial
+        endDate = new Date(endYear, endMonth, 0); // Último dia do mês final
+    } 
 
     // Fetch all records from the 'Trasacao' table
     const whereClause: any = {
