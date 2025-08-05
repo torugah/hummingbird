@@ -85,11 +85,14 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
             //  &date=${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}
 
             const response = await fetch(
-                `${baseUrl}/api/transactions?userId=${userId}&transactionType=${type}
-                &betweenDate=${currentYear}~${(currentMonth - 5 ).toString().padStart(2, '0')}
-                &andDate=${currentYear}~${(currentMonth + 1).toString().padStart(2, '0')}`, 
-                { cache: 'no-store' }
+                `${baseUrl}/api/transactions?userId=${userId}&transactionType=${type}` +
+                `&betweenDate=${currentYear}~${(currentMonth - 5 ).toString().padStart(2, '0')}` +
+                `&andDate=${currentYear}~${(currentMonth + 1).toString().padStart(2, '0')}`, 
+                { cache: 'no-store' }    
             );
+
+            console.log(`URL de busca: ${response.url}`)
+
             if (!response.ok) {
                 console.error(`Erro ao usar a API ${type}, status: ${response.status}`)
                 throw new Error(`Failed to fetch ${type} transactions. Status: ${response.status}`);                

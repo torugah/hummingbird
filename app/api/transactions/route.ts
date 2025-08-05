@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
     // 1. Get userId from query parameters
     const searchParams = request.nextUrl.searchParams;
     const userId = searchParams.get('userId');  
-    const transactionType = searchParams.get('transactionType'); 
+    const transactionType = searchParams.get('transactionType')?.trim(); 
     const date = searchParams.get('date'); // Formato esperado: YYYY-MM
     
     //Específico
@@ -81,6 +81,11 @@ export async function GET(request: NextRequest) {
     if (!userId) {
         return NextResponse.json({ message: "User ID is required" }, { status: 400 }); // Bad Request
     }    
+
+    const validTypes = ["Fixed", "Variable", "Income"];
+    if (!transactionType || !validTypes.includes(transactionType)) {
+      return NextResponse.json({ message: "Invalid transaction type" }, { status: 400 });
+    }
 
     // Parse da data
     let startDate: Date | null = null;
