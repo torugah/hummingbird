@@ -29,7 +29,7 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
   // Filtra transações dos últimos N meses
   const filterTransactionsByDate = () => {
     const cutoffDate = new Date(currentDate);
-    cutoffDate.setMonth(cutoffDate.getMonth() - parseInt(monthRange));
+    cutoffDate.setMonth(cutoffDate.getMonth() - (parseInt(monthRange) - 1));
     cutoffDate.setDate(1);
     cutoffDate.setHours(0, 0, 0, 0);
 
@@ -37,6 +37,8 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
     endDate.setMonth(endDate.getMonth() + 1);
     endDate.setDate(0);
     endDate.setHours(23, 59, 59, 999);
+
+    console.log('Filtrando transações entre:', cutoffDate, 'e', endDate);
 
     return transactions.filter(transaction => {
       try {
@@ -51,15 +53,18 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
 
   // Agrupa dados por mês e categoria
   const processChartData = () => {
+    console.log('Data recebida: ', currentDate);
+
     const filteredTransactions = filterTransactionsByDate();
 
     const monthData: Record<string, Record<string, number>> = {};
     const allCategories = [...new Set(filteredTransactions.map(t => t.category.str_categoryName))];
 
     // Corrigido: iterar de 0 até monthRange (inclusive)
-    for (let i = 0; i <= parseInt(monthRange); i++) {
+    for (let i = 0; i < parseInt(monthRange); i++) {
       const date = new Date(currentDate);
-      date.setMonth(currentDate.getMonth() - i);
+      date.setUTCDate(15);
+      date.setUTCMonth(currentDate.getMonth() - i);
       const monthKey = `${MONTHS[date.getMonth()]}/${date.getFullYear().toString().slice(2)}`;
 
       monthData[monthKey] = {};
@@ -67,6 +72,8 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
         monthData[monthKey][category] = 0;
       });
     }
+
+    console.log('Dados mensais antes de preencher:', monthData);
 
     // Preencher com valores reais
     filteredTransactions.forEach(transaction => {
@@ -95,6 +102,9 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
   };
 
   const chartData = processChartData();
+
+  console.log('Dados do gráfico processados:', chartData);
+
   const categories = [...new Set(transactions.map(t => t.category.str_categoryName))];
 
   // Adicione este console.log para debug
