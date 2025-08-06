@@ -49,7 +49,9 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ purchaseDecision, user_id }) 
     const handleDelete = async () => { 
         setIsDeleting(true);
         try {
-            const response = await fetch(`/api/decisions?userId=${user_id}`, {
+            const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+
+            const response = await fetch(`${baseUrl}/api/decisions?userId=${user_id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

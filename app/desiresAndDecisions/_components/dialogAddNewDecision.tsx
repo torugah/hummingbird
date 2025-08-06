@@ -75,7 +75,12 @@ const DialogAddNewDecision: React.FC<ChildComponentProps> = ({ userId }) => {
         const fetchWishes = async () => {
             if (!userId) return;
             try {
-                const response = await fetch(`/api/desires?userId=${userId}`);
+                const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+
+                const response = await fetch(`${baseUrl}/api/desires?userId=${userId}`, {
+                    method: 'GET',
+                    cache: 'no-store',
+                });
                 if (!response.ok) {
                     console.error(`Failed to fetch categories`);
                     return;
@@ -131,7 +136,9 @@ const DialogAddNewDecision: React.FC<ChildComponentProps> = ({ userId }) => {
         try {
             console.log("Request body before send:", JSON.stringify(requestBody, null, 2));
 
-            const response = await fetch(`/api/decisions?userId=${userId}`, {
+            const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+
+            const response = await fetch(`${baseUrl}/api/decisions?userId=${userId}`, {
                 cache: 'no-store',
                 method: 'POST',
                 headers: {

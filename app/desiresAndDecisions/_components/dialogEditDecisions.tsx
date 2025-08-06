@@ -99,7 +99,9 @@ const DialogEditDecisions: React.FC<DialogEditDecisionProps> = ({ isOpen, onOpen
             } 
 
             try {
-                const response = await fetch(`/api/desires?userId=${userId}`, { 
+                const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+
+                const response = await fetch(`${baseUrl}/api/desires?userId=${userId}`, { 
                     signal: abortController.signal, // Vincula o AbortController
                     cache: 'no-store',
                     method: 'GET',
@@ -187,7 +189,9 @@ const DialogEditDecisions: React.FC<DialogEditDecisionProps> = ({ isOpen, onOpen
 
         console.log("Request body before send:", JSON.stringify(requestBody, null, 2));
 
-        const response = await fetch('/api/decisions', {
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+
+        const response = await fetch(`${baseUrl}/api/decisions`, {
             method: 'PUT', 
             headers: {
                 'Content-Type': 'application/json'

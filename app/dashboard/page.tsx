@@ -79,11 +79,6 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
         try {
             const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
 
-            //https://meusite.com/api/transactions/userId=${exemplo}&transactionType=${type}&betweenDate=${dataInicial}&andDate=${dataFinal}.
-
-            // OLD:
-            //  &date=${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}
-
             const response = await fetch(
                 `${baseUrl}/api/transactions?userId=${userId}&transactionType=${type}` +
                 `&betweenDate=${currentYear}~${(currentMonth - 5 ).toString().padStart(2, '0')}` +

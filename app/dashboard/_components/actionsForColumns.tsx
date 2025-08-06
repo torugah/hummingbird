@@ -128,7 +128,7 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ transaction, user_id }) => {
                 <DialogEditDespesaVariavel
                     isOpen={isEditDialogOpen}
                     onOpenChange={setIsEditDialogOpen}
-                    transactionToEdit={transaction}
+                    transactionToEdit={transaction} 
                     userId={transaction.user_id}
                 />
             )}

@@ -68,6 +68,7 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId , show
                 // Use a unique key for each card, like category.id
                 <div 
                     key={category.category_id} 
+                    // TODO: corrigir o width em 99% em telas pequenas
                     className='flex flex-col p-[0.1rem] w-[32%] max-lg:w-[49%] max-sm::w-[99%] h-fit bg-gray-100 border-gray-300 border-2 rounded-lg'>
 
                     {/* Use category.str_image if available, otherwise a default */}
@@ -87,7 +88,7 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId , show
                     <div className='flex flex-row h-fit justify-between p-1'>
                         <div className='flex flex-col justify-around'>
                             {/* Display category name */}
-                            <p className="font-semibold">{category.str_categoryName}</p>
+                            <p className="font-semibold truncate">{category.str_categoryName}</p>
                             {/* Display budget limit if applicable */}
                             {category.bool_hasBudgetLimit && category.dbl_budgetLimit !== null && (
                                 <div className='flex flex-row items-center'>
@@ -108,8 +109,10 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId , show
                 </div>
             ))}
 
-            {/* The "Add New Category" card, always present */}
-            <div className='flex flex-col p-[0.1rem] w-[32%] max-lg:w-[49%] max-sm:w-[99%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg items-center justify-center'>  
+            {/* TODO: height: auto, min-height: 15rem  */}
+            {/* NOTE: veja como fazer com que altura em < 1024px seja no mínimo 15rem e em => 1024px seja mínimo 11rem   */}
+            <div className='flex flex-col p-[0.1rem] w-[32%] max-lg:w-[49%] max-sm:w-[99%] max-lg:min-h-44 min-h-60 h-fit
+                             bg-gray-100 border-gray-300 border-2 rounded-lg items-center justify-center'>  
                 <DialogAddNewCategory userId={userId} />
             </div>
         </>

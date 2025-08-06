@@ -81,6 +81,8 @@ const DialogEditDeleteWish: React.FC<{ desiresToEdit: Desires, userId: string | 
         setSelectedImageFile(null);
     };
 
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) return;
@@ -137,7 +139,7 @@ const DialogEditDeleteWish: React.FC<{ desiresToEdit: Desires, userId: string | 
     const handleDelete = async () => {
         setIsDeleting(true);
         try {
-            const response = await fetch(`/api/desires?userId=${userId}`, {
+            const response = await fetch(`${baseUrl}/api/desires?userId=${userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -181,7 +183,7 @@ const DialogEditDeleteWish: React.FC<{ desiresToEdit: Desires, userId: string | 
         };
 
         try {
-            const response = await fetch(`/api/desires?userId=${userId}`, {
+            const response = await fetch(`${baseUrl}/api/desires?userId=${userId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestBody)

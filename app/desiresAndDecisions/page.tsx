@@ -24,7 +24,10 @@ export default async function page() {
     }
 
     try {
-      const response = await fetch(`/api/decisions?userId=${userId}`, {
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
+
+      const response = await fetch(`${baseUrl}/api/decisions?userId=${userId}`, {
+        method: 'GET',
         cache: 'no-store',
       });
       if (!response.ok) {

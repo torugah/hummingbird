@@ -17,6 +17,7 @@ const DesiresListClient: React.FC<DesireListClientProps> = ({ desires, userId })
   return (
     <>
       {desires.map((desire) => (
+        // TODO: Adicionar outros max-w-X e max-h-X para responsividade (ex: categoryCardList.tsx)
         <div key={desire.id} className='flex flex-col p-[0.1rem] w-[32%] h-fit bg-gray-100 border-gray-300 border-2 rounded-lg'>
 
           <div className={`flex flex-row items-center p-2 rounded-sm w-full h-fit aspect-video bg-cover 
@@ -45,6 +46,7 @@ const DesiresListClient: React.FC<DesireListClientProps> = ({ desires, userId })
         </div>
       ))}
       
+      {/* TODO: Adicionar outros max-w-X e max-h-X para responsividade (ex: categoryCardList.tsx) */}
       <div className='flex flex-col p-[0.1rem] w-[32%] h-auto bg-gray-100 border-gray-300 border-2 rounded-lg items-center justify-center'>
         <DialogAddNewWish userId={userId}/>
       </div>
