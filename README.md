@@ -1,5 +1,8 @@
 # Mudanças
-## Server - Client
-> app/calendar/page.tsx
+## Calendário Customizado Alterado
+> app/calendar/_components/CalendarioCustomizado.tsx
+- Primeira introdução de barras abaixo dos dias, indicando se houve transações de receita ou despesa.
 > app/calendar/_components/CalendarWrapper.tsx
-- Separando a page.tsx em um componente client side a parte, necessário para a correção do 'fs' e 'bcrypt'.
+- Passando props necessárias para o Calendário Customizado
+> app/dashboard/page.tsx
+- Remoção de type em desuso. 

@@ -122,7 +122,7 @@ function CalendarWrapper({
     const invoices = processMonthlyData();
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-50">
+        <div className="flex flex-col min-h-screen bg-gray-50 items-center">
             <Header />
             <main className="flex-grow container mx-auto px-4 py-8 max-lg-w-full w-[74%]">
                 <div className="flex flex-col lg:flex-row gap-8 mb-8">
@@ -133,7 +133,12 @@ function CalendarWrapper({
                             <h1 className="text-2xl font-bold">Calendário</h1>
                         </div>
                         <div className="bg-white p-6 rounded-lg shadow flex flex-col items-center justify-between">
-                            <CalendarioCustomizado onDateChange={setSelectedDate}/>
+                            <CalendarioCustomizado 
+                                onDateChange={setSelectedDate}
+                                incomeData={incomeData}
+                                fixedData={fixedData}
+                                variableData={variableData}
+                            />
                         </div>
                     </div>
                     
@@ -158,9 +163,9 @@ function CalendarWrapper({
                             Controle do Ano - Mês por mês
                         </h2>
 
-                        <div className='flex items-center gap-4 mb-6'>
+                        <div id='yearSelector' className='flex items-center gap-4 mb-6 text-2xl'>
                             <a 
-                                href={getDateUrl(new Date(currentYear, currentMonth - 1, 1))}
+                                href={getDateUrl(new Date(currentYear - 1, currentMonth, 15))}
                                 className="p-1 hover:bg-gray-100 rounded"
                             >
                                 <FaChevronLeft className="text-[#01C14C] border-[#01C14C] border-2 rounded-full py-1 pl-[0.125rem] pr-1" />                        
@@ -171,14 +176,14 @@ function CalendarWrapper({
                             </p>
         
                             <a 
-                                href={getDateUrl(new Date(currentYear, currentMonth + 1, 1))}
+                                href={getDateUrl(new Date(currentYear + 1, currentMonth, 15))}
                                 className="p-1 hover:bg-gray-100 rounded"
                             >   
                                 <FaChevronRight className="text-[#01C14C] border-[#01C14C] border-2 rounded-full py-1 pr-[0.125rem] pl-1" />  
                             </a>        
                         </div>
 
-                        <div className="w-full overflow-x-auto">
+                        <div id='showYearTable' className="w-full overflow-x-auto">
                             <Table>
                                 <TableHeader>
                                     <TableRow>

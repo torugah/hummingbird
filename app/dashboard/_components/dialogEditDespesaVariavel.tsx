@@ -41,29 +41,6 @@ import { useRouter } from "next/navigation"
 import { NumericFormat } from 'react-number-format';
 import type { Transaction } from "./variableExpensesColumns"
 
-// type Transaction = {
-//     id: number;
-//     category_id: number;
-//     str_name: string;
-//     dbl_valor: number;
-//     str_transactionType: string;
-//     str_description: string;
-//     int_installmentCount: number;
-//     int_paymentForm: number;
-//     tipoPagamento?: {
-//         str_nomeTipoPgto?: string;
-//     };
-//     str_card_id: number;
-//     str_status: string;
-//     dtm_data: Date;
-//     category: {
-//         category_id: number;
-//         str_categoryName: string
-//         str_movimentType: string
-//     }
-//     user_id: string;
-// }
-
 // Schema pode ser o mesmo, mas valide se todos os campos são necessários/editáveis
 const FormSchema = z
     .object({
