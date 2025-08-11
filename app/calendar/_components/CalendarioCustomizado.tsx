@@ -1,5 +1,5 @@
 // app/calendar/_components/CalendarioCustomizado.tsx
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import styles from './customCalendar.module.css';
@@ -42,36 +42,60 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
   fixedData,
   variableData
 }) => {
-  const [selected, setSelected] = useState<Date | undefined>(new Date());
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
+  const [selected, setSelected] = React.useState<Date | undefined>(new Date());
+  const [currentMonth, setCurrentMonth] = React.useState<Date>(new Date());
 
-  // Função para verificar se um dia tem transações e de que tipo
-  const getDayTransactions = (date: Date) => {
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    const allTransactions = [...incomeData, ...fixedData, ...variableData];
+  const transactionsByDay = useMemo(() => {
+    const days: Record<string, {income: boolean, expense: boolean}> = {};
     
-    const dayTransactions = allTransactions.filter(transaction => {
-      const transactionDate = new Date(transaction.dtm_currentInstallmentDate || transaction.dtm_data);
-      return (
-        transactionDate.getDate() === day &&
-        transactionDate.getMonth() + 1 === month &&
-        transactionDate.getFullYear() === year
-      );
+    [...incomeData, ...fixedData, ...variableData].forEach(transaction => {
+      const date = new Date(transaction.dtm_currentInstallmentDate || transaction.dtm_data);
+      const dayKey = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+      
+      if (!days[dayKey]) {
+        days[dayKey] = {income: false, expense: false};
+      }
+      
+      if (transaction.str_transactionType === 'Income') {
+        days[dayKey].income = true;
+      } else {
+        days[dayKey].expense = true;
+      }
     });
-
-    if (dayTransactions.length === 0) return null;
-
-    const hasIncome = dayTransactions.some(t => t.str_transactionType === 'Income');
-    const hasExpense = dayTransactions.some(t => t.str_transactionType !== 'Income');
-
-    if (hasIncome && hasExpense) return 'both';
-    if (hasIncome) return 'income';
-    if (hasExpense) return 'expense';
     
-    return null;
+    return days;
+  }, [incomeData, fixedData, variableData]);
+
+  const DayComponent = (props: any) => {
+    const date = props.date;
+    const dayKey = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    const dayTransactions = transactionsByDay[dayKey];
+    
+    const isSelected = selected && date.toDateString() === selected.toDateString();
+
+    return (
+      <div className="relative flex flex-col items-center">
+        <div 
+          {...props} 
+          className={`${props.className} ${isSelected ? '!bg-[#01C14C] !text-white' : ''}`}
+        >
+          {date.getDate()}
+        </div>
+        {dayTransactions && (
+          <div className="flex justify-center w-full mt-1">
+            <div 
+              className={`h-1 rounded-full ${
+                dayTransactions.income && !dayTransactions.expense ? 'bg-green-500' :
+                !dayTransactions.income && dayTransactions.expense ? 'bg-red-500' :
+                'bg-gradient-to-r from-green-500 to-red-500'
+              }`}
+              style={{ width: '80%' }}
+            />
+          </div>
+        )}
+        {!dayTransactions && <div className="h-1 mt-1" />}
+      </div>
+    );
   };
 
   const handleSelect = (day: Date | undefined) => {
@@ -82,36 +106,6 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
     if (day.getMonth() !== currentMonth.getMonth() || day.getFullYear() !== currentMonth.getFullYear()) {
       setCurrentMonth(day);
     }
-  };
-
-  // Componente personalizado para cada dia do calendário
-  const DayComponent = (props: any) => {
-    const date = props.date;
-    const transactionsType = getDayTransactions(date);
-    const isSelected = selected && date.toDateString() === selected.toDateString();
-
-    return (
-      <div className="relative flex flex-col items-center">
-        <div 
-          {...props} 
-          className={`${props.className} ${isSelected ? '!bg-[#01C14C] !text-white' : ''}`}
-        />
-        {transactionsType && (
-          <div className="flex justify-center w-full mt-1">
-            <div 
-              className={`h-1 rounded-full ${
-                transactionsType === 'income' ? 'bg-green-500' :
-                transactionsType === 'expense' ? 'bg-red-500' :
-                'bg-gradient-to-r from-green-500 to-red-500'
-              }`}
-              style={{ width: '80%' }}
-            />
-          </div>
-        )}
-        {/* Espaçamento para dias sem transações */}
-        {!transactionsType && <div className="h-1 mt-1" />}
-      </div>
-    );
   };
 
   return (
