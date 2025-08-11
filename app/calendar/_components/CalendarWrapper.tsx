@@ -143,17 +143,14 @@ function CalendarWrapper({
                     </div>
                     
                     {/* Seção de Eventos e Descrição */}
-                    <div className="lg:w-2/5 space-y-6">
-                        <div className="bg-white p-6 rounded-lg shadow">
-                            <ListaEventos selectedDate={selectedDate}/>
-                        </div>
-                        <div className="bg-white p-6 rounded-lg shadow">
-                            <h2 className="text-xl font-bold mb-4">Descrição</h2>
-                            <div className="space-y-2">
-                                <p>MXRF11 - 698 Cotass - R$67,45</p>
-                                <p>VPLG11 - 51 Cotas - R$52,63</p>
-                                <p>AGRX11 - 296 Cotas - R$26,37</p>
-                            </div>
+                    <div className="lg:w-2/5">
+                        <div className="bg-white p-6 rounded-lg shadow h-full">
+                            <ListaEventos 
+                            selectedDate={selectedDate}
+                            incomeData={incomeData}
+                            fixedData={fixedData}
+                            variableData={variableData}
+                            />
                         </div>
                     </div>
                 </div>

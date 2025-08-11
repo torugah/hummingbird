@@ -5,7 +5,7 @@ import 'react-day-picker/dist/style.css';
 import styles from './customCalendar.module.css';
 import { ptBR } from "date-fns/locale";
 
-type Transaction = {
+export type Transaction = {
     id: number;
     category_id: number;
     str_name: string;
@@ -80,7 +80,7 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
         <div 
           {...props} 
           className={`${props.className} ${isSelected ? '!bg-[#01C14C] !text-white' : ''} ${
-            !isCurrentMonth ? 'opacity-30' : ''
+            !isCurrentMonth ? 'opacity-10' : ''
           }`}
         >
           {date.getDate()}
