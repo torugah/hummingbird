@@ -76,15 +76,18 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
                           date.getFullYear() === currentMonth.getFullYear();
 
     return (
-      <div className="relative flex flex-col items-center">
-        <div 
-          {...props} 
-          className={`${props.className} ${isSelected ? '!bg-[#01C14C] !text-white' : ''} ${
-            !isCurrentMonth ? 'opacity-10' : ''
-          }`}
+      <div className="relative flex flex-col items-center w-full">
+        <button
+          {...props}
+          type="button" // Adicionado para melhor semântica
+          className={`${props.className} w-8 h-8 flex items-center justify-center rounded-full ${
+            isSelected ? 'bg-[#01C14C] text-white' : ''
+          } ${
+            !isCurrentMonth ? 'opacity-30' : ''
+          } hover:bg-gray-100 cursor-pointer`} // Adicionado cursor-pointer e hover
         >
           {date.getDate()}
-        </div>
+        </button>
         {dayTransactions && (
           <div className={`flex justify-center w-full mt-1 ${!isCurrentMonth ? 'opacity-10' : ''}`}>
             <div className="flex justify-center w-[80%] gap-[1px]">
@@ -148,12 +151,15 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
             fontSize: "1.2rem",
             marginBottom: "1rem"
           },
+          day: {
+            margin: "auto", 
+            transition: "all 0.2s ease" 
+          }
         }}
         modifiersStyles={{
           selected: {
-            backgroundColor: "#01C14C",
+            backgroundColor: "transparent", 
             color: "white",
-            borderRadius: "50%",
           },
           outside: {
             color: "#b0b0b0",
