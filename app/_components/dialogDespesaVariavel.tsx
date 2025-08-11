@@ -175,7 +175,6 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
             itemDescription: "",
             boolInstallment: false,
             intInstallment: 1,
-            Installmentdate: new Date(),
             paymentMethod: undefined,
             date: new Date(),
         },
@@ -197,7 +196,7 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
             itemDescription: data.itemDescription,
             boolInstallment: data.boolInstallment,
             intInstallment: data.intInstallment,
-            Installmentdate: data.Installmentdate,
+            Installmentdate: data.Installmentdate ? data.Installmentdate : data.date,
             cardID: data.cardID,
             paymentMethod: data.paymentMethod,  //TODO: Rever itens e IDs em banco.       
             boolStatus: data.boolStatus,

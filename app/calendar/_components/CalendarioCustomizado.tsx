@@ -72,25 +72,31 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
     const dayTransactions = transactionsByDay[dayKey];
     
     const isSelected = selected && date.toDateString() === selected.toDateString();
+    const isCurrentMonth = date.getMonth() === currentMonth.getMonth() && 
+                          date.getFullYear() === currentMonth.getFullYear();
 
     return (
       <div className="relative flex flex-col items-center">
         <div 
           {...props} 
-          className={`${props.className} ${isSelected ? '!bg-[#01C14C] !text-white' : ''}`}
+          className={`${props.className} ${isSelected ? '!bg-[#01C14C] !text-white' : ''} ${
+            !isCurrentMonth ? 'opacity-30' : ''
+          }`}
         >
           {date.getDate()}
         </div>
         {dayTransactions && (
-          <div className="flex justify-center w-full mt-1">
-            <div 
-              className={`h-1 rounded-full ${
-                dayTransactions.income && !dayTransactions.expense ? 'bg-green-500' :
-                !dayTransactions.income && dayTransactions.expense ? 'bg-red-500' :
-                'bg-gradient-to-r from-green-500 to-red-500'
-              }`}
-              style={{ width: '80%' }}
-            />
+          <div className={`flex justify-center w-full mt-1 ${!isCurrentMonth ? 'opacity-10' : ''}`}>
+            <div className="flex justify-center w-[80%] gap-[1px]">
+              {dayTransactions.income && (
+                <div className="h-1 bg-green-500 flex-1 rounded-l-full" />
+              )}
+              {dayTransactions.expense && (
+                <div className={`h-1 bg-red-500 ${dayTransactions.income ? 'rounded-r-full' : 'rounded-full'}`} style={{
+                  flex: dayTransactions.income ? 1 : 2
+                }} />
+              )}
+            </div>
           </div>
         )}
         {!dayTransactions && <div className="h-1 mt-1" />}
