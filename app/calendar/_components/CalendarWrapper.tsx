@@ -58,7 +58,17 @@ function CalendarWrapper({
     const currentYear = searchParams.year ? parseInt(searchParams.year) : horaAtual.getFullYear();
     const currentViewDate = new Date(currentYear, currentMonth, 1);
     
-    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+    const [selectedDate, setSelectedDate] = useState<Date>(() => {
+    // Inicializa com a data atual ou a data dos searchParams se existirem
+    const horaAtual = new Date();
+    return searchParams.month && searchParams.year 
+        ? new Date(
+            parseInt(searchParams.year),
+            parseInt(searchParams.month) - 1,
+            1
+        )
+        : horaAtual;
+    });
 
     const getDateUrl = (date: Date) => {
         return `?month=${date.getMonth() + 1}&year=${date.getFullYear()}`;
@@ -134,7 +144,9 @@ function CalendarWrapper({
                         </div>
                         <div className="bg-white p-6 rounded-lg shadow flex flex-col items-center justify-between">
                             <CalendarioCustomizado 
-                                onDateChange={setSelectedDate}
+                                onDateChange={(date) => {
+                                    setSelectedDate(date);
+                                }}
                                 incomeData={incomeData}
                                 fixedData={fixedData}
                                 variableData={variableData}

@@ -66,6 +66,14 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
     return days;
   }, [incomeData, fixedData, variableData]);
 
+  interface DayComponentProps {
+    date: Date;
+    displayMonth: Date;
+    selected: Date | undefined;
+    onSelect: (date: Date) => void;
+    transactions: {income: boolean, expense: boolean};
+  }
+
   const DayComponent = (props: any) => {
     const date = props.date;
     const dayKey = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
@@ -130,7 +138,18 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
         showOutsideDays
         fixedWeeks
         components={{
-          Day: DayComponent
+          Day: (dayProps) => {
+            const dayKey = `${dayProps.date.getFullYear()}-${dayProps.date.getMonth() + 1}-${dayProps.date.getDate()}`;
+            return (
+              <DayComponent
+                date={dayProps.date}
+                displayMonth={currentMonth}
+                selected={selected}
+                onSelect={handleSelect}
+                transactions={transactionsByDay[dayKey] || {income: false, expense: false}}
+              />
+            );
+          }
         }}
         styles={{
           head_cell: { 
