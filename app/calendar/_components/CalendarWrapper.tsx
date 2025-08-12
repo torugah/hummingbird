@@ -128,21 +128,14 @@ function CalendarWrapper({
         <div className="flex flex-col min-h-screen bg-gray-50 items-center">
             <Header />
             <main className="flex-grow container mx-auto px-4 py-8 max-lg-w-full w-[74%]">
-                <div className="flex flex-col lg:flex-row gap-8 mb-8">                
-                    <div className="flex items-center gap-2 mb-4">
-                        <FaRegCalendar className="text-xl" />
-                        <h1 className="text-2xl font-bold">Calendário</h1>
-                    </div>
-                    <div className="bg-white p-6 rounded-lg shadow">
-                        <CalendarioCustomizado 
-                            onDateChange={setSelectedDate}
-                            incomeData={incomeData}
-                            fixedData={fixedData}
-                            variableData={variableData}
-                            selectedDate={selectedDate}
-                        />
-                    </div>
-                </div>
+                
+                <CalendarioCustomizado 
+                    onDateChange={setSelectedDate}
+                    incomeData={incomeData}
+                    fixedData={fixedData}
+                    variableData={variableData}
+                    selectedDate={selectedDate}
+                />
                 
                 {/* Seção de resumo anual (mantida igual) */}
                 <div className='flex flex-box bg-grey-100 rounded-md mx-auto p-8 mb-8 w-[74%]'>

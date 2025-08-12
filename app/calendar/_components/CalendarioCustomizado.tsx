@@ -5,6 +5,7 @@ import 'react-day-picker/dist/style.css';
 import styles from './customCalendar.module.css';
 import { ptBR } from "date-fns/locale";
 import { format } from 'date-fns';
+import { FaRegCalendar } from 'react-icons/fa';
 
 export type Transaction = {
     id: number;
@@ -147,71 +148,77 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
   }, [selectedDate, incomeData, fixedData, variableData]);
 
   return (
-    <div className="flex flex-row w-full">
-      <div className={styles.dayPickerWrapper + "lg:w-3/5"}>
-        <DayPicker
-          mode="single"
-          selected={selectedDate}        
-          onSelect={handleSelect}
-          month={currentMonth}
-          onMonthChange={setCurrentMonth}
-          locale={ptBR}
-          className={styles.rdp}
-          showOutsideDays
-          fixedWeeks
-          components={{
-            Day: (dayProps) => {
-              const dayKey = `${dayProps.date.getFullYear()}-${dayProps.date.getMonth() + 1}-${dayProps.date.getDate()}`;
-              return (
-                <DayComponent
-                  date={dayProps.date}
-                  displayMonth={currentMonth}
-                  selected={selectedDate}
-                  onSelect={handleSelect}
-                  transactions={transactionsByDay[dayKey] || {income: false, expense: false}}
-                />
-              );
-            }
-          }}
-          styles={{
-            head_cell: { 
-              padding: "8px",
-              fontSize: "1rem",
-              width: "100%",
-              textTransform: "capitalize",
-            },
-            row: { marginBottom: "8px" },
-            cell: {  
-              padding: "8px",
-              fontSize: "1rem",
-              textAlign: "center",
-              height: "40px"
-            },
-            caption: {
-              textTransform: "capitalize",
-              fontSize: "1.2rem",
-              marginBottom: "1rem"
-            },
-            day: {
-              margin: "auto", 
-              transition: "all 0.2s ease" 
-            }
-          }}
-          modifiersStyles={{
-            selected: {
-              backgroundColor: "transparent", 
-              color: "white",
-            },
-            outside: {
-              color: "#b0b0b0",
-              opacity: 0.5,
-            },
-          }}
-        />
+    <div className="flex flex-row w-full gap-6">
+      <div className="flex flex-col w-3/5">     
+        <div className="flex items-center gap-2 mb-4">
+            <FaRegCalendar className="text-xl" />
+            <h1 className="text-2xl font-bold">Calendário</h1>
+        </div>
+        <div className={styles.dayPickerWrapper + "bg-white p-6 rounded-lg shadow"}>
+          <DayPicker
+            mode="single"
+            selected={selectedDate}        
+            onSelect={handleSelect}
+            month={currentMonth}
+            onMonthChange={setCurrentMonth}
+            locale={ptBR}
+            className={styles.rdp}
+            showOutsideDays
+            fixedWeeks
+            components={{
+              Day: (dayProps) => {
+                const dayKey = `${dayProps.date.getFullYear()}-${dayProps.date.getMonth() + 1}-${dayProps.date.getDate()}`;
+                return (
+                  <DayComponent
+                    {...dayProps}
+                    date={dayProps}
+                    displayMonth={currentMonth}
+                    selected={selectedDate}
+                    transactions={transactionsByDay[dayKey] || {income: false, expense: false}}
+                  />
+                );
+              }
+            }}
+            styles={{
+              head_cell: { 
+                padding: "8px",
+                fontSize: "1rem",
+                width: "100%",
+                textTransform: "capitalize",
+              },
+              row: { marginBottom: "8px" },
+              cell: {  
+                padding: "8px",
+                fontSize: "1rem",
+                textAlign: "center",
+                height: "40px"
+              },
+              caption: {
+                textTransform: "capitalize",
+                fontSize: "1.2rem",
+                marginBottom: "1rem"
+              },
+              day: {
+                margin: "auto", 
+                transition: "all 0.2s ease" 
+              }
+            }}
+            modifiersStyles={{
+              selected: {
+                backgroundColor: "transparent", 
+                color: "white",
+              },
+              outside: {
+                color: "#b0b0b0",
+                opacity: 0.5,
+              },
+            }}
+          />
+        </div>
       </div>
 
       {/* Seção de Eventos - agora integrada */}
-      <div className="mt-6 space-y-4 lg:w-2/5">
+      <div className="mt-6 lg:w-2/5 bg-white p-6 rounded-lg shadow">
         <h2 className="text-xl font-bold">Eventos - {format(selectedDate, "dd/MM/yyyy", { locale: ptBR })}</h2>
         
         {eventosDoDia.length > 0 ? (
