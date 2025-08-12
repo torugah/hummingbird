@@ -5,7 +5,6 @@ import Header from '../../_components/header';
 import Footer from '../../_components/footer';
 import { FaRegCalendar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import CalendarioCustomizado from './CalendarioCustomizado';
-import ListaEventos from './ListaEventos';
 import { ptBR } from 'date-fns/locale';
 import { format } from 'date-fns';
 import {
@@ -59,15 +58,13 @@ function CalendarWrapper({
     const currentViewDate = new Date(currentYear, currentMonth, 1);
     
     const [selectedDate, setSelectedDate] = useState<Date>(() => {
-    // Inicializa com a data atual ou a data dos searchParams se existirem
-    const horaAtual = new Date();
-    return searchParams.month && searchParams.year 
-        ? new Date(
-            parseInt(searchParams.year),
-            parseInt(searchParams.month) - 1,
-            1
-        )
-        : horaAtual;
+      return searchParams.month && searchParams.year 
+          ? new Date(
+              parseInt(searchParams.year),
+              parseInt(searchParams.month) - 1,
+              1
+          )
+          : horaAtual;
     });
 
     const getDateUrl = (date: Date) => {
@@ -77,7 +74,6 @@ function CalendarWrapper({
     const processMonthlyData = (): MonthlySummary[] => {
         const monthlySummaries: Record<string, MonthlySummary> = {};
 
-        // Inicializar todos os meses
         for (let i = 0; i < 12; i++) {
             const monthKey = `${i + 1}-${currentYear}`;
             monthlySummaries[monthKey] = {
@@ -90,7 +86,6 @@ function CalendarWrapper({
             };
         }
 
-        // Processar receitas (Income)
         incomeData.forEach((transaction) => {
             const date = new Date(transaction.dtm_currentInstallmentDate || transaction.dtm_data);
             const month = date.getMonth() + 1;
@@ -102,7 +97,6 @@ function CalendarWrapper({
             }
         });
 
-        // Processar gastos (Fixed e Variable)
         [...fixedData, ...variableData].forEach((transaction) => {
             const date = new Date(transaction.dtm_currentInstallmentDate || transaction.dtm_data);
             const month = date.getMonth() + 1;
@@ -119,7 +113,6 @@ function CalendarWrapper({
             }
         });
 
-        // Calcular saldo
         Object.values(monthlySummaries).forEach(summary => {
             summary.balance = summary.allRevenues - (summary.allFixedExpenses + summary.allVariableExpenses);
         });
@@ -136,36 +129,30 @@ function CalendarWrapper({
             <Header />
             <main className="flex-grow container mx-auto px-4 py-8 max-lg-w-full w-[74%]">
                 <div className="flex flex-col lg:flex-row gap-8 mb-8">
-                    {/* Seção do Calendário */}
+                    {/* Seção do Calendário e Eventos combinados */}
                     <div className="lg:w-3/5">
                         <div className="flex items-center gap-2 mb-4">
                             <FaRegCalendar className="text-xl" />
                             <h1 className="text-2xl font-bold">Calendário</h1>
                         </div>
-                        <div className="bg-white p-6 rounded-lg shadow flex flex-col items-center justify-between">
+                        <div className="bg-white p-6 rounded-lg shadow">
                             <CalendarioCustomizado 
-                                onDateChange={(date) => {
-                                    setSelectedDate(date);
-                                }}
+                                onDateChange={setSelectedDate}
                                 incomeData={incomeData}
                                 fixedData={fixedData}
                                 variableData={variableData}
+                                selectedDate={selectedDate}
                             />
                         </div>
                     </div>
                     
-                    {/* Seção de Eventos e Descrição */}
+                    {/* Espaço reservado para conteúdo adicional se necessário */}
                     <div className="lg:w-2/5">
-                        <div className="bg-white p-6 rounded-lg shadow h-full">
-                            <ListaEventos 
-                            selectedDate={selectedDate}
-                            incomeData={incomeData}
-                            fixedData={fixedData}
-                            variableData={variableData}
-                            />
-                        </div>
+                        {/* Pode adicionar outros componentes aqui se necessário */}
                     </div>
                 </div>
+                
+                {/* Seção de resumo anual (mantida igual) */}
                 <div className='flex flex-box bg-grey-100 rounded-md mx-auto p-8 mb-8 w-[74%]'>
                     <div className="flex flex-col justify-between items-center w-full">    
                         <h2 className='text-xl font-semibold text-[#01C14C] mb-4'>
