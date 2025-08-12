@@ -171,7 +171,7 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
                 return (
                   <DayComponent
                     {...dayProps}
-                    date={dayProps}
+                    date={dayProps.date}
                     displayMonth={currentMonth}
                     selected={selectedDate}
                     transactions={transactionsByDay[dayKey] || {income: false, expense: false}}
