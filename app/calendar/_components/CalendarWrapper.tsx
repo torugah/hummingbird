@@ -128,27 +128,19 @@ function CalendarWrapper({
         <div className="flex flex-col min-h-screen bg-gray-50 items-center">
             <Header />
             <main className="flex-grow container mx-auto px-4 py-8 max-lg-w-full w-[74%]">
-                <div className="flex flex-col lg:flex-row gap-8 mb-8">
-                    {/* Seção do Calendário e Eventos combinados */}
-                    <div className="lg:w-3/5">
-                        <div className="flex items-center gap-2 mb-4">
-                            <FaRegCalendar className="text-xl" />
-                            <h1 className="text-2xl font-bold">Calendário</h1>
-                        </div>
-                        <div className="bg-white p-6 rounded-lg shadow">
-                            <CalendarioCustomizado 
-                                onDateChange={setSelectedDate}
-                                incomeData={incomeData}
-                                fixedData={fixedData}
-                                variableData={variableData}
-                                selectedDate={selectedDate}
-                            />
-                        </div>
+                <div className="flex flex-col lg:flex-row gap-8 mb-8">                
+                    <div className="flex items-center gap-2 mb-4">
+                        <FaRegCalendar className="text-xl" />
+                        <h1 className="text-2xl font-bold">Calendário</h1>
                     </div>
-                    
-                    {/* Espaço reservado para conteúdo adicional se necessário */}
-                    <div className="lg:w-2/5">
-                        {/* Pode adicionar outros componentes aqui se necessário */}
+                    <div className="bg-white p-6 rounded-lg shadow">
+                        <CalendarioCustomizado 
+                            onDateChange={setSelectedDate}
+                            incomeData={incomeData}
+                            fixedData={fixedData}
+                            variableData={variableData}
+                            selectedDate={selectedDate}
+                        />
                     </div>
                 </div>
                 

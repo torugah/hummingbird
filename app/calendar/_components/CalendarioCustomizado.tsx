@@ -76,6 +76,8 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
   }, [incomeData, fixedData, variableData]);
 
   const handleSelect = (day: Date | undefined) => {
+    console.log(day);
+
     if (!day) return;
     onDateChange(day);
 
@@ -102,7 +104,7 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
           className={`${props.className} w-8 h-8 flex items-center justify-center rounded-full ${
             isSelected ? 'bg-[#01C14C] text-white' : ''
           } ${
-            !isCurrentMonth ? 'opacity-30' : ''
+            !isCurrentMonth ? 'opacity-10' : ''
           } hover:bg-gray-100 cursor-pointer`}
         >
           {date.getDate()}
@@ -145,8 +147,8 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
   }, [selectedDate, incomeData, fixedData, variableData]);
 
   return (
-    <div className="flex flex-col w-full">
-      <div className={styles.dayPickerWrapper}>
+    <div className="flex flex-row w-full">
+      <div className={styles.dayPickerWrapper + "lg:w-3/5"}>
         <DayPicker
           mode="single"
           selected={selectedDate}        
@@ -209,7 +211,7 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
       </div>
 
       {/* Seção de Eventos - agora integrada */}
-      <div className="mt-6 space-y-4">
+      <div className="mt-6 space-y-4 lg:w-2/5">
         <h2 className="text-xl font-bold">Eventos - {format(selectedDate, "dd/MM/yyyy", { locale: ptBR })}</h2>
         
         {eventosDoDia.length > 0 ? (
