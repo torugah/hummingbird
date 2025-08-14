@@ -153,17 +153,16 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
                 <div className={styles.dayPickerWrapper + " bg-white p-6 rounded-lg shadow"}>
                     <DayPicker
                       mode="single"
+                      month={currentMonth}
+                      onMonthChange={setCurrentMonth}
+                      locale={ptBR}
+                      className={styles.rdp}
+                      showOutsideDays
+                      fixedWeeks
                       selected={dateSelectedByUser}
                       onSelect={handleDayClick}
                       onDayClick={handleDayClick}
                       components={{ DayContent: CustomDayContent }}
-                        
-                        
-                        // {{
-                        //     Day: ({ date, modifiers }) => (
-                        //         <DayComponent date={date} modifiers={modifiers} />
-                        //     ),
-                        // }}
                     />
                     {dateSelectedByUser && (
                       <div className="mt-5 p-4 border rounded-lg bg-gray-100">
