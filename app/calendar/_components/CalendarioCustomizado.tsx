@@ -54,6 +54,12 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
   selectedDate
 }) => {
   const [currentMonth, setCurrentMonth] = React.useState<Date>(new Date());
+  const [dateSelectedByUser, setDateSelectedByUser] = React.useState<Date>(selectedDate);
+
+  const handleDayClick = (day : Date) => {
+    console.log(day);
+    setDateSelectedByUser(day);
+  }
 
   const transactionsByDay = useMemo(() => {
     const days: Record<string, {income: boolean, expense: boolean}> = {};
@@ -132,7 +138,7 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
   // Função para filtrar eventos do dia selecionado
   const eventosDoDia = useMemo(() => {
     const formatarData = (date: Date) => format(date, "yyyy-MM-dd");
-    const dataSelecionada = formatarData(selectedDate);
+    const dataSelecionada = formatarData(dateSelectedByUser);
 
     return [...incomeData, ...fixedData, ...variableData]
       .filter(transaction => {
@@ -157,14 +163,14 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
         <div className={styles.dayPickerWrapper + "bg-white p-6 rounded-lg shadow"}>
           <DayPicker
             mode="single"
-            selected={selectedDate}        
-            onSelect={handleSelect}
+            selected={dateSelectedByUser}   
             month={currentMonth}
             onMonthChange={setCurrentMonth}
             locale={ptBR}
             className={styles.rdp}
             showOutsideDays
             fixedWeeks
+            onDayClick={handleDayClick}
             components={{
               Day: (dayProps) => {
                 const dayKey = `${dayProps.date.getFullYear()}-${dayProps.date.getMonth() + 1}-${dayProps.date.getDate()}`;
