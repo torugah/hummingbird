@@ -103,7 +103,6 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
     }, [dateSelectedByUser , incomeData, fixedData, variableData]);
 
     function CustomDayContent(props: DayContentProps) {
-      // você pode personalizar a renderização do conteúdo do dia aqui
       const { date } = props;
       return <DayComponent date={date} isSelected={props.activeModifiers.selected} />;
     }
@@ -163,18 +162,45 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
                       onSelect={handleDayClick}
                       onDayClick={handleDayClick}
                       components={{ DayContent: CustomDayContent }}
+                      styles={{
+                        head_cell: { 
+                          padding: "8px",
+                          fontSize: "1rem",
+                          width: "100%",
+                          textTransform: "capitalize",
+                        },
+                        row: { marginBottom: "8px" },
+                        cell: {  
+                          padding: "8px",
+                          fontSize: "1rem",
+                          textAlign: "center",
+                          height: "40px"
+                        },
+                        caption: {
+                          textTransform: "capitalize",
+                          fontSize: "1.2rem",
+                          marginBottom: "1rem"
+                        },
+                        day: {
+                          margin: "auto", 
+                          transition: "all 0.2s ease" 
+                        }
+                      }}
+                      modifiersStyles={{
+                        selected: {
+                          backgroundColor: "transparent", 
+                          color: "white",
+                        },
+                        outside: {
+                          color: "#b0b0b0",
+                          opacity: 0.5,
+                        },
+                      }}
                     />
-                    {dateSelectedByUser && (
-                      <div className="mt-5 p-4 border rounded-lg bg-gray-100">
-                        <h2 className="text-lg font-bold">Selected Date:</h2>
-                        <p>{dateSelectedByUser.toDateString()}</p>
-                      </div>
-                    )}
                 </div>
             </div>
 
-            <div className="mt-6 lg:w-2/5 bg-white p-6 rounded-lg shadow">
-                <p>Selected Date: {dateSelectedByUser .toDateString()}</p>
+            <div className="lg:w-2/5 bg-white p-6 rounded-lg shadow">
                 <h2 className="text-xl font-bold">Eventos - {format(dateSelectedByUser , "dd/MM/yyyy", { locale: ptBR })}</h2>
                 
                 {eventosDoDia.length > 0 ? (
