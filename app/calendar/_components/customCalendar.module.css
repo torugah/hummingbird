@@ -10,6 +10,12 @@
   width: 100%;
 }
 
+.rdp :global(.rdp-day),
+.rdp :global(.rdp-weeknumber) {
+  border-radius: 0px !important;
+  height: fit-content !important;
+}
+
 .rdp-day_selected:not(.rdp-day_disabled):not(.rdp-day_outside) {
   color: white;
 }

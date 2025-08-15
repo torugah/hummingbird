@@ -145,7 +145,7 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
     return (
         <div className="flex flex-row w-full gap-6">
             <div className="flex flex-col w-3/5">     
-                <div className="flex items-center gap-2 mb-4">
+                <div className="flex items-center gap-2 mb-4 ml-4">
                     <FaRegCalendar className="text-xl" />
                     <h1 className="text-2xl font-bold">Calendário</h1>
                 </div>
@@ -201,7 +201,7 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
             </div>
 
             <div className="lg:w-2/5 bg-white p-6 rounded-lg shadow">
-                <h2 className="text-xl font-bold">Eventos - {format(dateSelectedByUser , "dd/MM/yyyy", { locale: ptBR })}</h2>
+                <h2 className="text-xl font-bold pb-4">Eventos - {format(dateSelectedByUser , "dd/MM/yyyy", { locale: ptBR })}</h2>
                 
                 {eventosDoDia.length > 0 ? (
                     <ul className="space-y-3 max-h-[400px] overflow-y-auto">
