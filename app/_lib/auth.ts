@@ -18,12 +18,10 @@ export const authOptions: NextAuthOptions = {
             name: `__Secure-next-auth.session-token`,
             options: {
                 httpOnly: true,
-                secure: true,
-                sameSite: "none",
+                secure: process.env.NODE_ENV === "production",
+                sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
                 path: "/",
-                domain: process.env.NODE_ENV === "production" 
-                ? "hummingbird-swart.vercel.app" // 👈 Substitua pelo seu domínio
-                : undefined, // Localhost não precisa de domain
+                domain: process.env.NODE_ENV === "production" ? "hummingbird-swart.vercel.app" : undefined, 
                 // Expiração longa se "Remember Me" estiver ativo
                 maxAge: 30 * 24 * 60 * 60, // 30 dias
             },
@@ -75,8 +73,13 @@ export const authOptions: NextAuthOptions = {
         })
     ],
     callbacks: {
-        async jwt({ token, user }) {
+        async signIn({ user, account, profile }) {
+            console.log('SignIn Callback:', { user, account, profile });
+            return true;
+        },
+        async jwt({ token, user, account }) {
             if (user) {
+                console.log('True User - JWT Callback:', { token, user, account });
                 return {
                     ...token,
                     id: user.id,
@@ -84,9 +87,11 @@ export const authOptions: NextAuthOptions = {
                     username: user.username
                 }
             }
+            console.log('False User - JWT Callback:', { token, user, account });
             return token;
         },
-        async session({ session, token }) {
+        async session({ session, token, user }) {
+            console.log('Session Callback:', { session, token, user });
             return {
                 ...session,
                 user: {
@@ -96,6 +101,19 @@ export const authOptions: NextAuthOptions = {
                     username: token.username
                 }
             }
+        }
+    },
+    // No authOptions
+    debug: process.env.NODE_ENV === "development",
+    logger: {
+        error(code, metadata) {
+            console.error(code, metadata);
+        },
+        warn(code) {
+            console.warn(code);
+        },
+        debug(code, metadata) {
+            console.log(code, metadata);
         }
     }
 }

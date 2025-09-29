@@ -119,12 +119,12 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
                     type="button"
                     className={`w-8 h-8 flex items-center justify-center rounded-full ${
                         isSelected ? 'bg-[#01C14C] text-white' : ''
-                    } ${!isCurrentMonth ? 'opacity-10' : ''} hover:bg-gray-100 cursor-pointer`}
+                    } ${!isCurrentMonth ? 'opacity-25' : ''} hover:bg-gray-100 cursor-pointer`}
                 >
                     {date.getDate()}
                 </button>
                 {dayTransactions && (
-                    <div className={`flex justify-center w-full mt-1 ${!isCurrentMonth ? 'opacity-10' : ''}`}>
+                    <div className={`flex justify-center w-full mt-1 ${!isCurrentMonth ? 'opacity-25' : ''}`}>
                         <div className="flex justify-center w-[80%] gap-[1px]">
                             {dayTransactions.income && (
                                 <div className="h-1 bg-green-500 flex-1 rounded-l-full" />

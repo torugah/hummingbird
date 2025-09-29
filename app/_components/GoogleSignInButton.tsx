@@ -12,7 +12,7 @@ const GoogleSignInButton: FC<GoogleSignInButtonProps> = ({children}) => {
   const loginWithGoogle = async () => {
     try {
       setIsLoading(true);
-      await signIn('google',  { callbackUrl: 'https://hummingbird-swart.vercel.app/dashboard' });
+      await signIn('google',  { callbackUrl: process.env.NEXT_PUBLIC_SITE_URL });
     } catch (error) {
       setIsLoading(false);
     } finally {
