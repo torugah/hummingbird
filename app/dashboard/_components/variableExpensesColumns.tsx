@@ -94,7 +94,7 @@ export const outputColumns: ColumnDef<Transaction>[] = [
             if (installmentCount === 1) {
                 return <span>À Vista</span>; // Or "case 1" as in your example
             } else if (installmentCount > 1) {
-                return <span>{`1 de ${currentInstallment}`}</span>; // Or "case 2", or format as needed
+                return <span>{`${currentInstallment} de ${installmentCount}`}</span>; // Or "case 2", or format as needed
             }
             return <span>-</span>; // Handle other cases if necessary (e.g., 0 or null)
         }
