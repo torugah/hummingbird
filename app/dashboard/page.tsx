@@ -14,6 +14,7 @@ import { EmblaOptionsType } from "embla-carousel";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { MonthYearSelector } from "../_components/monthYearSelector";
 import { StackedAreaChart } from "./_components/StackedAreaChart";
+import { AlertCategoryLine } from "./_components/alertCategoryLine";
 
 interface InitialPageProps {
   searchParams: {
@@ -227,27 +228,35 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
                 </div>
                 
                 <div className='mb-8 p-4 bg-gray-100 rounded-md justify-around flex flex-row'>
-                <div>
-                    <span className="text-[#01C14C] font-bold">A pagar: </span>
-                    <span className="text-gray-700">{formatBRL(totalAPagar)}</span>
+                    <div>
+                        <span className="text-[#01C14C] font-bold">A pagar: </span>
+                        <span className="text-gray-700">{formatBRL(totalAPagar)}</span>
+                    </div>
+                    <div>
+                        <span className="text-[#01C14C] font-bold">Já paguei: </span>
+                        <span className="text-gray-700">{formatBRL(totalJaPaguei)}</span>
+                    </div>
+                    <div>
+                        <span className="text-[#01C14C] font-bold">Restante: </span>
+                        <span className={`${restante < 0 ? 'text-red-500' : 'text-gray-700'}`}>
+                        {formatBRL(restante)}
+                        </span>
+                    </div>
+                    <div>
+                        <span className="text-[#01C14C] font-bold">VRC: </span>
+                        <span className={`${vrc < 0 ? 'text-red-500' : 'text-gray-700'}`}>
+                        {formatBRL(vrc)}
+                        </span>
+                    </div>
                 </div>
-                <div>
-                    <span className="text-[#01C14C] font-bold">Já paguei: </span>
-                    <span className="text-gray-700">{formatBRL(totalJaPaguei)}</span>
-                </div>
-                <div>
-                    <span className="text-[#01C14C] font-bold">Restante: </span>
-                    <span className={`${restante < 0 ? 'text-red-500' : 'text-gray-700'}`}>
-                    {formatBRL(restante)}
-                    </span>
-                </div>
-                <div>
-                    <span className="text-[#01C14C] font-bold">VRC: </span>
-                    <span className={`${vrc < 0 ? 'text-red-500' : 'text-gray-700'}`}>
-                    {formatBRL(vrc)}
-                    </span>
-                </div>
-                </div>
+
+                <AlertCategoryLine 
+                    variableTransactionsData={variableTransactionsData} 
+                    fixedTransactionsData={fixedTransactionsData} 
+                    userId={userId}
+                    currentMonth={currentMonth}
+                    currentYear={currentYear}
+                />
 
                 <div className="pb-8">
                     <EmblaCarousel components={chartComponents} options={OPTIONS} />

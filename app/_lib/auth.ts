@@ -15,14 +15,14 @@ export const authOptions: NextAuthOptions = {
     cookies: {
         // Personaliza os cookies para sessão persistente
         sessionToken: {
-            name: `__Secure-next-auth.session-token`,
+            name: `next-auth.session-token`, //Usado em desenvolvimento
+            //name: `__Secure-next-auth.session-token`, //Usado somente em produção com HTTPS
             options: {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
                 path: "/",
-                domain: process.env.NODE_ENV === "production" ? "hummingbird-swart.vercel.app" : undefined, 
-                // Expiração longa se "Remember Me" estiver ativo
+                domain: process.env.NODE_ENV === "production" ? "hummingbird-swart.vercel.app" : "localhost", 
                 maxAge: 30 * 24 * 60 * 60, // 30 dias
             },
         },
