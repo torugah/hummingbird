@@ -226,7 +226,7 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
             boolActive: true // Assumindo que este campo é relevante para update
         };
 
-        console.log("Request Body:", requestBody);
+        // console.log("Request Body:", requestBody);
 
         const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
         const response = await fetch(`${baseUrl}/api/transactions`, { 

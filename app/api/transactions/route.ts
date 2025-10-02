@@ -20,6 +20,7 @@ const transactionSchema = z
     itemDescription: z.string().nullish(),
     boolInstallment: z.boolean(),
     intInstallment: z.number().nullish(),
+    currentInstallment: z.number().nullish(), // NOVO CAMPO
     Installmentdate: z.coerce.date().nullish(),
     paymentMethod: z.number(),
     cardID: z.number(),      
@@ -34,7 +35,7 @@ export async function POST(req: NextRequest) {
       const { 
         userId, categoryId, itemName, itemValue, transactionalType, 
         movimentType, itemDescription, boolInstallment, intInstallment, 
-        Installmentdate, paymentMethod, cardID, boolStatus, date, 
+        currentInstallment, Installmentdate, paymentMethod, cardID, boolStatus, date, 
         boolActive 
       } = transactionSchema.parse(body);
 
@@ -49,6 +50,7 @@ export async function POST(req: NextRequest) {
           str_description: itemDescription,
           bool_installment: boolInstallment,
           int_installmentCount: intInstallment,
+          int_currentInstallment: currentInstallment, // NOVO CAMPO
           dtm_currentInstallmentDate: Installmentdate,
           int_paymentForm: paymentMethod, 
           str_card_id: cardID,
@@ -60,7 +62,7 @@ export async function POST(req: NextRequest) {
       
       return NextResponse.json({ newTransaction: newTransaction, message: "A new transaction has been created successfully" }, {status: 201})
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       return NextResponse.json({ message: "Something went wrong!"}, {status: 500});
     }
 }
@@ -187,7 +189,7 @@ export async function PUT(request: NextRequest) {
             },
         });
         
-        console.log("Category updated successfully.");
+        // console.log("Category updated successfully.");
         return NextResponse.json({ message: 'Categoria atualizada com sucesso.', category: updateCategory }, { status: 200 });
         
     } catch (error: any) {

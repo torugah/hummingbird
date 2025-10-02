@@ -19,7 +19,7 @@ export default async function page() {
   async function getDecisions(userId: string | undefined): Promise<DesicaoDeCompra[]> {
     // If no userId, don't attempt to fetch
     if (!userId) {
-      console.log("No user ID found, skipping transaction fetch.");
+      // console.log("No user ID found, skipping transaction fetch.");
       return [];
     }
 

@@ -14,6 +14,7 @@ export type Transaction = {
     str_transactionType: string;
     str_description: string;
     int_installmentCount: number;
+    int_currentInstallment: number;
     dtm_currentInstallmentDate: Date | null;
     int_paymentForm: number;
     tipoPagamento?: {
@@ -57,7 +58,7 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
 
     const handleDayClick = (day: Date | undefined) => {
         if (day) {
-            console.log(day);
+            // console.log(day);
             setDateSelectedByUser (day);
         } else {
             console.error("No day selected");

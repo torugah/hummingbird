@@ -14,6 +14,7 @@ export type Transaction = {
     str_transactionType: string;
     str_description: string;
     int_installmentCount: number;
+    int_currentInstallment: number;
     int_paymentForm: number;
     tipoPagamento?: {
         str_nomeTipoPgto?: string;
@@ -88,11 +89,12 @@ export const outputColumns: ColumnDef<Transaction>[] = [
         },
         cell: ({ row }) => {
             const installmentCount = row.getValue("int_installmentCount") as number;
+            const currentInstallment = row.original.int_currentInstallment;
 
             if (installmentCount === 1) {
                 return <span>À Vista</span>; // Or "case 1" as in your example
             } else if (installmentCount > 1) {
-                return <span>{`1 de ${installmentCount}`}</span>; // Or "case 2", or format as needed
+                return <span>{`1 de ${currentInstallment}`}</span>; // Or "case 2", or format as needed
             }
             return <span>-</span>; // Handle other cases if necessary (e.g., 0 or null)
         }

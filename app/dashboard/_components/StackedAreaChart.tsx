@@ -38,7 +38,7 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
     endDate.setDate(0);
     endDate.setHours(23, 59, 59, 999);
 
-    console.log('Filtrando transações entre:', cutoffDate, 'e', endDate);
+    // console.log('Filtrando transações entre:', cutoffDate, 'e', endDate);
 
     return transactions.filter(transaction => {
       try {
@@ -53,7 +53,7 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
 
   // Agrupa dados por mês e categoria
   const processChartData = () => {
-    console.log('Data recebida: ', currentDate);
+    // console.log('Data recebida: ', currentDate);
 
     const filteredTransactions = filterTransactionsByDate();
 
@@ -73,7 +73,7 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
       });
     }
 
-    console.log('Dados mensais antes de preencher:', monthData);
+    // console.log('Dados mensais antes de preencher:', monthData);
 
     // Preencher com valores reais
     filteredTransactions.forEach(transaction => {
@@ -103,12 +103,12 @@ export function StackedAreaChart({ transactions, currentDate }: StackedAreaChart
 
   const chartData = processChartData();
 
-  console.log('Dados do gráfico processados:', chartData);
+  // console.log('Dados do gráfico processados:', chartData);
 
   const categories = [...new Set(transactions.map(t => t.category.str_categoryName))];
 
   // Adicione este console.log para debug
-  console.log('Dados do gráfico:', chartData);
+  // console.log('Dados do gráfico:', chartData);
 
   // Cores para as categorias
   const COLORS = [

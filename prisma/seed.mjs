@@ -89,7 +89,7 @@ async function main() {
     await prisma.cartao.create({ data: cartao });
   }
 
-  console.log('Seed concluída com sucesso!');
+  // console.log('Seed concluída com sucesso!');
 }
 
 main()

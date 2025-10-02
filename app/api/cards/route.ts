@@ -50,10 +50,10 @@ const cardSchema = z.object({
 export async function POST(request: Request) {
     try {
         const body = await request.json(); // Corrigido - chamando o método
-        console.log("Received body:", body);
+        // console.log("Received body:", body);
 
         const validatedData = cardSchema.parse(body);
-        console.log("Validated data:", validatedData);
+        // console.log("Validated data:", validatedData);
 
         const newCard = await db.cartao.create({
             data: {
@@ -73,7 +73,7 @@ export async function POST(request: Request) {
         );
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return NextResponse.json({ message: "Something went wrong!",error}, {status: 500});
     }
 }

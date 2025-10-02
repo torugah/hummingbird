@@ -103,7 +103,7 @@ const DialogAddNewCard: React.FC<ChildComponentProps> = ({ userId }) => {
     }
 
     try {
-      console.log("Request body before send:", JSON.stringify(requestBody, null, 2));
+      // console.log("Request body before send:", JSON.stringify(requestBody, null, 2));
 
       const response = await fetch('/api/cards', {
         method: 'POST',

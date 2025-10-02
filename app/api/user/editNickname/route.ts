@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Não há qualquer texto!"}, {status: 400})
         }
             
-        console.log(`ID do usuário: ${userId} - Apelido: ${newNickname}`)    
+        // console.log(`ID do usuário: ${userId} - Apelido: ${newNickname}`)    
 
         await db.user.update({
             where: { id: userId },

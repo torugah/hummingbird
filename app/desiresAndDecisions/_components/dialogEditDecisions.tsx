@@ -94,7 +94,7 @@ const DialogEditDecisions: React.FC<DialogEditDecisionProps> = ({ isOpen, onOpen
 
         const fetchWishes = async () => {
             if (!userId) {
-                console.log("ID do usuário não encontrado para edição.")
+                // console.log("ID do usuário não encontrado para edição.")
                 return;
             } 
 
@@ -172,7 +172,7 @@ const DialogEditDecisions: React.FC<DialogEditDecisionProps> = ({ isOpen, onOpen
         const rawValue = data.dbl_valor.replace(/[^0-9]/g, "");
         const numericValue = parseFloat(rawValue) / 100;
 
-        console.log(numericValue)
+        // console.log(numericValue)
 
         const requestBody = {
             id: decisionToEdit.id, 
@@ -187,7 +187,7 @@ const DialogEditDecisions: React.FC<DialogEditDecisionProps> = ({ isOpen, onOpen
             bool_doIPlanned: data.bool_doIPlanned,
         };
 
-        console.log("Request body before send:", JSON.stringify(requestBody, null, 2));
+        // console.log("Request body before send:", JSON.stringify(requestBody, null, 2));
 
         const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
 

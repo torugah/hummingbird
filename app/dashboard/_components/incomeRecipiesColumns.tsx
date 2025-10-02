@@ -14,6 +14,7 @@ export type Transaction = {
     str_transactionType: string;
     str_description: string;
     int_installmentCount: number;
+    int_currentInstallment: number;
     int_paymentForm: number;
     tipoPagamento?: {
         str_nomeTipoPgto?: string;

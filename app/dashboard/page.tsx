@@ -37,12 +37,12 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
     const currentViewDate = new Date(currentYear, currentMonth, 1);
     const stackedChartUseDate = new Date(currentYear, currentMonth, 15);
 
-    const consoleLogTime = () => {
-        console.log(`Hora atual: ${horaAtual}`);
-        console.log(`Mês atual: ${currentMonth + 1}`);
-        console.log(`Ano atual: ${currentYear}`);
-        console.log(`Data atual: ${currentViewDate}`);
-    }
+    // const consoleLogTime = () => {
+    //     console.log(`Hora atual: ${horaAtual}`);
+    //     console.log(`Mês atual: ${currentMonth + 1}`);
+    //     console.log(`Ano atual: ${currentYear}`);
+    //     console.log(`Data atual: ${currentViewDate}`);        
+    // }
 
     // Função para gerar URL com parâmetros de data
     const getDateUrl = (date: Date) => {
@@ -87,7 +87,7 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
                 { cache: 'no-store' }    
             );
 
-            console.log(`URL de busca: ${response.url}`)
+            // console.log(`URL de busca: ${response.url}`)
 
             if (!response.ok) {
                 console.error(`Erro ao usar a API ${type}, status: ${response.status}`)
@@ -185,7 +185,7 @@ export default async function InitialPage({ searchParams }: InitialPageProps) {
 
     return (
 
-        consoleLogTime(),
+        //consoleLogTime(),
 
         <div className="flex flex-col items-center justify-between">
             <Header />

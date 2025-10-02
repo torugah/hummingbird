@@ -40,7 +40,7 @@ const ActionsCell: React.FC<ActionsCellProps> = ({ purchaseDecision, user_id }) 
 
     const handleEdit = () => {
         if (!purchaseDecision.str_user_id) {
-            console.log("ID do usuário não encontrado para edição.", purchaseDecision.str_user_id)
+            // console.log("ID do usuário não encontrado para edição.", purchaseDecision.str_user_id)
             toast({ title: "Erro", description: "ID do usuário não encontrado para edição.", variant: "destructive" });
         }
         setIsEditDialogOpen(true);

@@ -62,7 +62,7 @@ export default function Configurations() {
     const handleUpdateNickname = async () => {
         setIsLoading(true);
 
-        console.log("Enviando requisição para API...");
+        // console.log("Enviando requisição para API...");
 
         const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
 
@@ -74,10 +74,10 @@ export default function Configurations() {
             }
         })
 
-        console.log("Requisição enviada, aguardando resposta...");
+        // console.log("Requisição enviada, aguardando resposta...");
 
         const data = await response.json();
-        console.log("Resposta da API:", data);
+        // console.log("Resposta da API:", data);
 
         setIsLoading(false);
         closeModalNickname()

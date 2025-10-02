@@ -51,13 +51,13 @@ const desireSchema = z.object({
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        console.log("Received body:", body);
+        // console.log("Received body:", body);
 
         const searchParams = request.nextUrl.searchParams;
         const userId = searchParams.get('userId');
 
         const validatedData = desireSchema.parse(body);
-        console.log("Validated data:", validatedData);
+        // console.log("Validated data:", validatedData);
 
         const newCard = await db.desicaoDeCompra.create({
             data: {
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
         );
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return NextResponse.json({ message: "Something went wrong!", error }, { status: 500 });
     }
 }
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
 // API UPDATE para Cartões
 export async function PUT(request: Request) {
 
-    console.log("Received request:", request);
+    // console.log("Received request:", request);
 
     try {
         const body = await request.json();
@@ -95,7 +95,7 @@ export async function PUT(request: Request) {
         const validationResult = desireSchema.safeParse(body);
 
         if (!validationResult.success) {
-            console.log(validationResult.error.flatten().fieldErrors)
+            // console.log(validationResult.error.flatten().fieldErrors)
             return NextResponse.json({
                 message: 'Dados de entrada inválidos.',
                 errors: validationResult.error.flatten().fieldErrors
@@ -166,7 +166,7 @@ export async function DELETE(request: NextRequest) {
         }
 
         if (desireToDelete.str_user_id !== userId) {
-            console.log("IdFromAPI: ",desireToDelete.str_user_id, "IdFromClient: ", userId)
+            // console.log("IdFromAPI: ",desireToDelete.str_user_id, "IdFromClient: ", userId)
             return NextResponse.json({ message: 'Não autorizado a remover este item.' }, { status: 403 });
         }
         

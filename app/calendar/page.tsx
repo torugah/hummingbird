@@ -29,6 +29,7 @@ export type Transaction = {
     str_transactionType: string;
     str_description: string;
     int_installmentCount: number;
+    int_currentInstallment: number;
     dtm_currentInstallmentDate: Date | null;
     int_paymentForm: number;
     tipoPagamento?: {

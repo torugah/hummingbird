@@ -15,8 +15,8 @@ export const authOptions: NextAuthOptions = {
     cookies: {
         // Personaliza os cookies para sessão persistente
         sessionToken: {
-            name: `next-auth.session-token`, //Usado em desenvolvimento
-            //name: `__Secure-next-auth.session-token`, //Usado somente em produção com HTTPS
+            //name: `next-auth.session-token`, //Usado em desenvolvimento
+            name: `__Secure-next-auth.session-token`, //Usado somente em produção com HTTPS
             options: {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
@@ -74,12 +74,12 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async signIn({ user, account, profile }) {
-            console.log('SignIn Callback:', { user, account, profile });
+            // console.log('SignIn Callback:', { user, account, profile });
             return true;
         },
         async jwt({ token, user, account }) {
             if (user) {
-                console.log('True User - JWT Callback:', { token, user, account });
+                // console.log('True User - JWT Callback:', { token, user, account });
                 return {
                     ...token,
                     id: user.id,
@@ -87,11 +87,11 @@ export const authOptions: NextAuthOptions = {
                     username: user.username
                 }
             }
-            console.log('False User - JWT Callback:', { token, user, account });
+            // console.log('False User - JWT Callback:', { token, user, account });
             return token;
         },
         async session({ session, token, user }) {
-            console.log('Session Callback:', { session, token, user });
+            // console.log('Session Callback:', { session, token, user });
             return {
                 ...session,
                 user: {
@@ -113,7 +113,7 @@ export const authOptions: NextAuthOptions = {
             console.warn(code);
         },
         debug(code, metadata) {
-            console.log(code, metadata);
+            // console.log(code, metadata);
         }
     }
 }

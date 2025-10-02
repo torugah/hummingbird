@@ -23,7 +23,7 @@ export default withAuth(
     callbacks: {
       authorized: ({ token }) => {
         // Debug: descomente para ver o token no log do Vercel
-        console.log('[MIDDLEWARE_TOKEN]', token)
+        // console.log('[MIDDLEWARE_TOKEN]', token)
         return !!token // Transforma em booleano
       },
     },

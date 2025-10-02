@@ -134,7 +134,7 @@ const DialogAddNewDecision: React.FC<ChildComponentProps> = ({ userId }) => {
         }
 
         try {
-            console.log("Request body before send:", JSON.stringify(requestBody, null, 2));
+            // console.log("Request body before send:", JSON.stringify(requestBody, null, 2));
 
             const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
 

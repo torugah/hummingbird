@@ -46,7 +46,7 @@ export async function POST(req: NextRequest){
 
         return NextResponse.json({newCategory: newCategory, message: "A new category has been created successfully" } ,{status: 201})
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return NextResponse.json({ message: "Something went wrong!"}, {status: 500});
     }
 }
@@ -128,7 +128,7 @@ export async function PUT(request: Request) {
 
         // --- Database Update Logic ---
         // Replace this section with your actual database update code
-        console.log("Attempting to update category with data:", validatedData);
+        // console.log("Attempting to update category with data:", validatedData);
 
         // Example using a hypothetical Prisma client:
         
@@ -151,7 +151,7 @@ export async function PUT(request: Request) {
         // Placeholder success response (replace with actual database result if needed)
         // If using Prisma, you might return NextResponse.json(updatedCategory, { status: 200 });
 
-        console.log("Category updated successfully (simulated).");
+        // console.log("Category updated successfully (simulated).");
         return NextResponse.json({ message: 'Categoria atualizada com sucesso.', category: updateCategory }, { status: 200 });
 
         // --- End Database Update Logic ---

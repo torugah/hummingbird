@@ -40,6 +40,7 @@ import { z } from "zod"
 import { useToast } from "@/components/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import { NumericFormat } from 'react-number-format';
+import { InstallmentHandler } from "../dashboard/_components/installmentHandler"
 import Link from "next/link"
 
 const FormSchema = z
@@ -55,6 +56,16 @@ const FormSchema = z
         paymentMethod: z.number().nonnegative("Obrigatório"),
         date: z.date(),
         boolStatus: z.string()
+    })
+    .refine((data) => {
+        // Se está parcelado, deve ter mais de 1 parcela
+        if (data.boolInstallment) {
+            return data.intInstallment > 1
+        }
+        return true
+    }, {
+        message: "Parcelamento deve ter pelo menos 2 parcelas",
+        path: ["intInstallment"]
     });
 
 interface Bank {
@@ -87,6 +98,13 @@ interface ChildComponentProps {
     transactionType: string;
 }
 
+interface InstallmentData {
+  installmentNumber: number
+  value: number
+  dueDate: Date
+  status: string
+}
+
 const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) => {
 
     const router = useRouter();
@@ -95,6 +113,8 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
     const [isLoading, setIsLoading] = useState(false);
 
     const [categories, setCategories] = useState<Categoria[]>([]); //TODO: Alternar entre INPUT e OUTPUT
+
+    const [installments, setInstallments] = useState<InstallmentData[]>([])
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
 
@@ -186,52 +206,107 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
 
         const movimentType = transactionType === "Fixed" || "Variable" ? "Output" : "Input";
 
-        const requestBody = {
-            userId: userId,
-            categoryId: data.category,
-            itemName: data.itemName,
-            itemValue: data.itemValue,
-            transactionalType: transactionType,
-            movimentType: movimentType,
-            itemDescription: data.itemDescription,
-            boolInstallment: data.boolInstallment,
-            intInstallment: data.intInstallment,
-            Installmentdate: data.Installmentdate ? data.Installmentdate : data.date,
-            cardID: data.cardID,
-            paymentMethod: data.paymentMethod,  //TODO: Rever itens e IDs em banco.       
-            boolStatus: data.boolStatus,
-            date: data.date,
-            boolActive: true
-        }
+        try {
+            const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
 
-        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hummingbird-swart.vercel.app/'
-        const response = await fetch(`${baseUrl}/api/transactions`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody)
-        })
+            // Se não está parcelado ou tem apenas 1 parcela, cria uma única transação
+            if (!data.boolInstallment || data.intInstallment === 1) {
+                const requestBody = {
+                    userId: userId,
+                    categoryId: data.category,
+                    itemName: data.itemName,
+                    itemValue: data.itemValue,
+                    transactionalType: transactionType,
+                    movimentType: movimentType,
+                    itemDescription: data.itemDescription,
+                    boolInstallment: false,
+                    intInstallment: 1,
+                    Installmentdate: data.Installmentdate ? data.Installmentdate : data.date,
+                    cardID: data.cardID,
+                    paymentMethod: data.paymentMethod,
+                    boolStatus: data.boolStatus,
+                    date: data.date,
+                    boolActive: true
+                }
 
-        if (response.ok) {
+                const response = await fetch(`${baseUrl}/api/transactions`, {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                })
+
+                if (!response.ok) {
+                    throw new Error(`Failed to create transaction: ${response.status}`)
+                }
+            } else {
+                // Cria múltiplas transações para cada parcela
+                const installmentValue = data.itemValue / data.intInstallment
+                
+                for (let i = 0; i < data.intInstallment; i++) {
+                    const dueDate = new Date(data.date)
+                    dueDate.setMonth(data.date.getMonth() + i)
+                    
+                    const installmentDescription = data.intInstallment > 1 
+                    ? `${data.itemDescription || data.itemName} (${i + 1}/${data.intInstallment})`
+                    : data.itemDescription
+
+                    const requestBody = {
+                        userId: userId,
+                        categoryId: data.category,
+                        itemName: data.itemName,
+                        itemValue: installmentValue,
+                        transactionalType: transactionType,
+                        movimentType: movimentType,
+                        itemDescription: installmentDescription,
+                        boolInstallment: data.boolInstallment,
+                        intInstallment: data.intInstallment,
+                        currentInstallment: i + 1,
+                        Installmentdate: dueDate,
+                        cardID: data.cardID,
+                        paymentMethod: data.paymentMethod,
+                        boolStatus: i === 0 ? data.boolStatus : 'futura', // Primeira parcela com status escolhido, demais como futura
+                        date: dueDate,
+                        boolActive: true
+                    }
+
+                    const response = await fetch(`${baseUrl}/api/transactions`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(requestBody)
+                    })
+
+                    if (!response.ok) {
+                        throw new Error(`Failed to create installment ${i + 1}: ${response.status}`)
+                    }
+                }
+            }
+
             toast({
-                title: "Sucesso!",
-                description: "Registro salvo!",
+            title: "Sucesso!",
+            description: data.boolInstallment && data.intInstallment > 1 
+                ? `${data.intInstallment} parcelas criadas com sucesso!`
+                : "Registro salvo!",
             })
-        } else {
+
+            handleCancel()
+            setIsOpen(false)
+            router.refresh()
+
+        } catch (error) {
+            console.error('Error creating transaction:', error)
             toast({
-                title: "Error",
-                description: `Oops! Something when wrong! Status: ${response.status}`,
-                variant: "destructive"
+            title: "Error",
+            description: `Oops! Algo deu errado!`,
+            variant: "destructive"
             })
-
+        } finally {
+            setIsLoading(false)
         }
-
-        setIsLoading(false);
-        handleCancel();
-        setIsOpen(false);
-        router.refresh(); //TODO: Comando não está sendo obdecido.
-    };
+        };
 
     const { reset } = form;
 
@@ -256,7 +331,7 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                 <DialogTrigger asChild>
                     <Button>Adicionar</Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="sm:max-w-[425px] overflow-y-auto e max-h-[80vh]">
                     <DialogHeader>
                         <DialogTitle>
                             {transactionType !== "Income" ? "Nova Despesa" : "Nova Receita"}
@@ -450,6 +525,16 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                                     />
                                 </div>
                             )}
+
+                            {form.watch('boolInstallment') && (
+                                <InstallmentHandler
+                                    totalValue={form.watch('itemValue') || 0}
+                                    installmentCount={form.watch('intInstallment') || 1}
+                                    startDate={form.watch('date') || new Date()}
+                                    onInstallmentsChange={setInstallments}
+                                />
+                            )}
+
                             {/* Fifth Layer */}
 
                             <div className="flex flex-row space-x-2">

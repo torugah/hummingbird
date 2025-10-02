@@ -25,7 +25,7 @@ interface CategoryCardListProps {
 
 async function getCategories(userId: string | null | undefined): Promise<Category[]> {
     if (!userId) {
-        console.log("No user ID found, skipping category fetch.");
+        // console.log("No user ID found, skipping category fetch.");
         return [];
     } 
 
@@ -42,7 +42,7 @@ async function getCategories(userId: string | null | undefined): Promise<Categor
         if (!response.ok) {
             // Handle specific status codes if needed
              if (response.status === 404) {
-                console.log("No categories found for this user.");
+                // console.log("No categories found for this user.");
                 return []; // Return empty array if no categories found
             }
             throw new Error(`Failed to fetch categories: ${response.statusText}`);
