@@ -8,10 +8,17 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '../_lib/auth'
 import CardsList from './_components/cardsList'
 
-export default async function CardPage() {
+export default async function CardPage(
+    {
+    searchParams,
+}: {
+    searchParams: { [key: string]: string | string[] | undefined };
+}
+) {
 
     const data = await getServerSession(authOptions);
     const userId = data?.user.id;
+    const showDialog = searchParams.addNew === "true";
 
     return (
         <div className="flex flex-col items-center justify-between">
@@ -38,7 +45,7 @@ export default async function CardPage() {
             </div>
 
             <div className="flex flex-row flex-wrap max-lg:w-[95%] justify-start my-16 w-[74%] p-1 gap-4">
-                <CardsList userId={userId}/>
+                <CardsList userId={userId} showDialog={showDialog}/>
             </div>
 
             <Footer />

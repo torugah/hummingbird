@@ -6,6 +6,7 @@ import { formatCurrency } from '@/lib/utils';
 import DialogEditDeleteWish from './dialogEditDeleteWish';
 import DialogAddNewWish from './dialogAddNewWish';
 import { Desires } from './DesiresListServer';
+import { TbTagStarred } from "react-icons/tb";
 
 interface DesireListClientProps {
   desires: Desires[];
@@ -23,7 +24,8 @@ const DesiresListClient: React.FC<DesireListClientProps> = ({ desires, userId })
           <div className={`flex flex-row items-center p-2 rounded-sm w-full h-fit aspect-video bg-cover 
                             bg-center ${(desire.str_image && desire.str_image !== 'none') 
                             ? `bg-[url('${process.env.NEXT_PUBLIC_API_URL || ''}${desire.str_image}')]` 
-                            : `bg-[url('/img/NoDesireImage2.png')]`} justify-center`}>
+                            : `bg-white`} justify-center`}>
+            <TbTagStarred className='h-24 w-24 text-[#01C14C]'/>
           </div>
 
           <div className='flex flex-row h-fit justify-between p-2'>

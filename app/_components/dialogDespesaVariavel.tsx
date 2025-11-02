@@ -45,17 +45,17 @@ import Link from "next/link"
 
 const FormSchema = z
     .object({
-        itemName: z.string().min(3, "Item name must be at least 3 characters.").max(50),
+        itemName: z.string().min(3, "Mínimo de 3 caracteres.").max(50, "Máximo de 50 caracteres.").nonempty("Obrigatório"),
         itemValue: z.number().min(0.01, "Item não pode ser menor que R$0,01"),
         itemDescription: z.string(),
-        category: z.number().nullable(),
+        category: z.number({ required_error: "Obrigatório" }).nullable(),
         boolInstallment: z.boolean().optional(),
         intInstallment: z.number().min(1, "This cannot be divided into zero or less"),
-        cardID: z.number().nonnegative("Obrigatório"),
+        cardID: z.number({ required_error: "Obrigatório" }).nonnegative("Obrigatório"),
         Installmentdate: z.date().optional(),
-        paymentMethod: z.number().nonnegative("Obrigatório"),
+        paymentMethod: z.number({ required_error: "Obrigatório" }).nonnegative("Obrigatório"),
         date: z.date(),
-        boolStatus: z.string()
+        boolStatus: z.string({ required_error: "Obrigatório" })
     })
     .refine((data) => {
         // Se está parcelado, deve ter mais de 1 parcela
@@ -266,7 +266,7 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                         Installmentdate: dueDate,
                         cardID: data.cardID,
                         paymentMethod: data.paymentMethod,
-                        boolStatus: i === 0 ? data.boolStatus : 'futura', // Primeira parcela com status escolhido, demais como futura
+                        boolStatus: i === 0 ? data.boolStatus : 'emAberto', 
                         date: dueDate,
                         boolActive: true
                     }
@@ -306,13 +306,13 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
         } finally {
             setIsLoading(false)
         }
-        };
+    };
 
     const { reset } = form;
 
     // Função para resetar o formulário ao clicar em "Cancelar"
     const handleCancel = () => {
-        reset(); // Reseta os valores do formulário para os valores padrão
+        reset(); 
     };
 
     const [isOpen, setIsOpen] = useState(false);
@@ -324,6 +324,15 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
         }
         setIsOpen(open);
     };
+
+    const movimentType =
+        transactionType === "Fixed" || transactionType === "Variable"
+            ? "Output"
+            : "Input";
+
+    const hasCompatibleCategories = categories.some(
+        (cat) => cat.str_movimentType === movimentType
+    );
 
     return (
         <>
@@ -429,17 +438,10 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                                                         <SelectContent className="max-h-[200px] overflow-y-auto">
                                                             <SelectGroup>
                                                                 <SelectLabel>Suas Categorias</SelectLabel>                                                
-                                                                {categories.length > 0 ? (
+                                                                {hasCompatibleCategories ? (
                                                                     categories
                                                                         .filter((cat) => {
-                                                                            const movimentType =
-                                                                                transactionType === "Fixed" || transactionType === "Variable"
-                                                                                    ? "Output"
-                                                                                    : "Input";
-
-                                                                            // Compara com transactionType OU movimentType, conforme necessário
                                                                             return (
-                                                                                cat.str_movimentType === transactionType ||
                                                                                 cat.str_movimentType === movimentType
                                                                             );
                                                                         })
@@ -558,8 +560,6 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                                                                     <SelectLabel>Seus Cartões</SelectLabel>
                                                                     {cards.length > 0 ? (
                                                                         cards.map((cartao, index) => {
-                                                                            //console.log(`Cartão na posição ${index}:`, cartao);
-                                                                            //console.log(`Banco associado:`, cartao.bank);
 
                                                                             if (!cartao || cartao.card_id === undefined || cartao.card_id === null) {
                                                                                 console.warn(`Cartão inválido na posição ${index}:`, cartao);
@@ -567,17 +567,22 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                                                                             }
 
                                                                             return (
-                                                                                <SelectItem key={cartao.card_id.toString()} value={cartao.card_id.toString()}>
-                                                                                    {/*{cartao?.bank?.str_bankName ?? "Banco Desconhecido"} - Cartão {cartao.card_id}*/}
+                                                                                <SelectItem key={cartao.card_id.toString()} value={cartao.card_id.toString()}>                                                                                    
                                                                                     {cartao.bank?.str_bankName ?? "Banco Desconhecido"} - Final {cartao.str_lastNumbers}
 
                                                                                 </SelectItem>
                                                                             );
                                                                         })
                                                                     ) : (
-                                                                        <SelectItem disabled value="">
-                                                                            Nenhum cartão disponível
-                                                                        </SelectItem>
+                                                                        <SelectLabel className="text-muted-foreground">
+                                                                            Nenhum cartão disponível.
+                                                                            <Link
+                                                                                href="/cards?addNew=true"
+                                                                                className="text-[#01C14C] hover:underline px-2"
+                                                                            >
+                                                                                Adicionar?
+                                                                            </Link>
+                                                                        </SelectLabel>
                                                                     )}
                                                                 </SelectGroup>
                                                             </SelectContent>

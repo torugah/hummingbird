@@ -12,9 +12,9 @@ const nextConfig = {
     config.externals = [...(config.externals || []), { '@prisma/client': 'PrismaClient' }];
     return config;
   },
-  experimental: {
-    serverActions: true,
-  },
+  // experimental: {
+  //   serverActions: true,
+  // },
   output: 'standalone' 
 };
 

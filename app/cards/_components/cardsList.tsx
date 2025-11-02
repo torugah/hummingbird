@@ -1,3 +1,5 @@
+'use server'
+
 import React from 'react'
 import DialogAddNewCard from './dialogAddNewCard'
 import { FaRegMoneyBill1 } from 'react-icons/fa6';
@@ -24,6 +26,7 @@ export interface Cards {
 
 interface CardListProps {
   userId: string | null | undefined;
+  showDialog: boolean;
 }
 
 async function getCards(userId: string | null | undefined): Promise<Cards[]> {
@@ -60,7 +63,7 @@ async function getCards(userId: string | null | undefined): Promise<Cards[]> {
   }
 }
 
-const CardsList: React.FC<CardListProps> = async ({ userId }) => {
+const CardsList: React.FC<CardListProps> = async ({ userId , showDialog }) => {
 
   const cards = await getCards(userId);
 

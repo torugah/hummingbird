@@ -199,32 +199,41 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json({ message: 'Não autorizado a remover esta categoria.' }, { status: 403 });
         }
 
-        // 2. (IMPORTANTE) Verificar se existem transações associadas a esta categoria
-        // Se existirem, você pode impedir a exclusão ou ter outra lógica de negócios
-        // (ex: desassociar transações, permitir exclusão e deixar transações sem categoria, etc.)
-        // Para este exemplo, vamos impedir a exclusão se houver transações.
-        const relatedTransactionsCount = await db.transacao.count({ // Assumindo que seu modelo de transação é 'transaction'
-            where: {
-                str_category_id: categoryId, // E que ele tem um campo 'categoryId'
-            },
+        // 2. Usar transação para garantir atomicidade
+        const result = await db.$transaction(async (tx) => {
+            // 2.1. Fazer soft-delete da categoria (apenas marcar como inativa)
+            const updatedCategory = await tx.categoria.update({
+                where: {
+                    category_id: categoryId,
+                    user_id: userId,
+                },
+                data: {
+                    bool_active: false,
+                },
+            });
+
+            // 2.2. Fazer soft-delete de todas as transações relacionadas a esta categoria
+            const updatedTransactions = await tx.transacao.updateMany({
+                where: {
+                    str_category_id: categoryId,
+                    user_id: userId,
+                    bool_active: true, // Apenas atualizar transações que ainda estão ativas
+                },
+                data: {
+                    bool_active: false,
+                },
+            });
+
+            return {
+                category: updatedCategory,
+                transactionsUpdated: updatedTransactions.count,
+            };
         });
 
-        if (relatedTransactionsCount > 0) {
-            return NextResponse.json(
-                { message: `Esta categoria não pode ser removida pois possui ${relatedTransactionsCount} transações associadas.` },
-                { status: 409 } // 409 Conflict
-            );
-        }
-
-        // 3. Deletar a categoria
-        await db.categoria.delete({
-            where: {
-                category_id: categoryId,
-                user_id: userId, // Segurança adicional: garantir que só delete se pertencer ao usuário
-            },
-        });
-
-        return NextResponse.json({ message: 'Categoria removida com sucesso.' }, { status: 200 });
+        return NextResponse.json({ 
+            message: 'Categoria e transações relacionadas foram desativadas com sucesso.',
+            transactionsUpdated: result.transactionsUpdated
+        }, { status: 200 });
 
     } catch (error) {
         console.error('Erro ao remover categoria:', error);

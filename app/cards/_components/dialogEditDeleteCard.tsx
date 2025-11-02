@@ -148,7 +148,7 @@ const DialogEditDeleteCard: React.FC<DialogEditCardsProps> = ({ cardToEdit, user
         } catch (error: any) {
             toast({
                 title: "Erro",
-                description: error.message || "Oops! Algo deu errado ao remover a transação.",
+                description: error.message || "Oops! Algo deu errado ao remover o cartão.",
                 variant: "destructive",
             });
         } finally {
@@ -187,11 +187,11 @@ const DialogEditDeleteCard: React.FC<DialogEditCardsProps> = ({ cardToEdit, user
 
             if (response.ok) {
                 toast({ title: "Sucesso!", description: "Cartão atualizado!" });
+                setIsOpen(false);
             } else {
                 const errorData = await response.json().catch(() => ({ message: "Erro ao processar a resposta do servidor." }));
                 toast({ title: "Erro", description: errorData.message || "Oops! Algo deu errado.", variant: "destructive" });
-            }
-            setIsOpen(false);
+            }            
         } catch (error) {
             toast({ title: "Erro de Rede", description: "Não foi possível conectar ao servidor.", variant: "destructive" });
         } finally {
@@ -203,7 +203,7 @@ const DialogEditDeleteCard: React.FC<DialogEditCardsProps> = ({ cardToEdit, user
 
     return (
         <>
-            <Dialog>
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogTrigger asChild>
                     <Button type="button" variant={"secondary"} aria-label="Abrir ações do cartão" className="p-1 rounded-md">
                         <PiDotsThreeOutlineVerticalFill className="text-gray-700 hover:text-[#01C14C] h-5 w-5" />

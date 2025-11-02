@@ -150,10 +150,10 @@ export function AlertCategoryLine({
             {alerts.map((alert, index) => (
                 <div key={index} className="flex items-center gap-2">
                     {alert.isOverBudget && (
-                        <span className="text-red-600 font-bold">⚠️ </span>
+                        <span className="text-red-600 font-bold">🛑 </span>
                     )}
                     {alert.isNearLimit && (
-                        <span className="text-orange-600 font-bold">🔔 </span>
+                        <span className="text-orange-600 font-bold">⚠️ </span>
                     )}
                     <span className="text-gray-700">
                         <strong>{alert.categoryName}</strong> - 

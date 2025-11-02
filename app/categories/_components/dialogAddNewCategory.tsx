@@ -27,7 +27,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 
 const FormSchema = z
     .object({
-        categoryName: z.string().min(2, "Item name must be at least 3 characters.").max(50),
+        categoryName: z.string({ required_error: "Obrigatório" }).min(2, "Mínimo de 2 caracteres").max(50),
         stringMovimentType: z.enum(["Input", "Output"], { errorMap: () => ({ message: "Selecione um tipo de movimentação." }) }),
         boolHasBudgetLimit: z.boolean(),
         doubleBudgetLimit: z.number().nullable(),
@@ -134,7 +134,7 @@ const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Adicionar Cartegoria</DialogTitle>
+                    <DialogTitle>Adicionar Categoria</DialogTitle>
                     <DialogDescription>
                         Adicione as informações abaixo e salve-as.
                     </DialogDescription>
@@ -153,7 +153,7 @@ const DialogAddNewCategory : React.FC<ChildComponentProps> = ({ userId }) => {
                                         <FormItem>
                                             <Label>Categoria:</Label>
                                             <FormControl>
-                                                <Input type="text" placeholder='Ex: Transaporte' {...field} />
+                                                <Input type="text" placeholder='Ex: Transporte' {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

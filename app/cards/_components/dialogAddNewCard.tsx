@@ -12,11 +12,11 @@ import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import Image from "next/image"
 import { useToast } from "@/components/hooks/use-toast"
-import { useRouter } from 'next/navigation'
 import { NumericFormat } from 'react-number-format'
+import { useSearchParams, useRouter } from 'next/navigation';
 
 const FormSchema = z.object({
-  bank_id: z.number().min(1, "Selecione um banco"),
+  bank_id: z.number({ required_error: "Obrigatório" }).min(1, "Selecione um banco"),
   dbl_creditLimit: z.string().refine(val => {
     // Remove todos os caracteres não numéricos
     const numericValue = val.replace(/[^0-9]/g, "");
@@ -45,11 +45,20 @@ interface Bank {
 }
 
 const DialogAddNewCard: React.FC<ChildComponentProps> = ({ userId }) => {
+  
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false)
   const [banks, setBanks] = useState<Bank[]>([])
 
-  const { toast } = useToast()
-  const router = useRouter()
+  const { toast } = useToast();
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Verifica o parâmetro da URL quando o componente monta
+  useEffect(() => {
+      const addNew = searchParams.get('addNew');
+      setIsOpen(addNew === 'true');
+  }, [searchParams]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -119,6 +128,8 @@ const DialogAddNewCard: React.FC<ChildComponentProps> = ({ userId }) => {
           description: "Registro salvo!",
         })
         handleCancel()
+        setIsOpen(false)
+        router.replace('/cards');
         router.refresh()
       } else {
         throw new Error('Falha ao salvar')
@@ -134,8 +145,16 @@ const DialogAddNewCard: React.FC<ChildComponentProps> = ({ userId }) => {
     }
   }
 
+    const handleOpenChange = (open: boolean) => {
+        if (!open) {
+            
+            router.replace('/cards');
+        }
+        setIsOpen(open);
+    };
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <button className="p-2">
           <FaPlusCircle className="h-24 w-24 text-gray-400 hover:text-[#01C14C] hover:cursor-pointer hover:scale-105 transition-transform duration-200 ease-in-out" />

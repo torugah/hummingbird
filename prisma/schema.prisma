@@ -96,7 +96,7 @@ model Transacao {
   str_description             String? @db.Text
   bool_installment            Boolean?
   int_installmentCount        Int?
-  int_currentInstallment      Int?      // NOVO CAMPO - parcela atual (1, 2, 3...)
+  int_currentInstallment      Int?  
   dtm_currentInstallmentDate  DateTime?
 
   int_paymentForm             Int

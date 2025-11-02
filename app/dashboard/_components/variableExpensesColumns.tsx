@@ -140,7 +140,11 @@ export const outputColumns: ColumnDef<Transaction>[] = [
             // Simple uppercase
             // return <span>{status.toUpperCase()}</span>;
             // Or capitalize the first letter only
-            return <span>{status.charAt(0).toUpperCase() + status.slice(1)}</span>;
+            if (status !== "emAberto") {
+                return <span>{status.charAt(0).toUpperCase() + status.slice(1)}</span>;
+            } else {
+                return <span>Em Aberto</span>;
+            }
         }
     },
     {

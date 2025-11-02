@@ -43,6 +43,16 @@ const DialogAddNewWish: React.FC<ChildComponentProps> = ({ userId }) => {
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [isOpen, setIsOpen] = useState(false); 
+
+  const handleOpenChange = (open: boolean) => {
+        if (!open) {
+            // Se o diálogo estiver fechando (por qualquer motivo: X, clique fora, Esc, botão Cancelar)
+            handleCancel();
+        }
+        setIsOpen(open);
+    };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -159,12 +169,15 @@ const DialogAddNewWish: React.FC<ChildComponentProps> = ({ userId }) => {
       })
     } finally {
       setIsLoading(false)
+      handleCancel();
+      setIsOpen(false);
+      router.refresh();
     }
   }
 
   return (
     <>
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
           <button className="p-2">
             <FaPlusCircle className="h-24 w-24 text-gray-400 hover:text-[#01C14C] hover:cursor-pointer hover:scale-105 transition-transform duration-200 ease-in-out" />
