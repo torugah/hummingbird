@@ -85,7 +85,7 @@ export default function Configurations() {
 
 
     return (
-        <div className="flex flex-col items-center justify-between">
+        <div className="flex flex-col min-h-screen items-center justify-between">
             <Header />
 
             <div className="flex max-lg:w-[95%] flex-row justify-between mt-16 w-[74%]">

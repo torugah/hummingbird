@@ -42,6 +42,7 @@ const cardSchema = z.object({
     str_user_id: z.string(),
     str_bank_id: z.number().min(1, "Selecione um banco"),
     dbl_creditLimit: z.number(),
+    int_bestDate: z.number(),
     dtm_dueDate: z.string().transform(str => new Date(str)), // Converte string para Date
     str_lastNumbers: z.string().min(4).max(4)
 })
@@ -61,6 +62,7 @@ export async function POST(request: Request) {
                 str_bank_id: validatedData.str_bank_id,
                 str_transaction_id: 0, // Valor padrão
                 dbl_creditLimit: validatedData.dbl_creditLimit,
+                int_bestDate: validatedData.int_bestDate,
                 dtm_dueDate: validatedData.dtm_dueDate,
                 str_lastNumbers: validatedData.str_lastNumbers,
                 bool_active: true
@@ -109,6 +111,7 @@ export async function PUT(request: Request) {
             data: {
                 str_bank_id: validatedData.str_bank_id, 
                 dbl_creditLimit: validatedData.dbl_creditLimit,
+                int_bestDate: validatedData.int_bestDate,
                 dtm_dueDate: validatedData.dtm_dueDate,
                 str_lastNumbers: validatedData.str_lastNumbers,
             },

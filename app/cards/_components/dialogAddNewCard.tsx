@@ -23,6 +23,13 @@ const FormSchema = z.object({
     // Verifica se tem pelo menos 1 dígito (já que min(1) já faz isso)
     return numericValue.length > 0;
   }, "Valor inválido"),
+  int_bestDate: z.number()
+    .min(1, "Dia inválido")
+    .max(31, "Dia inválido")
+    .refine(val => {
+      const dayNum = val
+      return dayNum >= 1 && dayNum <= 31
+    }, "Dia inválido"),
   str_dueDate: z.string()
     .min(5, "Data inválida")
     .refine(val => {
@@ -107,6 +114,7 @@ const DialogAddNewCard: React.FC<ChildComponentProps> = ({ userId }) => {
       str_user_id: userId,
       str_bank_id: data.bank_id,
       dbl_creditLimit: numericValue,
+      int_bestDate: data.int_bestDate,
       dtm_dueDate: dueDate.toISOString(), // Converta para ISO string
       str_lastNumbers: data.str_lastNumbers,
     }
@@ -258,31 +266,60 @@ const DialogAddNewCard: React.FC<ChildComponentProps> = ({ userId }) => {
             />
 
             {/* Due Date */}
-            <FormField
-              control={form.control}
-              name="str_dueDate"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Data de Vencimento (MM/AA)</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="MM/AA"
-                      maxLength={5}
-                      onChange={(e) => {
-                        const value = e.target.value
-                        if (value.length === 2 && !field.value.includes('/')) {
-                          field.onChange(value + '/')
-                        } else {
-                          field.onChange(value)
-                        }
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex flex-row space-x-2">
+              <div className="w-1/2">
+                <FormField
+                  control={form.control}
+                  name="int_bestDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Vencimento da Fatura</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Ex: Todo dia 15"
+                          maxLength={31}
+                          onChange={(e) => {
+                            const value = e.target.value
+                            field.onChange(Number(value))
+                          }}
+                          type='number'
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />                
+              </div>
+
+              <div className="w-1/2">
+                <FormField
+                  control={form.control}
+                  name="str_dueDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Data de Validade</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="MM/AA"
+                          maxLength={5}
+                          onChange={(e) => {
+                            const value = e.target.value
+                            if (value.length === 2 && !field.value.includes('/')) {
+                              field.onChange(value + '/')
+                            } else {
+                              field.onChange(value)
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
           </form>
         </Form>
 

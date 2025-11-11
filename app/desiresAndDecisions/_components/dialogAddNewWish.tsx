@@ -46,12 +46,12 @@ const DialogAddNewWish: React.FC<ChildComponentProps> = ({ userId }) => {
   const [isOpen, setIsOpen] = useState(false); 
 
   const handleOpenChange = (open: boolean) => {
-        if (!open) {
-            // Se o diálogo estiver fechando (por qualquer motivo: X, clique fora, Esc, botão Cancelar)
-            handleCancel();
-        }
-        setIsOpen(open);
-    };
+    if (!open) {
+        // Se o diálogo estiver fechando (por qualquer motivo: X, clique fora, Esc, botão Cancelar)
+        handleCancel();
+    }
+    setIsOpen(open);
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

@@ -62,6 +62,13 @@ const EditFormSchema = z.object({
         // Verifica se tem pelo menos 1 dígito (já que min(1) já faz isso)
         return numericValue.length > 0;
     }, "Valor inválido"),
+    int_bestDate: z.number()
+    .min(1, "Dia inválido")
+    .max(31, "Dia inválido")
+    .refine(val => {
+      const dayNum = val
+      return dayNum >= 1 && dayNum <= 31
+    }, "Dia inválido"),
     str_dueDate: z.string()
         .min(5, "Data inválida")
         .refine(val => {
@@ -115,6 +122,7 @@ const DialogEditDeleteCard: React.FC<DialogEditCardsProps> = ({ cardToEdit, user
         values: {
             bank_id: cardToEdit.bank.bank_id,
             dbl_creditLimit: cardToEdit.dbl_creditLimit.toString(),
+            int_bestDate: cardToEdit.int_bestDate,
             str_dueDate: new Date(cardToEdit.dtm_dueDate).toLocaleDateString('pt-BR', {
                 month: '2-digit',
                 year: '2-digit'
@@ -165,15 +173,25 @@ const DialogEditDeleteCard: React.FC<DialogEditCardsProps> = ({ cardToEdit, user
         const fullYear = `20${year}` // Assuming 21st century
         const dueDate = new Date(parseInt(fullYear), parseInt(month) - 1, 1)
 
-        // Format credit limit
-        const rawValue = data.dbl_creditLimit.replace(/[^0-9]/g, "")
-        const numericValue = parseFloat(rawValue) / 100
+        // Format credit limit. This handles the bug where non-interacted values were divided.
+        let numericValue;
+        const initialValueString = cardToEdit.dbl_creditLimit.toString();
+        const submittedValue = data.dbl_creditLimit;
+
+        if (submittedValue === initialValueString) {
+            numericValue = cardToEdit.dbl_creditLimit; // Use the original value if unchanged
+        } else {
+            // If changed, the value is a numeric string from NumericFormat (in cents)
+            const rawValue = submittedValue.replace(/[^0-9]/g, "");
+            numericValue = parseFloat(rawValue) / 100;
+        }
 
         const requestBody = {
             card_id: cardToEdit.card_id,
             str_user_id: userId,
             str_bank_id: data.bank_id,
             dbl_creditLimit: numericValue,
+            int_bestDate: data.int_bestDate,
             dtm_dueDate: dueDate.toISOString(), // Converta para ISO string
             str_lastNumbers: data.str_lastNumbers,
         };
@@ -308,31 +326,60 @@ const DialogEditDeleteCard: React.FC<DialogEditCardsProps> = ({ cardToEdit, user
                             />
 
                             {/* Due Date */}
-                            <FormField
-                                control={form.control}
-                                name="str_dueDate"
-                                render={({ field }) => (
+                            <div className="flex flex-row space-x-2">
+                                <div className="w-1/2">
+                                <FormField
+                                    control={form.control}
+                                    name="int_bestDate"
+                                    render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Data de Vencimento (MM/AA)</FormLabel>
+                                        <FormLabel>Vencimento da Fatura</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                {...field}
-                                                placeholder="MM/AA"
-                                                maxLength={5}
-                                                onChange={(e) => {
-                                                    const value = e.target.value
-                                                    if (value.length === 2 && !field.value.includes('/')) {
-                                                        field.onChange(value + '/')
-                                                    } else {
-                                                        field.onChange(value)
-                                                    }
-                                                }}
-                                            />
+                                        <Input
+                                            {...field}
+                                            placeholder="Ex: Todo dia 15"
+                                            maxLength={31}
+                                            onChange={(e) => {
+                                                const value = e.target.value                                              
+                                                field.onChange(Number(value))
+                                            }}
+                                        />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
-                                )}
-                            />
+                                    )}
+                                />                
+                                </div>
+                
+                                <div className="w-1/2">
+                                <FormField
+                                    control={form.control}
+                                    name="str_dueDate"
+                                    render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Data de Validade</FormLabel>
+                                        <FormControl>
+                                        <Input
+                                            {...field}
+                                            placeholder="MM/AA"
+                                            maxLength={5}
+                                            onChange={(e) => {
+                                            const value = e.target.value
+                                            if (value.length === 2 && !field.value.includes('/')) {
+                                                field.onChange(value + '/')
+                                            } else {
+                                                field.onChange(value)
+                                            }
+                                            }}
+                                            type="number"
+                                        />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                    )}
+                                />
+                                </div>
+                            </div>
 
                         </form>
                     </Form>

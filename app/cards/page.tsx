@@ -21,7 +21,7 @@ export default async function CardPage(
     const showDialog = searchParams.addNew === "true";
 
     return (
-        <div className="flex flex-col items-center justify-between">
+        <div className="flex flex-col min-h-screen items-center justify-between">
 
             <Header />
 

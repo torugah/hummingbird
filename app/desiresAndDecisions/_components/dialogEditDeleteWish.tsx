@@ -64,6 +64,16 @@ const DialogEditDeleteWish: React.FC<{ desiresToEdit: Desires, userId: string | 
     const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    const [isOpen, setIsOpen] = useState(false); 
+    
+    const handleOpenChange = (open: boolean) => {
+        if (!open) {
+            // Se o diálogo estiver fechando (por qualquer motivo: X, clique fora, Esc, botão Cancelar)
+            handleCancel();
+        }
+        setIsOpen(open);
+    };
+    
     const form = useForm<EditFormValues>({
         resolver: zodResolver(EditFormSchema),
         values: {
@@ -200,12 +210,15 @@ const DialogEditDeleteWish: React.FC<{ desiresToEdit: Desires, userId: string | 
             toast({ title: "Erro de Rede", description: "Não foi possível conectar ao servidor.", variant: "destructive" });
         } finally {
             setIsLoading(false);
+            handleCancel();
+            setIsOpen(false);
+            router.refresh();
         }
     };
 
     return (
         <>
-            <Dialog>
+            <Dialog open={isOpen} onOpenChange={handleOpenChange}>
                 <DialogTrigger asChild>
                     <Button type="button" variant={"secondary"} aria-label="Abrir ações do cartão" className="p-1 rounded-md">
                         <PiDotsThreeOutlineVerticalFill className="text-gray-700 hover:text-[#01C14C] h-5 w-5" />

@@ -64,18 +64,16 @@ export default function page() {
                                     text-gray-400 text-left 
                                     hover:text-[#01C14C]'>
                         <TooltipProvider delayDuration={300}>
-                            <TooltipProvider delayDuration={300}>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Link href="/" className='flex flex-row'>
-                                            <ChevronLeft className='h-4 w-4' />
-                                        </Link>
-                                    </TooltipTrigger>
-                                    <TooltipContent className="bg-white text-black p-2 rounded-md">
-                                        <p>Voltar</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Link href="/" className='flex flex-row'>
+                                        <ChevronLeft className='h-4 w-4' />
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent className="bg-white text-black p-2 rounded-md">
+                                    <p>Voltar</p>
+                                </TooltipContent>
+                            </Tooltip>
                         </TooltipProvider>
                     </div>
                 </div>

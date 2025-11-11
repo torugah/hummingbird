@@ -24,6 +24,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Calendar } from "@/components/ui/calendar"
+import { ptBR } from "date-fns/locale"
 import {
     Popover,
     PopoverContent,
@@ -489,7 +490,10 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                                                         <Switch
                                                             id="parcelado"
                                                             checked={field.value}
-                                                            onCheckedChange={field.onChange}
+                                                            onCheckedChange={(checked) => {
+                                                                field.onChange(checked);
+                                                                form.setValue('intInstallment', 1);
+                                                            }}
                                                         />
                                                         <Label htmlFor="parcelado">
                                                             Está parcelado?
@@ -518,6 +522,7 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                                                                     e.target.value === "" ? undefined : parseFloat(e.target.value)
                                                                 )
                                                             }
+                                                            disabled={!form.watch('boolInstallment')}
                                                         />
                                                     </div>
                                                 </FormControl>
@@ -666,6 +671,14 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                                                                     field.onChange(date);
                                                                 }}
                                                                 initialFocus
+                                                                fixedWeeks={true}
+                                                                locale={ptBR}
+                                                                formatters={{
+                                                                    formatCaption: (date, options) => {
+                                                                        const month = format(date, "LLLL", { locale: options?.locale });
+                                                                        return `${month.charAt(0).toUpperCase() + month.slice(1)} ${date.getFullYear()}`;
+                                                                    }
+                                                                }}                                                                
                                                             />
                                                         </PopoverContent>
                                                     </Popover>

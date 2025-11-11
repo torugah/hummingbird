@@ -23,6 +23,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Calendar } from "@/components/ui/calendar"
+import { ptBR } from "date-fns/locale"
 import {
     Popover,
     PopoverContent,
@@ -403,7 +404,10 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
                                                     <Switch
                                                         id="parceladoEdit" // ID diferente
                                                         checked={field.value}
-                                                        onCheckedChange={field.onChange}
+                                                        onCheckedChange={(checked) => {
+                                                            field.onChange(checked);
+                                                            form.setValue('intInstallment', 1);
+                                                        }}
                                                     />
                                                     <Label htmlFor="parceladoEdit">
                                                         Está parcelado?
@@ -547,6 +551,14 @@ const DialogEditDespesaVariavel: React.FC<DialogEditDPVProps> = ({ isOpen, onOpe
                                                                 field.onChange(date);
                                                             }}
                                                             initialFocus
+                                                            fixedWeeks={true}
+                                                            locale={ptBR}
+                                                            formatters={{
+                                                                formatCaption: (date, options) => {
+                                                                    const month = format(date, "LLLL", { locale: options?.locale });
+                                                                    return `${month.charAt(0).toUpperCase() + month.slice(1)} ${date.getFullYear()}`;
+                                                                }
+                                                            }}  
                                                         />
                                                     </PopoverContent>
                                                 </Popover>

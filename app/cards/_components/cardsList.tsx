@@ -4,16 +4,23 @@ import React from 'react'
 import DialogAddNewCard from './dialogAddNewCard'
 import { FaRegMoneyBill1 } from 'react-icons/fa6';
 import { formatCurrency } from '@/lib/utils';
-import { BsCalendarDate } from "react-icons/bs";
+import { BsCalendar2X, BsCalendarCheck, BsCalendarDate } from "react-icons/bs";
 import { GoNumber } from "react-icons/go";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import DialogEditDeleteCard from './dialogEditDeleteCard';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export interface Cards {
   str_user_id: string;
   card_id: number;
   dbl_creditLimit: number;
+  int_bestDate: number;
   dtm_dueDate: Date;
   str_lastNumbers: string;
   bool_active: boolean;
@@ -90,7 +97,7 @@ const CardsList: React.FC<CardListProps> = async ({ userId , showDialog }) => {
               </div>
 
               <div className='text-start items-start h-[75%]'>
-                <p className="text-clip">{card.bank.str_bankName}</p>                
+                <p className="text-clip text-xl font-bold">{card.bank.str_bankName}</p>                
               </div>
 
             </div>            
@@ -104,15 +111,45 @@ const CardsList: React.FC<CardListProps> = async ({ userId , showDialog }) => {
               {/* Display last card numbers */}
               <div className='flex flex-row items-center'>
                 <GoNumber className='pr-2 h-4 w-6' />
-                <p className="font-normal">Cartão com final {card.str_lastNumbers}</p>
+                <p className="text-lg font-normal font-mono tracking-widest">XXXX XXXX XXXX {card.str_lastNumbers}</p>
               </div>
 
               {/* Display category name */}
-              <div className='flex flex-row items-center'>
-                <BsCalendarDate className='pr-2 h-4 w-6' />
-                <p className="font-normal">
-                  Data de Ciclo do Cartão é {format(card.dtm_dueDate, 'MM/yy', { locale: ptBR })}
-                </p>
+              <div className='flex flex-row items-center w-full'>
+                <div className="flex flex-col w-[50%]">
+                  <TooltipProvider delayDuration={300}>
+                      <Tooltip>
+                          <TooltipTrigger asChild className='cursor-help'>
+                              <div className='flex flex-row items-center'>
+                                <BsCalendarCheck className='pr-2 h-4 w-6' />
+                                <p className="font-normal">
+                                  {card.int_bestDate ? "Dia " + card.int_bestDate : " --/-- "}
+                                </p>
+                              </div>  
+                          </TooltipTrigger>
+                          <TooltipContent className="bg-white text-black p-2 rounded-md">
+                              <p>Data de Vencimento da Fatura</p>
+                          </TooltipContent>
+                      </Tooltip>
+                  </TooltipProvider>             
+                </div>
+                <div className="flex flex-col w-[50%] items-center">
+                      <TooltipProvider delayDuration={300}>
+                        <Tooltip>
+                          <TooltipTrigger asChild className='cursor-help'>
+                            <div className='flex flex-row items-center'>
+                              <BsCalendar2X className='pr-2 h-4 w-6' />
+                              <p className="font-normal">
+                                {format(card.dtm_dueDate, 'MM/yyyy', { locale: ptBR })}
+                              </p>
+                            </div>
+                          </TooltipTrigger>
+                            <TooltipContent className="bg-white text-black p-2 rounded-md">
+                              <p>Data de Validade deste Cartão</p>
+                            </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>              
+                </div>
               </div>
 
               {/* Display budget limit if applicable */}

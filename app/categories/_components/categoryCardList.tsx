@@ -111,7 +111,7 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId , show
 
             {/* TODO: height: auto, min-height: 15rem  */}
             {/* NOTE: veja como fazer com que altura em < 1024px seja no mínimo 15rem e em => 1024px seja mínimo 11rem   */}
-            <div className='flex flex-col p-[0.1rem] w-[32%] max-lg:w-[49%] max-sm:w-[99%] max-lg:min-h-44 min-h-60 h-fit
+            <div className='flex flex-col p-[0.1rem] w-[32%] max-lg:w-[49%] max-sm:w-[99%] max-lg:min-h-44 min-h-60 h-auto
                              bg-gray-100 border-gray-300 border-2 rounded-lg items-center justify-center'>  
                 <DialogAddNewCategory userId={userId} />
             </div>

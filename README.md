@@ -1,42 +1,49 @@
 # Mudanças
 
-## Novidades
-> modified:   app/cards/_components/cardsList.tsx
-- Explicitamente alterado para Server Side e passa a receber props.
-> modified:   app/cards/page.tsx
-- Recebe props que são posteriormente enviadas ao CardList.
-> modified:   app/api/categories/route.ts
-- As categorias passam ser excluídas não mais físicamente (Soft Delete), onde agora sua exclusão passa a ser apenas uma alteração no booleando do status.
-> modified:   app/_components/dialogDespesaVariavel.tsx
-- Erros de obrigatoriedade agora estão em português.
-- Parcelas adiante passam a ser "Em aberto" ao invés de "Futura".
-- Campo das categorias agora verificam se há categorias da mesma espécie, evitando campos vazios ao encontrar categorias em geral.
-- Campo dos cartões passam a oferecer a criação de novos cartões caso ainda não existam.
-> modified:   app/desiresAndDecisions/_components/dialogAddNewWish.tsx
-- Fechamento automático publicar novo desejo.
-
-## Estética
-> modified:   app/desiresAndDecisions/_components/wishList.tsx
-- Implementação de área branca e ícone de etiqueta para evitar fundo vazio.
-> modified:   app/dashboard/_components/alertCategoryLine.tsx
-- Alteração de ícones utilizados
-
-## Correções Textuais
-> modified:   app/dashboard/_components/variableExpensesColumns.tsx
-- Correção e verificação de texto exibido na tabela, de "EmAberto" para "Em Aberto". 
-> modified:   app/categories/_components/dialogAddNewCategory.tsx
-- Implementação de texto em português.
+## 1ª Parte da Implementação de Faturas
 > modified:   app/cards/_components/dialogEditDeleteCard.tsx
-- Correções textuais e fechamento automático ao editar/excluir cartões.
 > modified:   app/cards/_components/dialogAddNewCard.tsx
-- Implemtação de texto em português, recebeu abertura automática por parâmetros e fechamento automático publicar novo cartão.
+- Adicionado o "int_bestDate" ao validador do formulário, através do zod.
+- Adicionado o valor padrão ao que é retornado pela API.
+- Verificação de valor: Quando há alteração a antiga implementação da divisão por 100 é mantida, mas quando não houver alterações o valor segue o mesmo do que é trago pela API (Resolução de BUG).
+- Adicionado o "int_bestDate" ao corpo da requisição.
+- Divisão da linha de datas a fim da implementação da data de vencimento da fatura.
+> modified:   app/cards/_components/cardsList.tsx
+- Importações do ToolTip e novos ícones.
+- Interface receber o novo elemento "int_bestDate".
+- Utilização de negrito e aumento na fonte que exibe o nome do banco.
+- Os números do cartão tiveram sua fonte aumentada, alterada para Monospace e maior distância de separação.
+- Datas presentes nos cartões agora recebem Tooltips a fim de melhor explicar se são: Data de Vencimento da Fatura ou Data de Validade do Cartão.
+- O Mouse ganha uma interroção ao passar pelas datas presentes.
+> modified:   app/api/cards/route.ts
+- Adicionado o "int_bestDate" a todas as rotas de API.
 
-## Limpeza
-> modified:   app/_components/allMenuPages.tsx
+## Prisma 
 > modified:   prisma/schema.prisma
-- Remoção de Área Comentada. 
-> modified:   next.config.mjs
-- Remoção de área experimental "serverActions".
+> modified:   prisma/seed.mjs
+> prisma/migrations/20251110215447_added_best_day_to_cards/
+- Por uso de comando o Schema acabou sendo reorganizado, mas a única alteração é na adição da coluna "int_bestDate" na tabela Cartao.
+- Logo foi feito uma nova _migration_ para registrar a mudança.
+- As datas que compoêm o arquivo seed.mjs agora seguem a ISO-8601.
 
+## Linguagem e Parcelamento
+> modified:   app/dashboard/_components/dialogEditDespesaVariavel.tsx
+> modified:   app/_components/dialogDespesaVariavel.tsx
+- Recebeu pacote de palavras em português no calendário.
+- Número de semanas passa a ser fixo.
+- Capitalização dos meses
+- Número de parcelas é fixado, ou corrigido, em 1 quando não é um parcelamento, categorizando como uma compra à vista corretamente. 
 
+## Correção do Dialog
+> modified:   app/desiresAndDecisions/_components/dialogEditDeleteWish.tsx
+- Implementação do fechamento correto do _Dialog_ usado.
 
+## Correções Pequenas
+> modified:   app/passwordRecovery/page.tsx
+- Remoção de código replicado (Apesar de não haver bugs).
+> modified:   app/configurations/page.tsx
+> modified:   app/categories/page.tsx
+> modified:   app/cards/page.tsx
+- Correção no tamanho ocupado.
+> modified:   app/categories/_components/categoryCardList.tsx
+- Correção no tamanho alinhado com outros _Cards_
