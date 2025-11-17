@@ -144,8 +144,8 @@ const CalendarioCustomizado: React.FC<CalendarioCustomizadoProps> = ({
     };
 
     return (
-        <div className="flex flex-row w-full gap-6">
-            <div className="flex flex-col w-3/5">     
+        <div className="flex flex-row justify-center w-full gap-6 pb-8">
+            <div className="flex flex-col w-2/5">     
                 <div className="flex items-center gap-2 mb-4 ml-4">
                     <FaRegCalendar className="text-xl" />
                     <h1 className="text-2xl font-bold">Calendário</h1>

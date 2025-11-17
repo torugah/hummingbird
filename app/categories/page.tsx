@@ -21,10 +21,8 @@ export default async function Categories({
     const userId = data?.user.id;
     const showDialog = searchParams.addNew === "true";
 
-    // TODO: Alerta de gasto nas categorias.
     // TODO: Desabilitar categorias e lista de categorias desabilitadas.
     // TODO: Habilitar forma de pagamento dependendo se for dinheiro oou cartão.
-    // TODO: Reajustar o layout do dialog.
 
     return (
         <div className="flex flex-col min-h-screen items-center justify-between">

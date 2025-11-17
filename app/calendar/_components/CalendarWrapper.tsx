@@ -138,7 +138,7 @@ function CalendarWrapper({
                 />
                 
                 {/* Seção de resumo anual (mantida igual) */}
-                <div className='flex flex-box bg-grey-100 rounded-md mx-auto p-8 mb-8 w-[74%]'>
+                <div className='flex flex-box bg-white rounded-lg shadow mx-auto p-8 mb-8 w-[74%]'>
                     <div className="flex flex-col justify-between items-center w-full">    
                         <h2 className='text-xl font-semibold text-[#01C14C] mb-4'>
                             Controle do Ano - Mês por mês

@@ -343,6 +343,7 @@ const DialogEditDeleteCard: React.FC<DialogEditCardsProps> = ({ cardToEdit, user
                                                 const value = e.target.value                                              
                                                 field.onChange(Number(value))
                                             }}
+                                            type="number"
                                         />
                                         </FormControl>
                                         <FormMessage />
@@ -370,8 +371,7 @@ const DialogEditDeleteCard: React.FC<DialogEditCardsProps> = ({ cardToEdit, user
                                             } else {
                                                 field.onChange(value)
                                             }
-                                            }}
-                                            type="number"
+                                            }}                                            
                                         />
                                         </FormControl>
                                         <FormMessage />

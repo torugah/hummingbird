@@ -43,6 +43,7 @@ import { useRouter } from "next/navigation"
 import { NumericFormat } from 'react-number-format';
 import { InstallmentHandler } from "../dashboard/_components/installmentHandler"
 import Link from "next/link"
+import { CardStatusAlert } from "../dashboard/_components/cardStatusAlert"
 
 const FormSchema = z
     .object({
@@ -79,7 +80,10 @@ interface Cartao {
     str_user_id: string; // ID do usuário
     str_bank_id: number; // ID do banco associado
     bank: Bank; // Relação com o banco
+    dbl_creditLimit: number;
     str_lastNumbers: string;
+    dtm_dueDate?: string; // Adicione esta linha
+    int_bestDate?: number; // Adicione esta linha
 }
 
 interface PaymentMethod {
@@ -453,7 +457,7 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                                                                         ))
                                                                 ) : (
                                                                     <SelectLabel className="text-muted-foreground">
-                                                                        Nenhuma categoria disponível.
+                                                                        {`Nenhuma categoria disponível. `}
                                                                         <Link
                                                                             href="/categories?addNew=true"
                                                                             className="
@@ -580,7 +584,7 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                                                                         })
                                                                     ) : (
                                                                         <SelectLabel className="text-muted-foreground">
-                                                                            Nenhum cartão disponível.
+                                                                            {`Nenhum cartão disponível. `}
                                                                             <Link
                                                                                 href="/cards?addNew=true"
                                                                                 className="text-[#01C14C] hover:underline px-2"
@@ -636,6 +640,19 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                                     />
                                 </div>
                             </div>
+
+                            {/* Card Status Alert */} 
+                            {/* 
+                            TODO: Verificar por que o componente não está atualizando quando mudo a forma de pagamento.
+                            */} 
+                            <CardStatusAlert
+                                selectedCardId={form.watch('cardID')}
+                                selectedPaymentMethod={form.watch('paymentMethod')}
+                                cards={cards}
+                                paymentMethods={paymentMethod}
+                                currentTransactionValue={form.watch('itemValue') || 0}
+                            />
+                            
 
                             {/* Sixth Layer */}
                             <div className="flex flex-row items-center justify-between space-x-2">

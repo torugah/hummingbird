@@ -68,7 +68,7 @@ const CategoryCardList: React.FC<CategoryCardListProps> = async ({ userId , show
                 // Use a unique key for each card, like category.id
                 <div 
                     key={category.category_id} 
-                    // TODO: corrigir o width em 99% em telas pequenas
+                    
                     className='flex flex-col p-[0.1rem] w-[32%] max-lg:w-[49%] max-sm::w-[99%] h-fit bg-gray-100 border-gray-300 border-2 rounded-lg'>
 
                     {/* Use category.str_image if available, otherwise a default */}
