@@ -205,6 +205,26 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
         },
     })
 
+    // Observa a forma de pagamento selecionada
+    const selectedPaymentMethodId = form.watch('paymentMethod');
+
+    useEffect(() => {
+        // Se a forma de pagamento for "Dinheiro em Espécie" (ID 1)
+        if (selectedPaymentMethodId === 1) {
+            // Encontra o cartão "Dinheiro Pessoal" (bank_id 22)
+            const personalCard = cards.find(card => card.bank.bank_id === 22);
+            if (personalCard) {
+                // Define o valor do campo cardID para o ID do cartão encontrado
+                form.setValue('cardID', personalCard.card_id);
+            }
+        } else {
+            // Se outra forma de pagamento for selecionada e o cartão for o pessoal, limpa a seleção
+            if (form.getValues('cardID') === cards.find(card => card.bank.bank_id === 22)?.card_id) {
+                form.resetField('cardID');
+            }
+        }
+    }, [selectedPaymentMethodId, cards, form]);
+
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
 
         setIsLoading(true);
@@ -560,39 +580,45 @@ const DialogDPV: React.FC<ChildComponentProps> = ({ userId, transactionType }) =
                                                         <Select
                                                             onValueChange={(value) => field.onChange(Number(value))}
                                                             value={field.value != null ? field.value.toString() : ""}
+                                                            disabled={selectedPaymentMethodId === 1}
                                                         >
                                                             <SelectTrigger className="w-full">
                                                                 <SelectValue placeholder="Escolha um cartão" />
                                                             </SelectTrigger>
                                                             <SelectContent>
                                                                 <SelectGroup>
-                                                                    <SelectLabel>Seus Cartões</SelectLabel>
-                                                                    {cards.length > 0 ? (
-                                                                        cards.map((cartao, index) => {
+                                                                    <SelectLabel>Seus Cartões</SelectLabel>                                                                    
+                                                                    {(() => {
+                                                                        // Filtra os cartões visíveis ANTES de renderizar.
+                                                                        const visibleCards = cards.filter(card => {
+                                                                            // Se o método for 1 (Dinheiro), mostra APENAS o cartão pessoal (bank_id 22).
+                                                                            if (selectedPaymentMethodId === 1) return card.bank.bank_id === 22;
+                                                                            // Se o método for 5 (Exceção), mostra TODOS os cartões.
+                                                                            if (selectedPaymentMethodId === 5) return true;
+                                                                            // Para todos os outros métodos, mostra os cartões normais (esconde o pessoal).
+                                                                            return card.bank.bank_id !== 22;
+                                                                        });
 
-                                                                            if (!cartao || cartao.card_id === undefined || cartao.card_id === null) {
-                                                                                console.warn(`Cartão inválido na posição ${index}:`, cartao);
-                                                                                return <p key={index}>Cartão inválido</p>;
-                                                                            }
-
-                                                                            return (
-                                                                                <SelectItem key={cartao.card_id.toString()} value={cartao.card_id.toString()}>                                                                                    
-                                                                                    {cartao.bank?.str_bankName ?? "Banco Desconhecido"} - Final {cartao.str_lastNumbers}
-
-                                                                                </SelectItem>
-                                                                            );
-                                                                        })
-                                                                    ) : (
-                                                                        <SelectLabel className="text-muted-foreground">
-                                                                            {`Nenhum cartão disponível. `}
-                                                                            <Link
-                                                                                href="/cards?addNew=true"
-                                                                                className="text-[#01C14C] hover:underline px-2"
-                                                                            >
-                                                                                Adicionar?
-                                                                            </Link>
-                                                                        </SelectLabel>
-                                                                    )}
+                                                                        if (visibleCards.length > 0) {
+                                                                            return visibleCards.map((cartao) => {
+                                                                                const isPersonalCard = cartao.bank.bank_id === 22;
+                                                                                return (
+                                                                                    <SelectItem key={cartao.card_id.toString()} value={cartao.card_id.toString()}>
+                                                                                        {isPersonalCard ? 'Dinheiro Pessoal' : `${cartao.bank?.str_bankName ?? "Banco Desconhecido"} - Final ${cartao.str_lastNumbers}`}
+                                                                                    </SelectItem>
+                                                                                );
+                                                                            });
+                                                                        } else {
+                                                                            return <>
+                                                                                <SelectLabel className="text-muted-foreground">
+                                                                                    {`Nenhum cartão disponível. `}
+                                                                                    <Link href="/cards?addNew=true" className="text-[#01C14C] hover:underline px-2">
+                                                                                    Adicionar?
+                                                                                    </Link>
+                                                                                </SelectLabel>
+                                                                            </>;
+                                                                        }
+                                                                    })()}
                                                                 </SelectGroup>
                                                             </SelectContent>
                                                         </Select>

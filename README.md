@@ -1,24 +1,12 @@
 # Mudanças
 
-## 2ª Parte da Implementação de Faturas
-> added: app/api/transactions/creditTransactions/
-- Nova rota de API especifica para consulta da fatura do cartão.
-> added: app/dashboard/_components/cardStatusAlert.tsx 
-- Novo Card que exibe os alertas de um cartão conforme informações sobre data de validade do cartão, limite de crédito do cartão e período de fatura. Implemntado dentro do componente dialogDespesaVariavel.tsx
+## Forma de Pagamento em Dinheiro
 > modified:   app/_components/dialogDespesaVariavel.tsx
-- Importação do CardStatusAlert neste componente. Implementado na 5ª linha do formulário, após os campos de Cartão e Forma de Pagamento.
-- Atualização da interface (regra de elementos) do Cartão
-- Correção da estética dos textos
-
-## Mudança Estética na página Calendar
-> modified:   app/calendar/_components/CalendarWrapper.tsx
-> modified:   app/calendar/_components/CalendarioCustomizado.tsx
-
-## Correções
+- Nova constante, chamada selectedPaymentMethodID que verifica a forma de pagamento selecionado.
+- Uso do useEffect que obeserva a selectedPaymentMethodID e força que o cartão falso, que não é atrelado a um banco e retrata o dinheiro físico do usuário, seja selecionado e fixado quando o usuário seleciona a opção de pagamento por Dinheiro, e apenas desbloquia o campo dos cartões quando o usuário altera para outro método de pagamento. 
+- O campo cardID, que trás os cartões do usuário recebeu filtros que exibem apenas cartões reais, com a exceção de quando o usuário opta por utilizar o método de pagamento em dinheiro ou então via boleto que pode ocasionar tanto o uso de um banco como a de dinheiro físico, ocasinando o aparecimento da opção "Dinheiro Pessoal" que se refere ao "cartão falso".
+### Visualização Programada
+> modified:   app/cards/_components/cardsList.tsx
+> modified:   app/cards/_components/dialogAddNewCard.tsx
 > modified:   app/cards/_components/dialogEditDeleteCard.tsx
-- Propriedade _type_ movida corretamente para dentro do campo de dia de vencimento da fatura, anteriormente foi implementado erronêamente no campo de validade do cartão. 
-
-## Limpeza de código
-> modified:   app/categories/_components/categoryCardList.tsx
-> modified:   app/categories/page.tsx
-- Remoção de comentários
+- Ao ler os bancos que chegaram da API a aplicação irá fazer um filtro que exclui o cartão falso da visão do usuário. 

@@ -197,7 +197,9 @@ const DialogAddNewCard: React.FC<ChildComponentProps> = ({ userId }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {banks.map((bank) => (
+                      {banks
+                        .filter(bank => bank.bank_id !== 22 && bank.str_bankName !== "personalFormUser")
+                        .map((bank) => (
                         <SelectItem key={bank.bank_id} value={bank.bank_id.toString()}>
                           <div className="flex items-center gap-2">
                             <Image

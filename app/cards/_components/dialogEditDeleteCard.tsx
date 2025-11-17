@@ -258,7 +258,9 @@ const DialogEditDeleteCard: React.FC<DialogEditCardsProps> = ({ cardToEdit, user
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                {banks.map((bank) => (
+                                                {banks
+                                                    .filter(bank => bank.bank_id !== 22 && bank.str_bankName !== "personalFormUser")
+                                                    .map((bank) => (
                                                     <SelectItem key={bank.bank_id} value={bank.bank_id.toString()}>
                                                         <div className="flex items-center gap-2">
                                                             <Image
@@ -380,7 +382,6 @@ const DialogEditDeleteCard: React.FC<DialogEditCardsProps> = ({ cardToEdit, user
                                 />
                                 </div>
                             </div>
-
                         </form>
                     </Form>
                     <DialogFooter>

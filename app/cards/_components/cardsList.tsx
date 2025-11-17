@@ -76,7 +76,9 @@ const CardsList: React.FC<CardListProps> = async ({ userId , showDialog }) => {
 
   return (
     <>
-      {cards.map((card) => (
+      {cards
+        .filter(card => card.bank.bank_id !== 22 && card.bank.str_bankName !== "personalFormUser")
+        .map((card) => (
         <div key={card.card_id} className='flex flex-col p-[0.1rem] w-[32%] h-60 bg-gray-100 border-gray-300 border-2 rounded-lg'>
           {/* Use category.str_image if available, otherwise a default */}
 
